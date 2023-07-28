@@ -1,0 +1,10 @@
+{
+  "optional": "opsional",
+  "yes": "Ya",
+  "cancel": "Batal",
+  "noInternetTitle": "Oh tidakkk, internetmu mati!",
+  "noInternetAlt": "Sepertinya internetmu mati. Kamu jadi gabisa akses LareJatim, nih. Coba cek lagi koneksi internetmu ya!",
+  "tryAgain": "Coba lagi!",
+  "stillNoInternet": "Kamu masih belum terhubung ke internet",
+  "confirmation": "Konfirmasi"
+}

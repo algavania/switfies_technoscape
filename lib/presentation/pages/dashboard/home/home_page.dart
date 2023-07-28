@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sizer/sizer.dart';
@@ -7,9 +8,11 @@ import 'package:swifties_technoscape/data/models/transaction/transaction_model.d
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
+import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_app_bar.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_article.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_child_account.dart';
+import 'package:swifties_technoscape/presentation/widgets/custom_saving_balance.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_transaction.dart';
 
@@ -21,7 +24,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final ValueNotifier<bool> _isBalanceVisible = ValueNotifier(false);
   final ArticleModel _dummyArticle = ArticleModel(title: '5 Langkah Simpel Buatmu Sukses Dalam Menabung', thumbnailUrl: 'https://mediacloud.theweek.co.uk/image/private/s--X-WVjvBW--/f_auto,t_content-image-full-desktop@1/v1669803330/theweek/2022/November/143276835%20-%20savings%20accounts.jpg', content: '', readingInMinutes: 5, createdAt: DateTime.now());
   final List<TransactionModel> _dummyTransactions = [const TransactionModel(uid: 0, amount: 200000, createTime: 1686725002, senderAccountNo: '1234567890', traxType: 'Transfer Out', receiverAccountNo: '', senderName: 'Fulan bin Fulan', receiverName: 'Naluf bin Naluf', isNeedingApproval: true)];
 
@@ -45,7 +47,7 @@ class _HomePageState extends State<HomePage> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  _buildBalance(),
+                  const CustomSavingBalance(balance: 2200000),
                   const SizedBox(height: UiConstant.defaultSpacing),
                   _buildMenus(),
                   const SizedBox(height: UiConstant.defaultSpacing),
@@ -63,91 +65,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildBalance() {
-    return ValueListenableBuilder(
-      valueListenable: _isBalanceVisible,
-      builder: (context, _, __) {
-        return Container(
-          padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
-          color: ColorValues.surface,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(AppLocalizations.of(context).yourSavings, style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14)),
-              const SizedBox(height: 4),
-              Row(children: [
-                Expanded(
-                  child: _isBalanceVisible.value ? RichText(
-                    text: TextSpan(
-                      text: 'Rp',
-                      style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20),
-                      children: [
-                        TextSpan(
-                          text:' ${SharedCode.formatThousands(2200000)}',
-                          style: Theme.of(context).textTheme.displayLarge,
-                        )
-                      ]
-                    )
-                  ) : SizedBox(
-                    height: 12,
-                    child: ListView.separated(
-                      primary: false,
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 8,
-                      itemBuilder: (_, i) {
-                        return Container(
-                          width: 12,
-                          height: 12,
-                          decoration: BoxDecoration(
-                            color: i % 2 == 0 ? ColorValues.primary30 : ColorValues.primary20,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        );
-                      },
-                      separatorBuilder: (_, __) {
-                        return const SizedBox(width: 4);
-                      },
-                    ),
-                  ),
-                ),
-                _buildBalanceToggle(),
-              ]),
-            ],
-          ),
-        );
-      }
-    );
-  }
-
-  Widget _buildBalanceToggle() {
-    return InkWell(
-      onTap: () {
-        _isBalanceVisible.value = !_isBalanceVisible.value;
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: ColorValues.text50, width: 1)
-        ),
-        child: Row(
-          children: [
-            Icon(
-              _isBalanceVisible.value ? Iconsax.eye_slash5 : Iconsax.eye4,
-              color: ColorValues.text50,
-              size: 16,
-            ),
-            const SizedBox(width: 4),
-            Text(
-              _isBalanceVisible.value ? AppLocalizations.of(context).hide : AppLocalizations.of(context).show,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(letterSpacing: 1),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   Widget _buildMenus() {
     return CustomShadow(
       isShadowAbove: true,
@@ -158,10 +75,11 @@ class _HomePageState extends State<HomePage> {
           children: [
             Expanded(
               child: _buildMenuItem(
-                title: AppLocalizations.of(context).createSavingTarget,
+                title: AppLocalizations.of(context).createSavingTargetAlt,
                 iconData: Iconsax.status_up5,
                 iconColor: ColorValues.primary50,
-                backgroundColor: ColorValues.primary10
+                backgroundColor: ColorValues.primary10,
+                onTap: () => AutoRouter.of(context).navigate(const SavingsRoute()),
               ),
             ),
             Expanded(
@@ -169,7 +87,8 @@ class _HomePageState extends State<HomePage> {
                 title: AppLocalizations.of(context).saveNow,
                 iconData: Iconsax.direct_inbox5,
                 iconColor: ColorValues.success30,
-                backgroundColor: ColorValues.success10
+                backgroundColor: ColorValues.success10,
+                onTap: () {},
               ),
             ),
             Expanded(
@@ -177,7 +96,8 @@ class _HomePageState extends State<HomePage> {
                 title: AppLocalizations.of(context).interestCalculator,
                 iconData: Iconsax.calculator5,
                 iconColor: ColorValues.danger30,
-                backgroundColor: ColorValues.danger10
+                backgroundColor: ColorValues.danger10,
+                onTap: () {},
               ),
             ),
             Expanded(
@@ -185,7 +105,8 @@ class _HomePageState extends State<HomePage> {
                 title: AppLocalizations.of(context).financeArticle,
                 iconData: Iconsax.document_text5,
                 iconColor: ColorValues.warning30,
-                backgroundColor: ColorValues.warning10
+                backgroundColor: ColorValues.warning10,
+                onTap: () {},
               ),
             ),
           ],
@@ -194,27 +115,30 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildMenuItem({required String title, required IconData iconData, required Color iconColor, required Color backgroundColor}) {
-    return Column(children: [
-      Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(UiConstant.smallerBorder)
+  Widget _buildMenuItem({required String title, required IconData iconData, required Color iconColor, required Color backgroundColor, required Function() onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(UiConstant.smallerBorder)
+          ),
+          child: Icon(
+            iconData,
+            color: iconColor,
+            size: 24,
+          ),
         ),
-        child: Icon(
-          iconData,
-          color: iconColor,
-          size: 24,
-        ),
-      ),
-      const SizedBox(height: 4),
-      Text(
-        title,
-        style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
-        textAlign: TextAlign.center,
-      )
-    ]);
+        const SizedBox(height: 4),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+          textAlign: TextAlign.center,
+        )
+      ]),
+    );
   }
 
   Widget _buildSectionHeading({required String title, required String description, required Function() onTap}) {

@@ -61,7 +61,7 @@
   "profile": "Profil",
   "show": "Tampilkan",
   "hide": "Sembunyikan",
-  "createSavingTarget": "Bikin Target\nTabungan",
+  "createSavingTargetAlt": "Bikin Target\nTabungan",
   "saveNow": "Nabung\nSekarang",
   "interestCalculator": "Kalkulator\nSuku Bunga",
   "financeArticle": "Artikel\nKeuangan",
@@ -85,5 +85,12 @@
   "approvalRequestTitle": "Terima atau Tolak",
   "approvalRequestDescription": "Hai, si kecil ada request nih!",
   "requestsEmptyTitle": "Hmm, belum ada request nih!",
-  "requestsEmptyDescription": "Keliatannya si kecil belum bikin request lagi"
+  "requestsEmptyDescription": "Keliatannya si kecil belum bikin request lagi",
+  "createSavingTarget": "Bikin target tabungan",
+  "createNewTargetTitle": "Buat Target Baru",
+  "createNewTargetDescription": "Hemat pangkal kaya! Yuk bikin target tabungan baru",
+  "yourSavingTargets": "Target Tabunganmu",
+  "currentSavings": "Tabungan Sekarang",
+  "target": "Target",
+  "until": "Sampai"
 }

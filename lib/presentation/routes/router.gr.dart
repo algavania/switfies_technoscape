@@ -85,6 +85,15 @@ class AppRouter extends _i2.RootStackRouter {
         barrierDismissible: false,
       );
     },
+    SavingsRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.SavingsPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
     HomeRoute.name: (routeData) {
       return _i2.CustomPage<dynamic>(
         routeData: routeData,
@@ -181,6 +190,10 @@ class AppRouter extends _i2.RootStackRouter {
             ),
           ],
         ),
+        _i2.RouteConfig(
+          SavingsRoute.name,
+          path: '/savings',
+        ),
       ];
 }
 
@@ -267,6 +280,18 @@ class DashboardRoute extends _i2.PageRouteInfo<void> {
         );
 
   static const String name = 'DashboardRoute';
+}
+
+/// generated route for
+/// [_i1.SavingsPage]
+class SavingsRoute extends _i2.PageRouteInfo<void> {
+  const SavingsRoute()
+      : super(
+          SavingsRoute.name,
+          path: '/savings',
+        );
+
+  static const String name = 'SavingsRoute';
 }
 
 /// generated route for

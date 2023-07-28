@@ -37,4 +37,15 @@ class BankRepository implements BaseBankRepository {
     }
     return result;
   }
+
+  @override
+  Future<AccountModel> getAccountInfo(String token) async {
+    Response res = await NetworkService.post(url: '/bankAccount/info', token: token);
+    ResponseModel model = ResponseModel.fromJson(jsonDecode(res.body));
+    if (model.errMsg != null) {
+      throw model.errMsg!.isNotEmpty ? model.errMsg! : 'Error';
+    }
+    AccountModel result = AccountModel.fromJson(model.data);
+    return result;
+  }
 }

@@ -7,6 +7,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 
 import 'application/repositories/repositories.dart';
+import 'application/service/shared_preferences_service.dart';
 import 'l10n/l10n.dart';
 import 'presentation/core/app_theme_data.dart';
 import 'presentation/core/color_values.dart';
@@ -21,6 +22,7 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   Intl.defaultLocale = 'id';
+  await SharedPreferencesService.init();
   runApp(const MyApp());
 }
 

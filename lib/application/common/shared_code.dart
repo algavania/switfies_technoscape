@@ -21,6 +21,13 @@ class SharedCode {
         .isEmpty ? 'Tidak boleh kosong' : null;
   }
 
+  static String? nikValidators(String? value) {
+    if (value.toString().trim().isEmpty) return 'Tidak boleh kosong';
+    if (value.toString().trim().length != 16) return 'Harus 16 digit';
+    return null;
+  }
+
+
   static String? usernameValidators(String? value) {
     String? result = emptyValidators(value);
     if (result != null) return result;
@@ -31,8 +38,9 @@ class SharedCode {
         .toString()
         .length > 30) return 'Tidak boleh lebih dari 30 karakter';
     RegExp regex = RegExp(r'^[\w.]+$');
-    if (!regex.hasMatch(value ?? ''))
+    if (!regex.hasMatch(value ?? '')) {
       return 'Hanya boleh alfabet, angka, underscore, dan titik.';
+    }
     return null;
   }
 
@@ -62,7 +70,7 @@ class SharedCode {
   }
 
   static void showSnackbar(
-      {required BuildContext context, required String message, bool isSuccess = true, bool isTop = true}) {
+      {required BuildContext context, required String message, bool isSuccess = true, bool isTop = false}) {
     Color backgroundColor = isSuccess ? ColorValues.success10 : ColorValues
         .danger10;
     Color borderColor = isSuccess ? ColorValues.success20 : ColorValues

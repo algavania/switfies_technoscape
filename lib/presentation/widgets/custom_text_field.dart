@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sizer/sizer.dart';
-import 'package:unicons/unicons.dart';
 
 import '../../l10n/l10n.dart';
 import '../core/color_values.dart';
@@ -27,7 +27,7 @@ class CustomTextField extends StatefulWidget {
       this.horizontalPadding = UiConstant.defaultPadding,
       this.minLines = 1,
       this.maxLines = 1,
-      this.hasBorder = true})
+      this.hasBorder = true, this.maxLength})
       : super(key: key);
   final TextEditingController controller;
   final String? Function(String?)? validator;
@@ -38,7 +38,7 @@ class CustomTextField extends StatefulWidget {
   final IconData? icon;
   final TextInputType? textInputType;
   final double verticalPadding, horizontalPadding;
-  final int? minLines, maxLines;
+  final int? minLines, maxLines, maxLength;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -94,11 +94,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
           controller: widget.controller,
           validator: widget.validator,
           readOnly: widget.readOnly,
+          maxLength: widget.maxLength,
           style: Theme.of(context).textTheme.displaySmall,
           obscureText: widget.isPassword ? _isShowPassword : false,
           keyboardType: widget.textInputType ?? TextInputType.text,
           minLines: widget.minLines,
           maxLines: widget.maxLines,
+          inputFormatters: widget.textInputType == TextInputType.number ? [FilteringTextInputFormatter.digitsOnly] : null,
           decoration: InputDecoration(
             contentPadding: widget.hasBorder ? EdgeInsets.symmetric(vertical: widget.verticalPadding, horizontal: widget.horizontalPadding) : EdgeInsets.zero,
             hintText: widget.hint,

@@ -20,7 +20,8 @@ class CustomDropdownField extends StatefulWidget {
       : super(key: key);
   final void Function(Object?)? onChanged;
   final bool isRequired, isDense, readOnly, showOptional;
-  final String? label, value;
+  final String? label;
+  final dynamic value;
   final String? hint;
   final IconData? icon;
   final List<DropdownMenuItem<Object>> items;

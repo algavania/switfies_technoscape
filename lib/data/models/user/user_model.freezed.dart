@@ -20,7 +20,7 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
-  int get uid => throw _privateConstructorUsedError;
+  int? get uid => throw _privateConstructorUsedError;
   String get displayName => throw _privateConstructorUsedError;
   String get loginPassword => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
@@ -37,7 +37,7 @@ abstract class $UserModelCopyWith<$Res> {
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
-      {int uid, String displayName, String loginPassword, String username});
+      {int? uid, String displayName, String loginPassword, String username});
 }
 
 /// @nodoc
@@ -53,16 +53,16 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uid = null,
+    Object? uid = freezed,
     Object? displayName = null,
     Object? loginPassword = null,
     Object? username = null,
   }) {
     return _then(_value.copyWith(
-      uid: null == uid
+      uid: freezed == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       displayName: null == displayName
           ? _value.displayName
           : displayName // ignore: cast_nullable_to_non_nullable
@@ -87,7 +87,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {int uid, String displayName, String loginPassword, String username});
+      {int? uid, String displayName, String loginPassword, String username});
 }
 
 /// @nodoc
@@ -101,16 +101,16 @@ class __$$_UserModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uid = null,
+    Object? uid = freezed,
     Object? displayName = null,
     Object? loginPassword = null,
     Object? username = null,
   }) {
     return _then(_$_UserModel(
-      uid: null == uid
+      uid: freezed == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       displayName: null == displayName
           ? _value.displayName
           : displayName // ignore: cast_nullable_to_non_nullable
@@ -131,7 +131,7 @@ class __$$_UserModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_UserModel implements _UserModel {
   const _$_UserModel(
-      {required this.uid,
+      {this.uid,
       required this.displayName,
       required this.loginPassword,
       required this.username});
@@ -140,7 +140,7 @@ class _$_UserModel implements _UserModel {
       _$$_UserModelFromJson(json);
 
   @override
-  final int uid;
+  final int? uid;
   @override
   final String displayName;
   @override
@@ -188,7 +188,7 @@ class _$_UserModel implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
-      {required final int uid,
+      {final int? uid,
       required final String displayName,
       required final String loginPassword,
       required final String username}) = _$_UserModel;
@@ -197,7 +197,7 @@ abstract class _UserModel implements UserModel {
       _$_UserModel.fromJson;
 
   @override
-  int get uid;
+  int? get uid;
   @override
   String get displayName;
   @override

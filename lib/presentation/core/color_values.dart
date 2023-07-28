@@ -11,6 +11,7 @@ class ColorValues {
   static const accent50 = Color(0xFFFF8000);
   static const accent20 = Color(0xFFFFCC99);
   static const accent10 = Color(0xFFFFE6CC);
+  static const greyBase = Color(0xFF5F6265);
   static const grey50 = Color(0xFF5887A4);
   static const grey30 = Color(0xFF9BB7C8);
   static const grey20 = Color(0xFFBCCFDB);

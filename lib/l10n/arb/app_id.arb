@@ -32,5 +32,15 @@
   "parentRegistrationSuccessTitle": "Registrasi Orangtua Berhasil!",
   "parentRegistrationSuccessDescription": "Setelah mendaftarkan diri orangtua, sekarang saatnya mengisi data anak, yuk!",
   "skip": "Lewati",
-  "registerChildAlt": "Daftarkan Anak"
+  "registerChildAlt": "Daftarkan Anak",
+  "confirmation": "Konfirmasi",
+  "next": "Lanjut",
+  "login": "Login",
+  "register": "Register",
+  "landingTitle1": "Rekening Tabungan Anak",
+  "landingTitle2": "Pengawasan Orangtua",
+  "landingTitle3": "Panduan DuitKiddo",
+  "landingDescription1": "Yuk, bikin rekening tabungan seru! capai tujuan, lacak tabunganmu! \uD83D\uDE04\uD83C\uDF1F",
+  "landingDescription2": "Kabar baik untuk para orang tua! DuitKiddo hadir dengan Fitur Parental Control yang hebat!\uD83D\uDEE1",
+  "landingDescription3": "Jelajahi dunia keuangan dengan cerita dan artikel yang seru! \uD83D\uDE04\uD83C\uDF1F"
 }

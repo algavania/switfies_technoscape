@@ -390,7 +390,7 @@ class _RegisterPageState extends State<RegisterPage> {
           Row(children: [
             Expanded(child: CustomButton(
               buttonText: AppLocalizations.of(context).skip,
-              colorAsOutlineButton: ColorValues.grey50,
+              colorAsOutlineButton: ColorValues.greyBase,
               backgroundColor: ColorValues.slidingPanelBackground,
               onPressed: () {},
             )),

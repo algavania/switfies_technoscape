@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
-import '../core/shared_data.dart';
 import '../core/ui_constant.dart';
 import 'custom_button.dart';
 
@@ -54,7 +53,7 @@ class NoAccessWidget extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          SharedData.userData.value?.role == 'admin' ? Container() : CustomButton(
+          CustomButton(
             backgroundColor: buttonColor ?? Theme.of(context).primaryColor,
             buttonText: buttonText,
             onPressed: onTap,

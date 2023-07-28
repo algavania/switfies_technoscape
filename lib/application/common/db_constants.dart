@@ -8,20 +8,10 @@ class DbConstants {
   static FirebaseStorage storage = FirebaseStorage.instance;
 
   static String users = 'users';
-  static String ratings = 'ratings';
-  static String posts = 'posts';
-  static String thumbnails = 'thumbnails';
-  static String replies = 'replies';
-  static String subReplies = 'subReplies';
-  static String contacts = 'contacts';
-  static String chats = 'chats';
-  static String chatRooms = 'chatRooms';
-  static String reports = 'reports';
-  static String replyTemplates = 'replyTemplates';
-  static String bannedWords = 'bannedWords';
+  static String children = 'children';
 
-  static String userRole = 'user';
-  static String adminRole = 'admin';
+  static String parentRole = 'parent';
+  static String childRole = 'admin';
 
   static String defaultPhotoProfileUrl = 'https://firebasestorage.googleapis.com/v0/b/lare-jatim.appspot.com/o/profile.png?alt=media&token=def1b9fc-2b7e-4d9d-9faa-40317ee4a1b9';
 }

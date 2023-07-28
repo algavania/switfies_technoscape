@@ -11,6 +11,7 @@ class ColorValues {
   static const accent50 = Color(0xFFFF8000);
   static const accent20 = Color(0xFFFFCC99);
   static const accent10 = Color(0xFFFFE6CC);
+  static const greyBase = Color(0xFF5F6265);
   static const grey50 = Color(0xFF5887A4);
   static const grey30 = Color(0xFF9BB7C8);
   static const grey20 = Color(0xFFBCCFDB);
@@ -28,7 +29,7 @@ class ColorValues {
   static const secondary20 = Color(0xFFFFB703);
   static const secondary10 = Color(0xFFFFF1CD);
   static const pink50 = Color(0xFFF8627F);
-  static const white = Color(0xFFFFFFFF);
+  static const surface = Color(0xFFFFFFFF);
 
   static Color lighten(Color c, [int percent = 10]) {
     assert(1 <= percent && percent <= 100);

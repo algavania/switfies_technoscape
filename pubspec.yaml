@@ -37,6 +37,7 @@ dependencies:
   status_bar_control: ^3.2.1
   auto_size_text: ^3.0.0
   unicons: ^2.1.1
+  iconsax: ^0.0.8
 
 dev_dependencies:
   flutter_test:
@@ -71,4 +72,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets
+    - assets/
+    - assets/core/
+    - assets/onboarding/
+    - assets/authentication/

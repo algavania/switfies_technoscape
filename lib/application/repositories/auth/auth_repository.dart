@@ -33,13 +33,25 @@ class AuthRepository implements BaseAuthRepository {
   Future<TokenModel> generateToken(String username, password) async {
     Response res = await NetworkService.post(url: '/user/auth/token', body: {
       'username': username,
-      'password': password
+      'loginPassword': password
     });
     ResponseModel model = ResponseModel.fromJson(jsonDecode(res.body));
     if (model.errMsg != null) {
       throw model.errMsg!.isNotEmpty ? model.errMsg! : 'Error';
     }
     print('model data ${model.data.runtimeType} ${model.data}');
-    return TokenModel.fromJson(model.data['accessToken']);
+    TokenModel result = TokenModel.fromJson(model.data);
+    return result;
+  }
+
+  @override
+  Future<AuthModel> getAuthInfo(String token) async {
+    Response res = await NetworkService.post(url: '/user/info', token: token);
+    ResponseModel model = ResponseModel.fromJson(jsonDecode(res.body));
+    if (model.errMsg != null) {
+      throw model.errMsg!.isNotEmpty ? model.errMsg! : 'Error';
+    }
+    AuthModel user = AuthModel.fromJson(model.data);
+    return user;
   }
 }

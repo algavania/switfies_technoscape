@@ -6,4 +6,5 @@ import '../../../data/models/user/user_model.dart';
 abstract class BaseAuthRepository {
   Future<ResponseModel> createUser(AuthModel authModel, UserModel userModel);
   Future<TokenModel> generateToken(String username, password);
+  Future<AuthModel> getAuthInfo(String token);
 }

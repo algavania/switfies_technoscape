@@ -11,7 +11,7 @@ class DbConstants {
   static String children = 'children';
 
   static String parentRole = 'parent';
-  static String childRole = 'admin';
+  static String childRole = 'child';
 
   static String defaultPhotoProfileUrl = 'https://firebasestorage.googleapis.com/v0/b/lare-jatim.appspot.com/o/profile.png?alt=media&token=def1b9fc-2b7e-4d9d-9faa-40317ee4a1b9';
 }

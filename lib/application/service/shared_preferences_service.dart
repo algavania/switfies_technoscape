@@ -45,4 +45,12 @@ class SharedPreferencesService {
     }
     return null;
   }
+
+  static String? getToken() {
+    return prefs?.getString('token');
+  }
+
+  static Future<void> setToken(String token) async {
+    await prefs?.setString('token', token);
+  }
 }

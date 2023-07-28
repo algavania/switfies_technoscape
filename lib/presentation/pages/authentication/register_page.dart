@@ -7,6 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:swifties_technoscape/application/common/db_constants.dart';
 import 'package:swifties_technoscape/application/common/shared_code.dart';
 import 'package:swifties_technoscape/application/repositories/auth/auth_repository.dart';
 import 'package:swifties_technoscape/data/models/user/user_model.dart';
@@ -274,6 +275,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         username: username);
                                     UserModel userModel = UserModel(
                                       username: username,
+                                      role: DbConstants.parentRole,
                                       displayName: displayName,
                                       loginPassword: loginPassword
                                     );

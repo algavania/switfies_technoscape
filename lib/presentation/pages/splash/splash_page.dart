@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:swifties_technoscape/application/service/shared_preferences_service.dart';
 import '../../routes/router.gr.dart';
 import '../../widgets/logo_widget.dart';
 
@@ -16,7 +17,11 @@ class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     Future.delayed(const Duration(seconds: 3), () {
-      AutoRouter.of(context).replace(const LandingRoute());
+      if (SharedPreferencesService.getAuthData() != null) {
+        AutoRouter.of(context).replace(const DashboardRoute());
+      } else {
+        AutoRouter.of(context).replace(const LandingRoute());
+      }
     });
     super.initState();
   }
@@ -30,7 +35,7 @@ class _SplashPageState extends State<SplashPage> {
     return const Scaffold(
       body: SafeArea(
         child: Center(
-          child: LogoWidget()
+          child: LogoWidget(isBig: true)
         ),
       ),
     );

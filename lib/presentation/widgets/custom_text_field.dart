@@ -71,7 +71,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       text: '*', style: TextStyle(color: ColorValues.danger50)),
                 if (widget.showOptional)
                   TextSpan(
-                      text: ' (${AppLocalizations.of(context).optional})', style: GoogleFonts.nunito(fontWeight: FontWeight.w600)),
+                      text: ' (${AppLocalizations.of(context).optional})', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600)),
               ])),
         if (widget.label != null) const SizedBox(height: 8),
         if (widget.readOnly) AbsorbPointer(child: _buildTextField()),

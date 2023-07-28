@@ -76,6 +76,51 @@ class AppRouter extends _i2.RootStackRouter {
         barrierDismissible: false,
       );
     },
+    DashboardRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.DashboardPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    HomeRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.HomePage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    ActivityRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.ActivityPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    ArticleRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.ArticlePage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    ProfileRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.ProfilePage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
   };
 
   @override
@@ -109,6 +154,32 @@ class AppRouter extends _i2.RootStackRouter {
         _i2.RouteConfig(
           AddChildRoute.name,
           path: '/add-child',
+        ),
+        _i2.RouteConfig(
+          DashboardRoute.name,
+          path: '/dashboard',
+          children: [
+            _i2.RouteConfig(
+              HomeRoute.name,
+              path: 'home',
+              parent: DashboardRoute.name,
+            ),
+            _i2.RouteConfig(
+              ActivityRoute.name,
+              path: 'activity',
+              parent: DashboardRoute.name,
+            ),
+            _i2.RouteConfig(
+              ArticleRoute.name,
+              path: 'article',
+              parent: DashboardRoute.name,
+            ),
+            _i2.RouteConfig(
+              ProfileRoute.name,
+              path: 'profile',
+              parent: DashboardRoute.name,
+            ),
+          ],
         ),
       ];
 }
@@ -183,4 +254,65 @@ class AddChildRoute extends _i2.PageRouteInfo<void> {
         );
 
   static const String name = 'AddChildRoute';
+}
+
+/// generated route for
+/// [_i1.DashboardPage]
+class DashboardRoute extends _i2.PageRouteInfo<void> {
+  const DashboardRoute({List<_i2.PageRouteInfo>? children})
+      : super(
+          DashboardRoute.name,
+          path: '/dashboard',
+          initialChildren: children,
+        );
+
+  static const String name = 'DashboardRoute';
+}
+
+/// generated route for
+/// [_i1.HomePage]
+class HomeRoute extends _i2.PageRouteInfo<void> {
+  const HomeRoute()
+      : super(
+          HomeRoute.name,
+          path: 'home',
+        );
+
+  static const String name = 'HomeRoute';
+}
+
+/// generated route for
+/// [_i1.ActivityPage]
+class ActivityRoute extends _i2.PageRouteInfo<void> {
+  const ActivityRoute()
+      : super(
+          ActivityRoute.name,
+          path: 'activity',
+        );
+
+  static const String name = 'ActivityRoute';
+}
+
+/// generated route for
+/// [_i1.ArticlePage]
+class ArticleRoute extends _i2.PageRouteInfo<void> {
+  const ArticleRoute()
+      : super(
+          ArticleRoute.name,
+          path: 'article',
+        );
+
+  static const String name = 'ArticleRoute';
+}
+
+/// generated route for
+/// [_i1.ProfilePage]
+class ProfileRoute extends _i2.PageRouteInfo<void> {
+  const ProfileRoute()
+      : super(
+          ProfileRoute.name,
+          path: 'profile',
+        );
+
+  static const String name = 'ProfileRoute';
 }

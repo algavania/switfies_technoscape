@@ -21,6 +21,7 @@ import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart
 import 'package:swifties_technoscape/presentation/widgets/logo_widget.dart';
 
 import '../../../data/models/auth/auth_model.dart';
+import '../../routes/router.gr.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class AddChildPage extends StatefulWidget {
@@ -48,9 +49,9 @@ class _AddChildPageState extends State<AddChildPage> {
     _getGenders();
     Future.delayed(Duration.zero, () {
       if (AutoRouter.of(context).canPop()) {
-        SharedData.setStatusBarColorPrimary(context);
-      } else {
         SharedData.setStatusBarColorWhite(context);
+      } else {
+        SharedData.setStatusBarColorPrimary(context);
       }
     });
     super.initState();
@@ -412,7 +413,7 @@ class _AddChildPageState extends State<AddChildPage> {
             colorAsOutlineButton: ColorValues.grey90,
             backgroundColor: ColorValues.slidingPanelBackground,
             onPressed: () {
-              //TODO: Navigate to Home Page
+              AutoRouter.of(context).replace(const DashboardRoute());
             },
           );
   }

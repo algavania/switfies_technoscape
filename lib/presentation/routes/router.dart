@@ -41,6 +41,28 @@ import '../pages/screens.dart';
         page: AddChildPage,
         path: '/add-child',
         transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: DashboardPage,
+        path: '/dashboard',
+        transitionsBuilder: TransitionsBuilders.fadeIn,
+        children: [
+          CustomRoute(
+              path: 'home',
+              page: HomePage,
+              transitionsBuilder: TransitionsBuilders.fadeIn),
+          CustomRoute(
+              path: 'activity',
+              page: ActivityPage,
+              transitionsBuilder: TransitionsBuilders.fadeIn),
+          CustomRoute(
+              path: 'article',
+              page: ArticlePage,
+              transitionsBuilder: TransitionsBuilders.fadeIn),
+          CustomRoute(
+              path: 'profile',
+              page: ProfilePage,
+              transitionsBuilder: TransitionsBuilders.fadeIn),
+        ]),
   ],
 )
 class $AppRouter {}

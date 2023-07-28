@@ -112,7 +112,7 @@ class _LandingPageState extends State<LandingPage> {
                                   if (_isLast()) {
                                     AutoRouter.of(context).replace(const RegisterRoute());
                                   } else {
-                                    _controller.animateToPage(2, duration: const Duration(milliseconds: 1500), curve: Curves.easeInOut);
+                                    _controller.animateToPage(2, duration: const Duration(milliseconds: 1000), curve: Curves.easeInOut);
                                   }
                                 },
                               ),

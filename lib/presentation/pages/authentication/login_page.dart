@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                               await SharedPreferencesService.setUserData(userModel);
                               await SharedPreferencesService.setAuthData(authModel);
                               SharedData.userData.value = userModel;
-                              //TODO: Navigate to Home Page
+                              AutoRouter.of(context).replace(const DashboardRoute());
                             } catch (e) {
                               SharedCode.showSnackbar(context: context,
                                   message: e.toString(),

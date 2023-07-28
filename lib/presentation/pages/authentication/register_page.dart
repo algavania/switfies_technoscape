@@ -10,6 +10,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:swifties_technoscape/application/common/db_constants.dart';
 import 'package:swifties_technoscape/application/common/shared_code.dart';
 import 'package:swifties_technoscape/application/repositories/auth/auth_repository.dart';
+import 'package:swifties_technoscape/application/service/shared_preferences_service.dart';
 import 'package:swifties_technoscape/data/models/user/user_model.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
@@ -61,11 +62,6 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Theme
-          .of(context)
-          .primaryColor,
-    ));
     return Scaffold(
       backgroundColor: Theme
           .of(context)
@@ -79,7 +75,9 @@ class _RegisterPageState extends State<RegisterPage> {
         backdropEnabled: true,
         backdropColor: ColorValues.grey50,
         onPanelClosed: () {
-          //TODO: Navigate to Home Page if has registered
+          if (SharedPreferencesService.getToken() != null) {
+            AutoRouter.of(context).replace(const DashboardRoute());
+          }
         },
         backdropOpacity: 0.32,
         borderRadius: const BorderRadius.only(
@@ -402,7 +400,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   .skip,
               colorAsOutlineButton: ColorValues.grey90,
               backgroundColor: ColorValues.slidingPanelBackground,
-              onPressed: () {},
+              onPressed: () {
+                AutoRouter.of(context).replace(const DashboardRoute());
+              },
             )),
             const SizedBox(width: UiConstant.defaultPadding),
             Expanded(child: CustomButton(

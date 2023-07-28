@@ -22,7 +22,9 @@ import 'package:swifties_technoscape/presentation/widgets/custom_dropdown_field.
 import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart';
 import 'package:swifties_technoscape/presentation/widgets/logo_widget.dart';
 
+import '../../../application/repositories/bank/bank_repository.dart';
 import '../../../data/models/auth/auth_model.dart';
+import '../../../data/models/token/token_model.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -284,6 +286,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                       loginPassword: loginPassword
                                     );
                                     await AuthRepository().createUser(authModel, userModel);
+                                    TokenModel tokenModel = await AuthRepository().generateToken(username, loginPassword);
+                                    await SharedPreferencesService.setToken(tokenModel.accessToken);
+                                    await BankRepository().createBankAccount(tokenModel.accessToken);
                                     _panelController.open();
                                   } catch (e) {
                                     SharedCode.showSnackbar(context: context,

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:sizer/sizer.dart';
 import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 
@@ -53,6 +54,9 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Theme.of(context).scaffoldBackgroundColor,
+    ));
     _initPages();
     return Scaffold(
       body: SafeArea(
@@ -61,7 +65,7 @@ class _LandingPageState extends State<LandingPage> {
           child: Column(
             children: [
               SizedBox(height: 5.h),
-              const LogoWidget(),
+              const LogoWidget(isBig: true),
               Expanded(
                 child: Stack(
                   children: [
@@ -108,7 +112,7 @@ class _LandingPageState extends State<LandingPage> {
                                   if (_isLast()) {
                                     AutoRouter.of(context).replace(const RegisterRoute());
                                   } else {
-                                    // AutoRouter.of(context).replace(const LoginRoute());
+                                    _controller.animateToPage(2, duration: const Duration(milliseconds: 1500), curve: Curves.easeInOut);
                                   }
                                 },
                               ),
@@ -121,7 +125,7 @@ class _LandingPageState extends State<LandingPage> {
                                     : AppLocalizations.of(context).next,
                                 onPressed: () {
                                   if (_isLast()) {
-                                    AutoRouter.of(context).replace(const RegisterRoute());
+                                    AutoRouter.of(context).replace(const LoginRoute());
                                   } else {
                                     _controller.nextPage(
                                         duration:

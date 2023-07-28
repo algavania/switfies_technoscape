@@ -49,6 +49,15 @@ class AppRouter extends _i2.RootStackRouter {
         barrierDismissible: false,
       );
     },
+    LoginRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.LoginPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
     LandingRoute.name: (routeData) {
       return _i2.CustomPage<dynamic>(
         routeData: routeData,
@@ -79,6 +88,10 @@ class AppRouter extends _i2.RootStackRouter {
         _i2.RouteConfig(
           RegisterRoute.name,
           path: '/register',
+        ),
+        _i2.RouteConfig(
+          LoginRoute.name,
+          path: '/login',
         ),
         _i2.RouteConfig(
           LandingRoute.name,
@@ -121,6 +134,18 @@ class RegisterRoute extends _i2.PageRouteInfo<void> {
         );
 
   static const String name = 'RegisterRoute';
+}
+
+/// generated route for
+/// [_i1.LoginPage]
+class LoginRoute extends _i2.PageRouteInfo<void> {
+  const LoginRoute()
+      : super(
+          LoginRoute.name,
+          path: '/login',
+        );
+
+  static const String name = 'LoginRoute';
 }
 
 /// generated route for

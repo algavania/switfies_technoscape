@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,10 +11,11 @@ import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/shared_data.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
+import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_button.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_dropdown_field.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart';
-import 'package:unicons/unicons.dart';
+import 'package:swifties_technoscape/presentation/widgets/logo_widget.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -33,7 +35,6 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _birthdateController = TextEditingController();
   final List<DropdownMenuItem<String>> _genderItems = [];
   String? _value;
-  bool _isInFirstStep = true;
 
   @override
   void initState() {
@@ -90,9 +91,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildStepWidget(),
-                          const SizedBox(height: UiConstant.biggerSpacing),
-                          _buildLogo(),
+                          const SizedBox(height: UiConstant.biggerPadding),
+                          const Center(child: LogoWidget()),
                           const SizedBox(height: UiConstant.biggerSpacing),
                           const SizedBox(height: UiConstant.defaultPadding),
                           Text(
@@ -119,7 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           CustomTextField(
                             validator: SharedCode.emptyValidators,
                             controller: _displayNameController,
-                            icon: Iconsax.user,
+                            icon: Iconsax.user5,
                             hint: AppLocalizations
                                 .of(context)
                                 .enterName,
@@ -131,7 +131,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           CustomTextField(
                             validator: SharedCode.usernameValidators,
                             controller: _usernameController,
-                            icon: Iconsax.user_edit,
+                            icon: Iconsax.user_edit5,
                             hint: AppLocalizations
                                 .of(context)
                                 .enterUsername,
@@ -143,7 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           CustomTextField(
                             validator: SharedCode.emailValidators,
                             controller: _emailController,
-                            icon: Iconsax.sms,
+                            icon: Iconsax.sms5,
                             hint: AppLocalizations
                                 .of(context)
                                 .enterEmail,
@@ -156,7 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             validator: SharedCode.passwordValidators,
                             isPassword: true,
                             controller: _passwordController,
-                            icon: Iconsax.lock,
+                            icon: Iconsax.key5,
                             hint: AppLocalizations
                                 .of(context)
                                 .enterPassword,
@@ -168,7 +168,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           CustomTextField(
                             validator: SharedCode.emptyValidators,
                             controller: _phoneController,
-                            icon: Iconsax.call,
+                            icon: Iconsax.call5,
                             hint: AppLocalizations
                                 .of(context)
                                 .enterPhoneNumber,
@@ -193,7 +193,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: CustomTextField(
                               validator: SharedCode.emptyValidators,
                               controller: _birthdateController,
-                              icon: Iconsax.calendar,
+                              icon: Iconsax.calendar5,
                               readOnly: true,
                               hint: AppLocalizations
                                   .of(context)
@@ -211,7 +211,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               hint: AppLocalizations
                                   .of(context)
                                   .chooseGender,
-                              icon: Iconsax.user_search,
+                              icon: Iconsax.user5,
                               value: _value,
                               items: _genderItems,
                               onChanged: (value) {
@@ -262,7 +262,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                                   .primaryColor,
                                               fontWeight: FontWeight.w800),
                                           recognizer: TapGestureRecognizer()
-                                            ..onTap = () {}
+                                            ..onTap = () {
+                                              AutoRouter.of(context).replace(const LoginRoute());
+                                            }
                                       )
                                     ])),
                           ),
@@ -276,75 +278,6 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildStepWidget() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        GestureDetector(
-          onTap: () {
-          },
-          child: _buildStepItemWidget(
-              1, AppLocalizations
-              .of(context)
-              .registerParent, true),
-        ),
-        const Icon(UniconsSolid.angle_right, color: ColorValues.grey20,),
-        _buildStepItemWidget(
-            2, AppLocalizations
-            .of(context)
-            .registerChild, false),
-      ],
-    );
-  }
-
-  Widget _buildLogo() {
-    return Center(
-      child: SvgPicture.asset(
-        'assets/core/logo_app.svg',
-        width: 80.w,
-        height: 6.h,
-        fit: BoxFit.contain,
-      ),
-    );
-  }
-
-  Row _buildStepItemWidget(int number, String text, bool isActive) {
-    return Row(
-      mainAxisAlignment: number == 1 ? MainAxisAlignment.end : MainAxisAlignment
-          .start,
-      children: [
-        Container(
-          decoration: BoxDecoration(
-              color: Theme
-                  .of(context)
-                  .primaryColor, shape: BoxShape.circle),
-          padding: const EdgeInsets.all(UiConstant.smallerSpacing),
-          child: Text(
-            number.toString(),
-            style: Theme
-                .of(context)
-                .textTheme
-                .bodySmall
-                ?.copyWith(color: Colors.white),
-          ),
-        ),
-        const SizedBox(
-          width: UiConstant.smallerSpacing,
-        ),
-        Text(
-          text,
-          style: Theme
-              .of(context)
-              .textTheme
-              .bodySmall
-              ?.copyWith(
-              color: isActive ? ColorValues.text50 : ColorValues.grey30,
-              fontWeight: isActive ? FontWeight.w800 : null),
-        ),
-      ],
     );
   }
 

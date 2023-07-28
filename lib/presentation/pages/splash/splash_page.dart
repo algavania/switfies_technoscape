@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../../routes/router.gr.dart';
 import '../../widgets/logo_widget.dart';
 
@@ -22,6 +23,10 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Theme.of(context).scaffoldBackgroundColor,
+    ));
+
     return const Scaffold(
       body: SafeArea(
         child: Center(

@@ -9,6 +9,7 @@ class CustomButton extends StatefulWidget {
       this.onPressed,
       required this.buttonText,
       this.fontSize = 15,
+      this.height = 48,
       this.prefixIcon,
       this.colorAsOutlineButton,
       this.backgroundColor = ColorValues.primary50,
@@ -20,6 +21,7 @@ class CustomButton extends StatefulWidget {
   final IconData? prefixIcon;
   final Color? colorAsOutlineButton;
   final Color backgroundColor;
+  final double height;
 
   @override
   State<CustomButton> createState() => _CustomButtonState();
@@ -31,7 +33,7 @@ class _CustomButtonState extends State<CustomButton> {
     return ElevatedButton(
         onPressed: widget.onPressed,
         style: ElevatedButton.styleFrom(
-            minimumSize: const Size(double.infinity, 48),
+            minimumSize: Size(double.infinity, widget.height),
             elevation: 0,
             backgroundColor: widget.backgroundColor,
             shape: RoundedRectangleBorder(

@@ -15,10 +15,14 @@ class SharedCode {
     return number;
   }
 
-  static String thousandSeparatorFormat(int number) {
+  static String formatThousands(int number) {
     NumberFormat formatter = NumberFormat.decimalPattern('vi_VN');
     return formatter.format(number);
+  }
 
+  static String formatToRupiah(int number) {
+    NumberFormat formatter = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
+    return formatter.format(number);
   }
 
   static String? emptyValidators(String? value) {

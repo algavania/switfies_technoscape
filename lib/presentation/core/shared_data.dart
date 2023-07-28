@@ -5,7 +5,7 @@ import 'package:status_bar_control/status_bar_control.dart';
 import '../../data/models/user/user_model.dart';
 
 class SharedData {
-  static DateFormat dateFormat = DateFormat('d MMM', 'id_ID');
+  static DateFormat dateFormat = DateFormat('d MMMM yyyy', 'id_ID');
   static DateFormat regularDateFormat = DateFormat('dd/MM/yyyy');
   static DateFormat authDateFormat = DateFormat('ddMMyyyy');
   static ValueNotifier<UserModel?> userData = ValueNotifier(null);

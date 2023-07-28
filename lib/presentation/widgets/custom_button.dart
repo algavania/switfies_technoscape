@@ -11,7 +11,7 @@ class CustomButton extends StatefulWidget {
       this.fontSize = 15,
       this.prefixIcon,
       this.colorAsOutlineButton,
-      this.backgroundColor = ColorValues.info,
+      this.backgroundColor = ColorValues.primary50,
       this.borderRadius = UiConstant.defaultBorder})
       : super(key: key);
   final Function()? onPressed;

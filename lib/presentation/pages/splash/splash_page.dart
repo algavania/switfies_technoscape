@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:swifties_technoscape/application/repositories/bank/bank_repository.dart';
 import 'package:swifties_technoscape/application/service/shared_preferences_service.dart';
+import '../../../application/common/db_constants.dart';
 import '../../routes/router.gr.dart';
 import '../../widgets/logo_widget.dart';
 
@@ -16,10 +18,19 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 1), () async {
       if (SharedPreferencesService.getAuthData() != null) {
+        if (SharedPreferencesService.getUserData()!.role == DbConstants.parentRole) {
+          var result = await BankRepository().getAllAccount();
+          if (result.isEmpty) {
+            await BankRepository().createBankAccount(SharedPreferencesService.getToken()!);
+          }
+        } else {
+          await Future.delayed(const Duration(seconds: 2));
+        }
         AutoRouter.of(context).replace(const DashboardRoute());
       } else {
+        await Future.delayed(const Duration(seconds: 2));
         AutoRouter.of(context).replace(const LandingRoute());
       }
     });

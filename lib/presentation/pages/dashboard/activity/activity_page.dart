@@ -1,15 +1,20 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:sizer/sizer.dart';
 import 'package:swifties_technoscape/data/models/transaction/transaction_model.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
 import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_app_bar.dart';
-import 'package:swifties_technoscape/presentation/widgets/custom_child_account.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_transaction.dart';
+
+import '../../../../application/repositories/repositories.dart';
+import '../../../../data/models/user/user_model.dart';
+import '../../../widgets/custom_child_account.dart';
 
 class ActivityPage extends StatefulWidget {
   const ActivityPage({Key? key}) : super(key: key);
@@ -19,48 +24,82 @@ class ActivityPage extends StatefulWidget {
 }
 
 class _ActivityPageState extends State<ActivityPage> {
-  final TransactionModel _dummyTransaction1 = const TransactionModel(uid: 0, amount: 200000, createTime: 1686725002, senderAccountNo: '0000000000', traxType: 'Transfer In', receiverAccountNo: '', senderName: 'E-Wallet', receiverName: 'Fulan bin Fulan', isNeedingApproval: false);
-  final TransactionModel _dummyTransaction2 = const TransactionModel(uid: 0, amount: 200000, createTime: 1686725002, senderAccountNo: '1234567890', traxType: 'Transfer Out', receiverAccountNo: '', senderName: 'Fulan bin Fulan', receiverName: 'Naluf bin Naluf', isNeedingApproval: false);
-  List<TransactionModel> _dummyTransactions = [];
+  List<TransactionModel> _transactionList = [];
+  List<UserModel> _childList = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
-    _dummyTransactions = [_dummyTransaction1, _dummyTransaction2];
+    Future.delayed(Duration.zero, () {
+      context.loaderOverlay.show();
+    });
+    _getAllData();
     super.initState();
+  }
+
+  Future<void> _getAllData() async {
+    if (!context.loaderOverlay.visible) {
+      context.loaderOverlay.show();
+    }
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+    _childList = await UserRepository().getMyChildren();
+    _transactionList = await TransactionRepository()
+        .getTransactions(limit: 2, isRequestedTransaction: false);
+    setState(() {
+      _isLoading = false;
+    });
+    context.loaderOverlay.hide();
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        children: [
-          CustomAppBar(
-            needSpacing: true,
-            body: ClipRRect(
-              borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
-              child: Image.network(
-                'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
-                width: 40,
-                height: 40,
+      child: RefreshIndicator(
+        onRefresh: () async {
+          _getAllData();
+        },
+        child: Column(
+          children: [
+            CustomAppBar(
+              needSpacing: true,
+              body: ClipRRect(
+                borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
+                child: Image.network(
+                  'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                  width: 40,
+                  height: 40,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                  vertical: UiConstant.mediumPadding),
-              child: Column(
+            Expanded(
+              child: Stack(
                 children: [
-                  _buildAddAccount(),
-                  const SizedBox(height: UiConstant.defaultSpacing),
-                  _buildChildrenAccounts(),
-                  const SizedBox(height: UiConstant.defaultSpacing),
-                  _buildActivities(),
+                  ListView(physics: const AlwaysScrollableScrollPhysics()),
+                  _isLoading
+                      ? Container()
+                      : SingleChildScrollView(
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: UiConstant.mediumPadding),
+                          child: Column(
+                            children: [
+                              _buildAddAccount(),
+                              const SizedBox(height: UiConstant.defaultSpacing),
+                              _buildChildrenAccounts(),
+                              const SizedBox(height: UiConstant.defaultSpacing),
+                              _buildActivities(),
+                            ],
+                          ),
+                        ),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -94,23 +133,14 @@ class _ActivityPageState extends State<ActivityPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        AppLocalizations
-                            .of(context)
-                            .newChildAccountTitle,
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .titleLarge
-                            ?.copyWith(
+                        AppLocalizations.of(context).newChildAccountTitle,
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
                             color: ColorValues.primary80, fontSize: 14),
                       ),
                       const SizedBox(height: UiConstant.mediumSpacing),
                       Text(
-                        AppLocalizations
-                            .of(context)
-                            .newChildAccountDescription,
-                        style: Theme
-                            .of(context)
+                        AppLocalizations.of(context).newChildAccountDescription,
+                        style: Theme.of(context)
                             .textTheme
                             .displayMedium
                             ?.copyWith(fontSize: 12),
@@ -134,28 +164,34 @@ class _ActivityPageState extends State<ActivityPage> {
   Widget _buildChildrenAccounts() {
     return CustomShadow(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding,
+        padding: const EdgeInsets.symmetric(
+            vertical: UiConstant.defaultPadding,
             horizontal: UiConstant.sidePadding),
         color: ColorValues.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildSectionHeading(
-              title: AppLocalizations
-                  .of(context)
-                  .childrenAccountsTitle,
-              description: AppLocalizations
-                  .of(context)
-                  .childrenAccountsDescription,
+              onTap: () {},
+              isListEmpty: _childList.isEmpty,
+              title: AppLocalizations.of(context).childrenAccountsTitle,
+              description:
+                  AppLocalizations.of(context).childrenAccountsDescription,
             ),
             const SizedBox(height: 16),
-            ListView.separated(
+            _childList.isEmpty
+                ? _buildEmptyList(
+                AppLocalizations.of(context).childrenAccountEmptyTitle,
+                AppLocalizations.of(context).childrenAccountEmptyDescription)
+                : ListView.separated(
               primary: false,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: 2,
+              itemCount: _childList.length,
               itemBuilder: (context, index) {
-                return const CustomChildAccount(name: 'Fulan bin Fulan');
+                return CustomChildAccount(
+                  user: _childList[index],
+                );
               },
               separatorBuilder: (_, __) {
                 return const SizedBox(height: UiConstant.defaultSpacing);
@@ -167,43 +203,59 @@ class _ActivityPageState extends State<ActivityPage> {
     );
   }
 
+  Widget _buildEmptyList(String title, String description) {
+    return SizedBox(
+      width: 100.w,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        child: Column(children: [
+          Text(
+            title,
+            style:
+                Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14),
+          ),
+          const SizedBox(height: UiConstant.mediumSpacing),
+          Text(
+            description,
+            style: Theme.of(context)
+                .textTheme
+                .displayMedium
+                ?.copyWith(fontSize: 12),
+          )
+        ]),
+      ),
+    );
+  }
+
   Widget _buildSectionHeading(
-      {required String title, required String description, Function()? onTap}) {
+      {required String title,
+      required String description,
+      required Function() onTap,
+      required bool isListEmpty}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(children: [
-          Expanded(child: Text(
+          Expanded(
+              child: Text(
             title,
-            style: Theme
-                .of(context)
-                .textTheme
-                .labelLarge,
+            style: Theme.of(context).textTheme.labelLarge,
           )),
-          if (onTap != null) GestureDetector(
-            onTap: onTap,
-            child: Text(
-              AppLocalizations
-                  .of(context)
-                  .seeAll,
-              style: Theme
-                  .of(context)
-                  .textTheme
-                  .displayMedium
-                  ?.copyWith(fontSize: 12, color: Theme
-                  .of(context)
-                  .primaryColor),
-            ),
-          )
+          if (!isListEmpty)
+            GestureDetector(
+              onTap: onTap,
+              child: Text(
+                AppLocalizations.of(context).seeAll,
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                    fontSize: 12, color: Theme.of(context).primaryColor),
+              ),
+            )
         ]),
         const SizedBox(height: UiConstant.mediumSpacing),
         Text(
           description,
-          style: Theme
-              .of(context)
-              .textTheme
-              .displayMedium
-              ?.copyWith(fontSize: 12),
+          style:
+              Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
         )
       ],
     );
@@ -212,29 +264,37 @@ class _ActivityPageState extends State<ActivityPage> {
   Widget _buildActivities() {
     return CustomShadow(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
+        padding: const EdgeInsets.symmetric(
+            vertical: UiConstant.defaultPadding,
+            horizontal: UiConstant.sidePadding),
         color: ColorValues.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildSectionHeading(
+              isListEmpty: _transactionList.isEmpty,
               title: AppLocalizations.of(context).lastActivityTitle,
               description: AppLocalizations.of(context).lastActivityDescription,
               onTap: () {},
             ),
             const SizedBox(height: 16),
-            ListView.separated(
-              primary: false,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _dummyTransactions.length,
-              itemBuilder: (context, index) {
-                return CustomTransaction(transactionModel: _dummyTransactions[index]);
-              },
-              separatorBuilder: (_, __) {
-                return const SizedBox(height: UiConstant.defaultSpacing);
-              },
-            ),
+            _transactionList.isEmpty
+                ? _buildEmptyList(
+                    AppLocalizations.of(context).activityEmptyTitle,
+                    AppLocalizations.of(context).activityEmptyDescription)
+                : ListView.separated(
+                    primary: false,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _transactionList.length,
+                    itemBuilder: (context, index) {
+                      return CustomTransaction(
+                          transactionModel: _transactionList[index]);
+                    },
+                    separatorBuilder: (_, __) {
+                      return const SizedBox(height: UiConstant.defaultSpacing);
+                    },
+                  ),
           ],
         ),
       ),

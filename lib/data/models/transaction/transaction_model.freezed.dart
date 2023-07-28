@@ -28,7 +28,13 @@ mixin _$TransactionModel {
   String get receiverAccountNo => throw _privateConstructorUsedError;
   String get senderName => throw _privateConstructorUsedError;
   String get receiverName => throw _privateConstructorUsedError;
-  bool get isNeedingApproval => throw _privateConstructorUsedError;
+  bool? get isApproved => throw _privateConstructorUsedError;
+  int? get relatedId => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  DocumentSnapshot<Object?>? get documentSnapshot =>
+      throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? get id => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -51,7 +57,11 @@ abstract class $TransactionModelCopyWith<$Res> {
       String receiverAccountNo,
       String senderName,
       String receiverName,
-      bool isNeedingApproval});
+      bool? isApproved,
+      int? relatedId,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      DocumentSnapshot<Object?>? documentSnapshot,
+      @JsonKey(includeFromJson: false, includeToJson: false) String? id});
 }
 
 /// @nodoc
@@ -75,7 +85,10 @@ class _$TransactionModelCopyWithImpl<$Res, $Val extends TransactionModel>
     Object? receiverAccountNo = null,
     Object? senderName = null,
     Object? receiverName = null,
-    Object? isNeedingApproval = null,
+    Object? isApproved = freezed,
+    Object? relatedId = freezed,
+    Object? documentSnapshot = freezed,
+    Object? id = freezed,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -110,10 +123,22 @@ class _$TransactionModelCopyWithImpl<$Res, $Val extends TransactionModel>
           ? _value.receiverName
           : receiverName // ignore: cast_nullable_to_non_nullable
               as String,
-      isNeedingApproval: null == isNeedingApproval
-          ? _value.isNeedingApproval
-          : isNeedingApproval // ignore: cast_nullable_to_non_nullable
-              as bool,
+      isApproved: freezed == isApproved
+          ? _value.isApproved
+          : isApproved // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      relatedId: freezed == relatedId
+          ? _value.relatedId
+          : relatedId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      documentSnapshot: freezed == documentSnapshot
+          ? _value.documentSnapshot
+          : documentSnapshot // ignore: cast_nullable_to_non_nullable
+              as DocumentSnapshot<Object?>?,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -135,7 +160,11 @@ abstract class _$$_TransactionModelCopyWith<$Res>
       String receiverAccountNo,
       String senderName,
       String receiverName,
-      bool isNeedingApproval});
+      bool? isApproved,
+      int? relatedId,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      DocumentSnapshot<Object?>? documentSnapshot,
+      @JsonKey(includeFromJson: false, includeToJson: false) String? id});
 }
 
 /// @nodoc
@@ -157,7 +186,10 @@ class __$$_TransactionModelCopyWithImpl<$Res>
     Object? receiverAccountNo = null,
     Object? senderName = null,
     Object? receiverName = null,
-    Object? isNeedingApproval = null,
+    Object? isApproved = freezed,
+    Object? relatedId = freezed,
+    Object? documentSnapshot = freezed,
+    Object? id = freezed,
   }) {
     return _then(_$_TransactionModel(
       uid: null == uid
@@ -192,10 +224,22 @@ class __$$_TransactionModelCopyWithImpl<$Res>
           ? _value.receiverName
           : receiverName // ignore: cast_nullable_to_non_nullable
               as String,
-      isNeedingApproval: null == isNeedingApproval
-          ? _value.isNeedingApproval
-          : isNeedingApproval // ignore: cast_nullable_to_non_nullable
-              as bool,
+      isApproved: freezed == isApproved
+          ? _value.isApproved
+          : isApproved // ignore: cast_nullable_to_non_nullable
+              as bool?,
+      relatedId: freezed == relatedId
+          ? _value.relatedId
+          : relatedId // ignore: cast_nullable_to_non_nullable
+              as int?,
+      documentSnapshot: freezed == documentSnapshot
+          ? _value.documentSnapshot
+          : documentSnapshot // ignore: cast_nullable_to_non_nullable
+              as DocumentSnapshot<Object?>?,
+      id: freezed == id
+          ? _value.id
+          : id // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -212,7 +256,11 @@ class _$_TransactionModel implements _TransactionModel {
       required this.receiverAccountNo,
       required this.senderName,
       required this.receiverName,
-      required this.isNeedingApproval});
+      this.isApproved,
+      this.relatedId,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      this.documentSnapshot,
+      @JsonKey(includeFromJson: false, includeToJson: false) this.id});
 
   factory _$_TransactionModel.fromJson(Map<String, dynamic> json) =>
       _$$_TransactionModelFromJson(json);
@@ -234,11 +282,19 @@ class _$_TransactionModel implements _TransactionModel {
   @override
   final String receiverName;
   @override
-  final bool isNeedingApproval;
+  final bool? isApproved;
+  @override
+  final int? relatedId;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final DocumentSnapshot<Object?>? documentSnapshot;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  final String? id;
 
   @override
   String toString() {
-    return 'TransactionModel(uid: $uid, amount: $amount, createTime: $createTime, senderAccountNo: $senderAccountNo, traxType: $traxType, receiverAccountNo: $receiverAccountNo, senderName: $senderName, receiverName: $receiverName, isNeedingApproval: $isNeedingApproval)';
+    return 'TransactionModel(uid: $uid, amount: $amount, createTime: $createTime, senderAccountNo: $senderAccountNo, traxType: $traxType, receiverAccountNo: $receiverAccountNo, senderName: $senderName, receiverName: $receiverName, isApproved: $isApproved, relatedId: $relatedId, documentSnapshot: $documentSnapshot, id: $id)';
   }
 
   @override
@@ -260,8 +316,13 @@ class _$_TransactionModel implements _TransactionModel {
                 other.senderName == senderName) &&
             (identical(other.receiverName, receiverName) ||
                 other.receiverName == receiverName) &&
-            (identical(other.isNeedingApproval, isNeedingApproval) ||
-                other.isNeedingApproval == isNeedingApproval));
+            (identical(other.isApproved, isApproved) ||
+                other.isApproved == isApproved) &&
+            (identical(other.relatedId, relatedId) ||
+                other.relatedId == relatedId) &&
+            (identical(other.documentSnapshot, documentSnapshot) ||
+                other.documentSnapshot == documentSnapshot) &&
+            (identical(other.id, id) || other.id == id));
   }
 
   @JsonKey(ignore: true)
@@ -276,7 +337,10 @@ class _$_TransactionModel implements _TransactionModel {
       receiverAccountNo,
       senderName,
       receiverName,
-      isNeedingApproval);
+      isApproved,
+      relatedId,
+      documentSnapshot,
+      id);
 
   @JsonKey(ignore: true)
   @override
@@ -302,7 +366,12 @@ abstract class _TransactionModel implements TransactionModel {
       required final String receiverAccountNo,
       required final String senderName,
       required final String receiverName,
-      required final bool isNeedingApproval}) = _$_TransactionModel;
+      final bool? isApproved,
+      final int? relatedId,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final DocumentSnapshot<Object?>? documentSnapshot,
+      @JsonKey(includeFromJson: false, includeToJson: false)
+      final String? id}) = _$_TransactionModel;
 
   factory _TransactionModel.fromJson(Map<String, dynamic> json) =
       _$_TransactionModel.fromJson;
@@ -324,7 +393,15 @@ abstract class _TransactionModel implements TransactionModel {
   @override
   String get receiverName;
   @override
-  bool get isNeedingApproval;
+  bool? get isApproved;
+  @override
+  int? get relatedId;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  DocumentSnapshot<Object?>? get documentSnapshot;
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  String? get id;
   @override
   @JsonKey(ignore: true)
   _$$_TransactionModelCopyWith<_$_TransactionModel> get copyWith =>

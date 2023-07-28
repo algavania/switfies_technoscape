@@ -1,20 +1,27 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 import 'package:swifties_technoscape/application/common/shared_code.dart';
+import 'package:swifties_technoscape/application/repositories/repositories.dart';
 import 'package:swifties_technoscape/data/models/article/article_model.dart';
 import 'package:swifties_technoscape/data/models/transaction/transaction_model.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
+import 'package:swifties_technoscape/presentation/core/shared_data.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
-import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_app_bar.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_article.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_child_account.dart';
-import 'package:swifties_technoscape/presentation/widgets/custom_saving_balance.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_transaction.dart';
+
+import '../../../../application/common/db_constants.dart';
+import '../../../../application/service/shared_preferences_service.dart';
+import '../../../../data/models/account/account_model.dart';
+import '../../../../data/models/user/user_model.dart';
+import '../../../routes/router.gr.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -24,43 +31,193 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final ArticleModel _dummyArticle = ArticleModel(title: '5 Langkah Simpel Buatmu Sukses Dalam Menabung', thumbnailUrl: 'https://mediacloud.theweek.co.uk/image/private/s--X-WVjvBW--/f_auto,t_content-image-full-desktop@1/v1669803330/theweek/2022/November/143276835%20-%20savings%20accounts.jpg', content: '', readingInMinutes: 5, createdAt: DateTime.now());
-  final List<TransactionModel> _dummyTransactions = [const TransactionModel(uid: 0, amount: 200000, createTime: 1686725002, senderAccountNo: '1234567890', traxType: 'Transfer Out', receiverAccountNo: '', senderName: 'Fulan bin Fulan', receiverName: 'Naluf bin Naluf', isNeedingApproval: true)];
+  final ValueNotifier<bool> _isBalanceVisible = ValueNotifier(false);
+  List<UserModel> _childList = [];
+  List<ArticleModel> _articleList = [];
+  List<TransactionModel> _transactionList = [];
+  bool _isLoading = true;
+  bool _isParent = true;
+
+  @override
+  void initState() {
+    _isParent = SharedPreferencesService.getUserData()!.role == DbConstants.parentRole;
+    Future.delayed(Duration.zero, () {
+      context.loaderOverlay.show();
+    });
+    _getAllData();
+    super.initState();
+  }
+
+  Future<void> _getAllData() async {
+    if (!context.loaderOverlay.visible) {
+      context.loaderOverlay.show();
+    }
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+    List<AccountModel> accounts = await BankRepository().getAllAccount();
+    SharedData.myAccountData.value = accounts.isEmpty ? null : accounts.first;
+    if (_isParent) {
+      _childList = await UserRepository().getMyChildren(limit: 2);
+      _transactionList = await TransactionRepository().getTransactions(limit: 2, isRequestedTransaction: true);
+    }
+    _articleList = await ArticleRepository().getArticleList(2);
+    setState(() {
+      _isLoading = false;
+    });
+    context.loaderOverlay.hide();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        children: [
-          CustomAppBar(
-            needSpacing: true,
-            body: ClipRRect(
-              borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
-              child: Image.network(
-                'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
-                width: 40,
-                height: 40,
+      child: RefreshIndicator(
+        onRefresh: () async {
+          _getAllData();
+        },
+        child: Column(
+          children: [
+            CustomAppBar(
+              needSpacing: true,
+              body: ClipRRect(
+                borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
+                child: Image.network(
+                  'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                  width: 40,
+                  height: 40,
+                ),
               ),
             ),
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
+            Expanded(
+              child: Stack(
                 children: [
-                  const CustomSavingBalance(balance: 2200000),
-                  const SizedBox(height: UiConstant.defaultSpacing),
-                  _buildMenus(),
-                  const SizedBox(height: UiConstant.defaultSpacing),
-                  _buildApprovalRequests(),
-                  const SizedBox(height: UiConstant.defaultSpacing),
-                  _buildChildrenAccounts(),
-                  const SizedBox(height: UiConstant.defaultSpacing),
-                  _buildArticles(),
+                  ListView(physics: const AlwaysScrollableScrollPhysics()),
+                  _isLoading
+                      ? Container()
+                      : SingleChildScrollView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        child: Column(
+                          children: [
+                            _buildBalance(),
+                            const SizedBox(height: UiConstant.defaultSpacing),
+                            _buildMenus(),
+                            const SizedBox(height: UiConstant.defaultSpacing),
+                            if (_isParent) _buildApprovalRequests(),
+                            if (_isParent) const SizedBox(height: UiConstant.defaultSpacing),
+                            if (_isParent) _buildChildrenAccounts(),
+                            if (_isParent)  const SizedBox(height: UiConstant.defaultSpacing),
+                            _buildArticles(),
+                          ],
+                        ),
+                      ),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBalance() {
+    return ValueListenableBuilder(
+        valueListenable: _isBalanceVisible,
+        builder: (context, _, __) {
+          return Container(
+            padding: const EdgeInsets.symmetric(
+                vertical: UiConstant.defaultPadding,
+                horizontal: UiConstant.sidePadding),
+            color: ColorValues.surface,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(AppLocalizations.of(context).yourSavings,
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(fontSize: 14)),
+                const SizedBox(height: 4),
+                Row(children: [
+                  Expanded(
+                    child: _isBalanceVisible.value
+                        ? RichText(
+                            text: TextSpan(
+                                text: 'Rp',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayMedium
+                                    ?.copyWith(fontSize: 20),
+                                children: [
+                                TextSpan(
+                                  text:
+                                      ' ${SharedCode.formatThousands(SharedData.myAccountData.value!.balance)}',
+                                  style:
+                                      Theme.of(context).textTheme.displayLarge,
+                                )
+                              ]))
+                        : SizedBox(
+                            height: 12,
+                            child: ListView.separated(
+                              primary: false,
+                              scrollDirection: Axis.horizontal,
+                              itemCount: 8,
+                              itemBuilder: (_, i) {
+                                return Container(
+                                  width: 12,
+                                  height: 12,
+                                  decoration: BoxDecoration(
+                                    color: i % 2 == 0
+                                        ? ColorValues.primary30
+                                        : ColorValues.primary20,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                );
+                              },
+                              separatorBuilder: (_, __) {
+                                return const SizedBox(width: 4);
+                              },
+                            ),
+                          ),
+                  ),
+                  _buildBalanceToggle(),
+                ]),
+              ],
+            ),
+          );
+        });
+  }
+
+  Widget _buildBalanceToggle() {
+    return InkWell(
+      onTap: () {
+        _isBalanceVisible.value = !_isBalanceVisible.value;
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: ColorValues.text50, width: 1)),
+        child: Row(
+          children: [
+            Icon(
+              _isBalanceVisible.value ? Iconsax.eye_slash5 : Iconsax.eye4,
+              color: ColorValues.text50,
+              size: 16,
+            ),
+            const SizedBox(width: 4),
+            Text(
+              _isBalanceVisible.value
+                  ? AppLocalizations.of(context).hide
+                  : AppLocalizations.of(context).show,
+              style: Theme.of(context)
+                  .textTheme
+                  .labelSmall
+                  ?.copyWith(letterSpacing: 1),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -122,8 +279,8 @@ class _HomePageState extends State<HomePage> {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(UiConstant.smallerBorder)
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(UiConstant.smallerBorder)
           ),
           child: Icon(
             iconData,
@@ -141,27 +298,34 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildSectionHeading({required String title, required String description, required Function() onTap}) {
+
+  Widget _buildSectionHeading(
+      {required String title,
+      required String description,
+      required Function() onTap, required bool isListEmpty}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(children: [
-          Expanded(child: Text(
+          Expanded(
+              child: Text(
             title,
             style: Theme.of(context).textTheme.labelLarge,
           )),
-          GestureDetector(
+          if (!isListEmpty) GestureDetector(
             onTap: onTap,
             child: Text(
               AppLocalizations.of(context).seeAll,
-              style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12, color: Theme.of(context).primaryColor),
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                  fontSize: 12, color: Theme.of(context).primaryColor),
             ),
           )
         ]),
         const SizedBox(height: UiConstant.mediumSpacing),
         Text(
           description,
-          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+          style:
+              Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
         )
       ],
     );
@@ -171,47 +335,37 @@ class _HomePageState extends State<HomePage> {
     return CustomShadow(
       isShadowAbove: true,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
+        padding: const EdgeInsets.symmetric(
+            vertical: UiConstant.defaultPadding,
+            horizontal: UiConstant.sidePadding),
         color: ColorValues.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildSectionHeading(
+                isListEmpty: _transactionList.isEmpty,
                 title: AppLocalizations.of(context).approvalRequestTitle,
-                description: AppLocalizations.of(context).approvalRequestDescription,
-                onTap: () {}
-            ),
+                description:
+                    AppLocalizations.of(context).approvalRequestDescription,
+                onTap: () {}),
             const SizedBox(height: 16),
-            _dummyTransactions.isEmpty
-            ? SizedBox(
-              width: 100.w,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 24),
-                child: Column(children: [
-                  Text(
+            _transactionList.isEmpty
+                ? _buildEmptyList(
                     AppLocalizations.of(context).requestsEmptyTitle,
-                    style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14),
+                    AppLocalizations.of(context).requestsEmptyDescription)
+                : ListView.separated(
+                    primary: false,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _transactionList.length,
+                    itemBuilder: (context, index) {
+                      return CustomTransaction(
+                          transactionModel: _transactionList[index]);
+                    },
+                    separatorBuilder: (_, __) {
+                      return const SizedBox(height: UiConstant.defaultSpacing);
+                    },
                   ),
-                  const SizedBox(height: UiConstant.mediumSpacing),
-                  Text(
-                    AppLocalizations.of(context).requestsEmptyDescription,
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
-                  )
-                ]),
-              ),
-            )
-            : ListView.separated(
-              primary: false,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _dummyTransactions.length,
-              itemBuilder: (context, index) {
-                return CustomTransaction(transactionModel: _dummyTransactions[index]);
-              },
-              separatorBuilder: (_, __) {
-                return const SizedBox(height: UiConstant.defaultSpacing);
-              },
-            ),
           ],
         ),
       ),
@@ -222,29 +376,39 @@ class _HomePageState extends State<HomePage> {
     return CustomShadow(
       isShadowAbove: true,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
+        padding: const EdgeInsets.symmetric(
+            vertical: UiConstant.defaultPadding,
+            horizontal: UiConstant.sidePadding),
         color: ColorValues.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildSectionHeading(
-              title: AppLocalizations.of(context).childrenAccountsTitle,
-              description: AppLocalizations.of(context).childrenAccountsDescription,
-              onTap: () {}
-            ),
+                isListEmpty: _childList.isEmpty,
+                title: AppLocalizations.of(context).childrenAccountsTitle,
+                description:
+                    AppLocalizations.of(context).childrenAccountsDescription,
+                onTap: () {}),
             const SizedBox(height: 16),
-            ListView.separated(
-              primary: false,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 2,
-              itemBuilder: (context, index) {
-                return const CustomChildAccount(name: 'Fulan bin Fulan');
-              },
-              separatorBuilder: (_, __) {
-                return const SizedBox(height: UiConstant.defaultSpacing);
-              },
-            ),
+            _childList.isEmpty
+                ? _buildEmptyList(
+                    AppLocalizations.of(context).childrenAccountEmptyTitle,
+                    AppLocalizations.of(context)
+                        .childrenAccountEmptyDescription)
+                : ListView.separated(
+                    primary: false,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _childList.length,
+                    itemBuilder: (context, index) {
+                      return CustomChildAccount(
+                        user: _childList[index],
+                      );
+                    },
+                    separatorBuilder: (_, __) {
+                      return const SizedBox(height: UiConstant.defaultSpacing);
+                    },
+                  ),
           ],
         ),
       ),
@@ -255,31 +419,62 @@ class _HomePageState extends State<HomePage> {
     return CustomShadow(
       isShadowAbove: true,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
+        padding: const EdgeInsets.symmetric(
+            vertical: UiConstant.defaultPadding,
+            horizontal: UiConstant.sidePadding),
         color: ColorValues.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildSectionHeading(
+                isListEmpty: _articleList.isEmpty,
                 title: AppLocalizations.of(context).duitKiddoArticleTitle,
-                description: AppLocalizations.of(context).duitKiddoArticleDescription,
-                onTap: () {}
-            ),
+                description:
+                    AppLocalizations.of(context).duitKiddoArticleDescription,
+                onTap: () {}),
             const SizedBox(height: 16),
-            ListView.separated(
-              primary: false,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 2,
-              itemBuilder: (context, index) {
-                return CustomArticle(article: _dummyArticle);
-              },
-              separatorBuilder: (_, __) {
-                return const SizedBox(height: UiConstant.defaultSpacing);
-              },
-            ),
+            _articleList.isEmpty
+                ? _buildEmptyList(
+                    AppLocalizations.of(context).articleEmptyTitle,
+                    AppLocalizations.of(context).articleEmptyDescription)
+                : ListView.separated(
+                    primary: false,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _articleList.length,
+                    itemBuilder: (context, index) {
+                      return CustomArticle(article: _articleList[index]);
+                    },
+                    separatorBuilder: (_, __) {
+                      return const SizedBox(height: UiConstant.defaultSpacing);
+                    },
+                  ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildEmptyList(String title, String description) {
+    return SizedBox(
+      width: 100.w,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 24),
+        child: Column(children: [
+          Text(
+            title,
+            style:
+                Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14),
+          ),
+          const SizedBox(height: UiConstant.mediumSpacing),
+          Text(
+            description,
+            style: Theme.of(context)
+                .textTheme
+                .displayMedium
+                ?.copyWith(fontSize: 12),
+          )
+        ]),
       ),
     );
   }

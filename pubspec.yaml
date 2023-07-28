@@ -37,6 +37,7 @@ dependencies:
   status_bar_control: ^3.2.1
   auto_size_text: ^3.0.0
   unicons: ^2.1.1
+  http: ^0.13.6
 
 dev_dependencies:
   flutter_test:

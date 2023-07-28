@@ -1,6 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:unicons/unicons.dart';
+import 'package:iconsax/iconsax.dart';
 import '../../l10n/l10n.dart';
 import '../../presentation/core/color_values.dart';
 import '../../presentation/core/ui_constant.dart';
@@ -89,7 +89,7 @@ class SharedCode {
             border: Border.all(color: borderColor, width: 1),
           ),
           child: Center(child: Icon(
-              isSuccess ? UniconsLine.check_circle : UniconsLine.info_circle,
+              isSuccess ? Iconsax.check5 : Iconsax.info_circle5,
               color: ColorValues.surface, size: 16)),
         ),
         Expanded(child: Padding(
@@ -103,7 +103,7 @@ class SharedCode {
         GestureDetector(
             onTap: () => flushbar.dismiss(),
             child: const Icon(
-                UniconsLine.times, size: 16, color: ColorValues.text50)
+                Iconsax.close_circle5, size: 16, color: ColorValues.text50)
         )
       ]),
     );

@@ -48,5 +48,9 @@
   "loginDescription": "Masukkan email dan password yang udah didaftarin!",
   "forgotpassword": "Lupa password?",
   "dontHaveAccount": "Belum punya akun?",
-  "letsRegister": "Yuk register!"
+  "letsRegister": "Yuk register!",
+  "home": "Beranda",
+  "activity": "Aktivitas",
+  "article": "Artikel",
+  "profile": "Profil"
 }

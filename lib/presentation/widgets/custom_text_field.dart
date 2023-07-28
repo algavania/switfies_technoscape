@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sizer/sizer.dart';
-import 'package:unicons/unicons.dart';
 
 import '../../l10n/l10n.dart';
 import '../core/color_values.dart';
@@ -71,7 +70,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       text: '*', style: TextStyle(color: ColorValues.danger50)),
                 if (widget.showOptional)
                   TextSpan(
-                      text: ' (${AppLocalizations.of(context).optional})', style: GoogleFonts.nunito(fontWeight: FontWeight.w600)),
+                      text: ' (${AppLocalizations.of(context).optional})', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600)),
               ])),
         if (widget.label != null) const SizedBox(height: 8),
         if (widget.readOnly) AbsorbPointer(child: _buildTextField()),

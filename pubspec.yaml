@@ -36,7 +36,6 @@ dependencies:
   connectivity_plus: ^4.0.1
   status_bar_control: ^3.2.1
   auto_size_text: ^3.0.0
-  unicons: ^2.1.1
   http: ^0.13.6
   iconsax: ^0.0.8
 

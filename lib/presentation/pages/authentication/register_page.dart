@@ -325,7 +325,9 @@ class _RegisterPageState extends State<RegisterPage> {
               buttonText: AppLocalizations.of(context).skip,
               colorAsOutlineButton: ColorValues.greyBase,
               backgroundColor: ColorValues.slidingPanelBackground,
-              onPressed: () {},
+              onPressed: () {
+                AutoRouter.of(context).replace(const DashboardRoute());
+              },
             )),
             const SizedBox(width: UiConstant.defaultPadding),
             Expanded(child: CustomButton(

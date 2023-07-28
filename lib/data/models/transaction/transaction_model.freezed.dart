@@ -26,6 +26,8 @@ mixin _$TransactionModel {
   String get senderAccountNo => throw _privateConstructorUsedError;
   String get traxType => throw _privateConstructorUsedError;
   String get receiverAccountNo => throw _privateConstructorUsedError;
+  String get senderName => throw _privateConstructorUsedError;
+  String get receiverName => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,7 +47,9 @@ abstract class $TransactionModelCopyWith<$Res> {
       int createTime,
       String senderAccountNo,
       String traxType,
-      String receiverAccountNo});
+      String receiverAccountNo,
+      String senderName,
+      String receiverName});
 }
 
 /// @nodoc
@@ -67,6 +71,8 @@ class _$TransactionModelCopyWithImpl<$Res, $Val extends TransactionModel>
     Object? senderAccountNo = null,
     Object? traxType = null,
     Object? receiverAccountNo = null,
+    Object? senderName = null,
+    Object? receiverName = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -93,6 +99,14 @@ class _$TransactionModelCopyWithImpl<$Res, $Val extends TransactionModel>
           ? _value.receiverAccountNo
           : receiverAccountNo // ignore: cast_nullable_to_non_nullable
               as String,
+      senderName: null == senderName
+          ? _value.senderName
+          : senderName // ignore: cast_nullable_to_non_nullable
+              as String,
+      receiverName: null == receiverName
+          ? _value.receiverName
+          : receiverName // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -111,7 +125,9 @@ abstract class _$$_TransactionModelCopyWith<$Res>
       int createTime,
       String senderAccountNo,
       String traxType,
-      String receiverAccountNo});
+      String receiverAccountNo,
+      String senderName,
+      String receiverName});
 }
 
 /// @nodoc
@@ -131,6 +147,8 @@ class __$$_TransactionModelCopyWithImpl<$Res>
     Object? senderAccountNo = null,
     Object? traxType = null,
     Object? receiverAccountNo = null,
+    Object? senderName = null,
+    Object? receiverName = null,
   }) {
     return _then(_$_TransactionModel(
       uid: null == uid
@@ -157,6 +175,14 @@ class __$$_TransactionModelCopyWithImpl<$Res>
           ? _value.receiverAccountNo
           : receiverAccountNo // ignore: cast_nullable_to_non_nullable
               as String,
+      senderName: null == senderName
+          ? _value.senderName
+          : senderName // ignore: cast_nullable_to_non_nullable
+              as String,
+      receiverName: null == receiverName
+          ? _value.receiverName
+          : receiverName // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -170,7 +196,9 @@ class _$_TransactionModel implements _TransactionModel {
       required this.createTime,
       required this.senderAccountNo,
       required this.traxType,
-      required this.receiverAccountNo});
+      required this.receiverAccountNo,
+      required this.senderName,
+      required this.receiverName});
 
   factory _$_TransactionModel.fromJson(Map<String, dynamic> json) =>
       _$$_TransactionModelFromJson(json);
@@ -187,10 +215,14 @@ class _$_TransactionModel implements _TransactionModel {
   final String traxType;
   @override
   final String receiverAccountNo;
+  @override
+  final String senderName;
+  @override
+  final String receiverName;
 
   @override
   String toString() {
-    return 'TransactionModel(uid: $uid, amount: $amount, createTime: $createTime, senderAccountNo: $senderAccountNo, traxType: $traxType, receiverAccountNo: $receiverAccountNo)';
+    return 'TransactionModel(uid: $uid, amount: $amount, createTime: $createTime, senderAccountNo: $senderAccountNo, traxType: $traxType, receiverAccountNo: $receiverAccountNo, senderName: $senderName, receiverName: $receiverName)';
   }
 
   @override
@@ -207,13 +239,17 @@ class _$_TransactionModel implements _TransactionModel {
             (identical(other.traxType, traxType) ||
                 other.traxType == traxType) &&
             (identical(other.receiverAccountNo, receiverAccountNo) ||
-                other.receiverAccountNo == receiverAccountNo));
+                other.receiverAccountNo == receiverAccountNo) &&
+            (identical(other.senderName, senderName) ||
+                other.senderName == senderName) &&
+            (identical(other.receiverName, receiverName) ||
+                other.receiverName == receiverName));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, uid, amount, createTime,
-      senderAccountNo, traxType, receiverAccountNo);
+      senderAccountNo, traxType, receiverAccountNo, senderName, receiverName);
 
   @JsonKey(ignore: true)
   @override
@@ -236,7 +272,9 @@ abstract class _TransactionModel implements TransactionModel {
       required final int createTime,
       required final String senderAccountNo,
       required final String traxType,
-      required final String receiverAccountNo}) = _$_TransactionModel;
+      required final String receiverAccountNo,
+      required final String senderName,
+      required final String receiverName}) = _$_TransactionModel;
 
   factory _TransactionModel.fromJson(Map<String, dynamic> json) =
       _$_TransactionModel.fromJson;
@@ -253,6 +291,10 @@ abstract class _TransactionModel implements TransactionModel {
   String get traxType;
   @override
   String get receiverAccountNo;
+  @override
+  String get senderName;
+  @override
+  String get receiverName;
   @override
   @JsonKey(ignore: true)
   _$$_TransactionModelCopyWith<_$_TransactionModel> get copyWith =>

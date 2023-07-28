@@ -14,6 +14,8 @@ _$_TransactionModel _$$_TransactionModelFromJson(Map<String, dynamic> json) =>
       senderAccountNo: json['senderAccountNo'] as String,
       traxType: json['traxType'] as String,
       receiverAccountNo: json['receiverAccountNo'] as String,
+      senderName: json['senderName'] as String,
+      receiverName: json['receiverName'] as String,
     );
 
 Map<String, dynamic> _$$_TransactionModelToJson(_$_TransactionModel instance) =>
@@ -24,4 +26,6 @@ Map<String, dynamic> _$$_TransactionModelToJson(_$_TransactionModel instance) =>
       'senderAccountNo': instance.senderAccountNo,
       'traxType': instance.traxType,
       'receiverAccountNo': instance.receiverAccountNo,
+      'senderName': instance.senderName,
+      'receiverName': instance.receiverName,
     };

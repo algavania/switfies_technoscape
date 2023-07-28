@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                       style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20),
                       children: [
                         TextSpan(
-                          text:' ${SharedCode.thousandSeparatorFormat(2200000)}',
+                          text:' ${SharedCode.formatThousands(2200000)}',
                           style: Theme.of(context).textTheme.displayLarge,
                         )
                       ]
@@ -134,7 +134,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(width: 4),
             Text(
               _isBalanceVisible.value ? AppLocalizations.of(context).hide : AppLocalizations.of(context).show,
-              style: Theme.of(context).textTheme.labelSmall,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(letterSpacing: 1),
             ),
           ],
         ),

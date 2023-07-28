@@ -70,5 +70,14 @@
   "seeAll": "Lihat semua",
   "duitKiddoArticleTitle": "Artikel DuitKiddo",
   "duitKiddoArticleDescription": "Jelajahi dunia keuangan dari artikel!",
-  "minutes": "menit"
+  "minutes": "menit",
+  "newChildAccountTitle": "Rekening Anak Baru",
+  "newChildAccountDescription": "Buat rekening baru untuk anak anda dengan mudah di sini, ya!",
+  "lastActivityTitle": "Aktivitas Terakhir",
+  "lastActivityDescription": "Pantau terus aktivitas si kecil",
+  "from": "Dari",
+  "to": "Ke",
+  "topup": "Nabung",
+  "transferIn": "Minta",
+  "transferOut": "Transfer"
 }

@@ -36,7 +36,7 @@ class AppThemeData {
           selectedItemColor: ColorValues.primary50,
           unselectedItemColor: ColorValues.grey20,
           selectedLabelStyle: GoogleFonts.plusJakartaSans(
-              color: ColorValues.primary50, fontSize: 13, fontWeight: FontWeight.bold),
+              color: ColorValues.primary50, fontSize: 13, fontWeight: FontWeight.w700),
           unselectedLabelStyle: GoogleFonts.plusJakartaSans(
               color: ColorValues.grey20, fontSize: 13, fontWeight: FontWeight.normal),
         ),
@@ -50,7 +50,7 @@ class AppThemeData {
           // labelLarge: Button 1
           // displaySmall: Button 2
           displayLarge: GoogleFonts.plusJakartaSans(
-              color: ColorValues.text50, fontSize: 22, fontWeight: FontWeight.bold),
+              color: ColorValues.text50, fontSize: 22, fontWeight: FontWeight.w700),
           displayMedium: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 17, fontWeight: FontWeight.w400),
           displaySmall: GoogleFonts.plusJakartaSans(
@@ -60,7 +60,7 @@ class AppThemeData {
           headlineSmall: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 24, fontWeight: FontWeight.w500),
           titleLarge: GoogleFonts.plusJakartaSans(
-              color: ColorValues.text50, fontSize: 22, fontWeight: FontWeight.bold),
+              color: ColorValues.text50, fontSize: 22, fontWeight: FontWeight.w700),
           titleMedium: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 17, fontWeight: FontWeight.w800),
           titleSmall: GoogleFonts.plusJakartaSans(

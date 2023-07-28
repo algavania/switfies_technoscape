@@ -12,6 +12,8 @@ class TransactionModel with _$TransactionModel {
     required String senderAccountNo,
     required String traxType,
     required String receiverAccountNo,
+    required String senderName,
+    required String receiverName,
   }) = _TransactionModel;
 
   factory TransactionModel.fromJson(Map<String, Object?> json)

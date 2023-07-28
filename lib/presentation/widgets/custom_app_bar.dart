@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:swifties_technoscape/presentation/widgets/logo_widget.dart';
 import '../core/ui_constant.dart';
 import 'custom_back_button.dart';
-import 'custom_logo_button.dart';
 
 class CustomAppBar extends StatelessWidget {
   final Widget body;

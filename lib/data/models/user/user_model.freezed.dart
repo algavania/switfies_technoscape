@@ -20,18 +20,10 @@ UserModel _$UserModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$UserModel {
-  String get name => throw _privateConstructorUsedError;
+  int get uid => throw _privateConstructorUsedError;
+  String get displayName => throw _privateConstructorUsedError;
+  String get loginPassword => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
-  String get city => throw _privateConstructorUsedError;
-  String get role => throw _privateConstructorUsedError;
-  String? get address => throw _privateConstructorUsedError;
-  String? get photoUrl => throw _privateConstructorUsedError;
-  bool? get hasSentFeedback => throw _privateConstructorUsedError;
-  @TimestampConverter()
-  DateTime get birthdate => throw _privateConstructorUsedError;
-  @TimestampConverter()
-  DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -45,16 +37,7 @@ abstract class $UserModelCopyWith<$Res> {
       _$UserModelCopyWithImpl<$Res, UserModel>;
   @useResult
   $Res call(
-      {String name,
-      String username,
-      String email,
-      String city,
-      String role,
-      String? address,
-      String? photoUrl,
-      bool? hasSentFeedback,
-      @TimestampConverter() DateTime birthdate,
-      @TimestampConverter() DateTime createdAt});
+      {int uid, String displayName, String loginPassword, String username});
 }
 
 /// @nodoc
@@ -70,58 +53,28 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
+    Object? uid = null,
+    Object? displayName = null,
+    Object? loginPassword = null,
     Object? username = null,
-    Object? email = null,
-    Object? city = null,
-    Object? role = null,
-    Object? address = freezed,
-    Object? photoUrl = freezed,
-    Object? hasSentFeedback = freezed,
-    Object? birthdate = null,
-    Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      uid: null == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as int,
+      displayName: null == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String,
+      loginPassword: null == loginPassword
+          ? _value.loginPassword
+          : loginPassword // ignore: cast_nullable_to_non_nullable
               as String,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      city: null == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String,
-      role: null == role
-          ? _value.role
-          : role // ignore: cast_nullable_to_non_nullable
-              as String,
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as String?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      hasSentFeedback: freezed == hasSentFeedback
-          ? _value.hasSentFeedback
-          : hasSentFeedback // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      birthdate: null == birthdate
-          ? _value.birthdate
-          : birthdate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ) as $Val);
   }
 }
@@ -134,16 +87,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String name,
-      String username,
-      String email,
-      String city,
-      String role,
-      String? address,
-      String? photoUrl,
-      bool? hasSentFeedback,
-      @TimestampConverter() DateTime birthdate,
-      @TimestampConverter() DateTime createdAt});
+      {int uid, String displayName, String loginPassword, String username});
 }
 
 /// @nodoc
@@ -157,58 +101,28 @@ class __$$_UserModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
+    Object? uid = null,
+    Object? displayName = null,
+    Object? loginPassword = null,
     Object? username = null,
-    Object? email = null,
-    Object? city = null,
-    Object? role = null,
-    Object? address = freezed,
-    Object? photoUrl = freezed,
-    Object? hasSentFeedback = freezed,
-    Object? birthdate = null,
-    Object? createdAt = null,
   }) {
     return _then(_$_UserModel(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      uid: null == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as int,
+      displayName: null == displayName
+          ? _value.displayName
+          : displayName // ignore: cast_nullable_to_non_nullable
+              as String,
+      loginPassword: null == loginPassword
+          ? _value.loginPassword
+          : loginPassword // ignore: cast_nullable_to_non_nullable
               as String,
       username: null == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      email: null == email
-          ? _value.email
-          : email // ignore: cast_nullable_to_non_nullable
-              as String,
-      city: null == city
-          ? _value.city
-          : city // ignore: cast_nullable_to_non_nullable
-              as String,
-      role: null == role
-          ? _value.role
-          : role // ignore: cast_nullable_to_non_nullable
-              as String,
-      address: freezed == address
-          ? _value.address
-          : address // ignore: cast_nullable_to_non_nullable
-              as String?,
-      photoUrl: freezed == photoUrl
-          ? _value.photoUrl
-          : photoUrl // ignore: cast_nullable_to_non_nullable
-              as String?,
-      hasSentFeedback: freezed == hasSentFeedback
-          ? _value.hasSentFeedback
-          : hasSentFeedback // ignore: cast_nullable_to_non_nullable
-              as bool?,
-      birthdate: null == birthdate
-          ? _value.birthdate
-          : birthdate // ignore: cast_nullable_to_non_nullable
-              as DateTime,
-      createdAt: null == createdAt
-          ? _value.createdAt
-          : createdAt // ignore: cast_nullable_to_non_nullable
-              as DateTime,
     ));
   }
 }
@@ -217,46 +131,26 @@ class __$$_UserModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_UserModel implements _UserModel {
   const _$_UserModel(
-      {required this.name,
-      required this.username,
-      required this.email,
-      required this.city,
-      required this.role,
-      this.address,
-      this.photoUrl,
-      this.hasSentFeedback,
-      @TimestampConverter() required this.birthdate,
-      @TimestampConverter() required this.createdAt});
+      {required this.uid,
+      required this.displayName,
+      required this.loginPassword,
+      required this.username});
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
       _$$_UserModelFromJson(json);
 
   @override
-  final String name;
+  final int uid;
+  @override
+  final String displayName;
+  @override
+  final String loginPassword;
   @override
   final String username;
-  @override
-  final String email;
-  @override
-  final String city;
-  @override
-  final String role;
-  @override
-  final String? address;
-  @override
-  final String? photoUrl;
-  @override
-  final bool? hasSentFeedback;
-  @override
-  @TimestampConverter()
-  final DateTime birthdate;
-  @override
-  @TimestampConverter()
-  final DateTime createdAt;
 
   @override
   String toString() {
-    return 'UserModel(name: $name, username: $username, email: $email, city: $city, role: $role, address: $address, photoUrl: $photoUrl, hasSentFeedback: $hasSentFeedback, birthdate: $birthdate, createdAt: $createdAt)';
+    return 'UserModel(uid: $uid, displayName: $displayName, loginPassword: $loginPassword, username: $username)';
   }
 
   @override
@@ -264,27 +158,19 @@ class _$_UserModel implements _UserModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_UserModel &&
-            (identical(other.name, name) || other.name == name) &&
+            (identical(other.uid, uid) || other.uid == uid) &&
+            (identical(other.displayName, displayName) ||
+                other.displayName == displayName) &&
+            (identical(other.loginPassword, loginPassword) ||
+                other.loginPassword == loginPassword) &&
             (identical(other.username, username) ||
-                other.username == username) &&
-            (identical(other.email, email) || other.email == email) &&
-            (identical(other.city, city) || other.city == city) &&
-            (identical(other.role, role) || other.role == role) &&
-            (identical(other.address, address) || other.address == address) &&
-            (identical(other.photoUrl, photoUrl) ||
-                other.photoUrl == photoUrl) &&
-            (identical(other.hasSentFeedback, hasSentFeedback) ||
-                other.hasSentFeedback == hasSentFeedback) &&
-            (identical(other.birthdate, birthdate) ||
-                other.birthdate == birthdate) &&
-            (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.username == username));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, username, email, city,
-      role, address, photoUrl, hasSentFeedback, birthdate, createdAt);
+  int get hashCode =>
+      Object.hash(runtimeType, uid, displayName, loginPassword, username);
 
   @JsonKey(ignore: true)
   @override
@@ -302,42 +188,22 @@ class _$_UserModel implements _UserModel {
 
 abstract class _UserModel implements UserModel {
   const factory _UserModel(
-      {required final String name,
-      required final String username,
-      required final String email,
-      required final String city,
-      required final String role,
-      final String? address,
-      final String? photoUrl,
-      final bool? hasSentFeedback,
-      @TimestampConverter() required final DateTime birthdate,
-      @TimestampConverter() required final DateTime createdAt}) = _$_UserModel;
+      {required final int uid,
+      required final String displayName,
+      required final String loginPassword,
+      required final String username}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
 
   @override
-  String get name;
+  int get uid;
+  @override
+  String get displayName;
+  @override
+  String get loginPassword;
   @override
   String get username;
-  @override
-  String get email;
-  @override
-  String get city;
-  @override
-  String get role;
-  @override
-  String? get address;
-  @override
-  String? get photoUrl;
-  @override
-  bool? get hasSentFeedback;
-  @override
-  @TimestampConverter()
-  DateTime get birthdate;
-  @override
-  @TimestampConverter()
-  DateTime get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$_UserModelCopyWith<_$_UserModel> get copyWith =>

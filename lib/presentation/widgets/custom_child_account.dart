@@ -39,13 +39,16 @@ class _CustomChildAccountState extends State<CustomChildAccount> {
           Expanded(
             child: Text(
               widget.name,
-              style: Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 12),
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 12),
             ),
           ),
-          const Icon(
-            Iconsax.arrow_right_25,
-            color: ColorValues.text50,
-            size: 16,
+          const Padding(
+            padding: EdgeInsets.only(right: UiConstant.smallerPadding),
+            child: Icon(
+              Iconsax.arrow_right_3,
+              color: ColorValues.text50,
+              size: 16,
+            ),
           )
         ]),
       ),

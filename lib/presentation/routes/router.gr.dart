@@ -40,6 +40,15 @@ class AppRouter extends _i2.RootStackRouter {
         barrierDismissible: false,
       );
     },
+    LandingRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.LandingPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
   };
 
   @override
@@ -57,6 +66,10 @@ class AppRouter extends _i2.RootStackRouter {
         _i2.RouteConfig(
           NoInternetRoute.name,
           path: '/no-internet',
+        ),
+        _i2.RouteConfig(
+          LandingRoute.name,
+          path: '/on-boarding',
         ),
       ];
 }
@@ -83,4 +96,16 @@ class NoInternetRoute extends _i2.PageRouteInfo<void> {
         );
 
   static const String name = 'NoInternetRoute';
+}
+
+/// generated route for
+/// [_i1.LandingPage]
+class LandingRoute extends _i2.PageRouteInfo<void> {
+  const LandingRoute()
+      : super(
+          LandingRoute.name,
+          path: '/on-boarding',
+        );
+
+  static const String name = 'LandingRoute';
 }

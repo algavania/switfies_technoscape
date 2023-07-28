@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:swifties_technoscape/presentation/core/color_values.dart';
+
+import '../core/color_values.dart';
 
 class CustomShadow extends StatefulWidget {
   final bool isShadowAbove;

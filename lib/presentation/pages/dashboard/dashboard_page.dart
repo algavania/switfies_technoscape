@@ -7,6 +7,8 @@ import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
 
+import '../../core/shared_data.dart';
+
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
 
@@ -16,11 +18,15 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   @override
-  Widget build(context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: ColorValues.surface,
-    ));
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      SharedData.setStatusBarColorWhite(context);
+    });
+    super.initState();
+  }
 
+  @override
+  Widget build(context) {
     return Scaffold(
       body: AutoTabsScaffold(
         routes: const [

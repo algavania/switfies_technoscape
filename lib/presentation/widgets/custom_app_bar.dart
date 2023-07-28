@@ -1,34 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:sizer/sizer.dart';
-import 'package:swifties_technoscape/presentation/core/color_values.dart';
-import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
+import 'package:swifties_technoscape/presentation/widgets/logo_widget.dart';
+import '../core/ui_constant.dart';
+import 'custom_back_button.dart';
+import 'custom_logo_button.dart';
 
 class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({Key? key}) : super(key: key);
+  final Widget body;
+  final bool hasBackButton;
+  final bool needSpacing;
+  final Color? color;
+
+  const CustomAppBar({Key? key, required this.body, this.hasBackButton = false, this.needSpacing = false, this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: UiConstant.mediumPadding, horizontal: UiConstant.sidePadding),
-      width: 100.w,
-      color: ColorValues.surface,
+      color: color ?? Colors.white,
+      padding: const EdgeInsets.fromLTRB(UiConstant.sidePadding, 12,
+          UiConstant.sidePadding, UiConstant.sidePadding),
       child: Row(
         children: [
-          SvgPicture.asset(
-            'assets/core/logo_app.svg',
-            height: 24,
-            fit: BoxFit.contain,
-          ),
-          const Spacer(),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
-            child: Image.network(
-              'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
-              width: 40,
-              height: 40,
-            ),
-          )
+          hasBackButton
+            ? const CustomBackButton()
+            : const LogoWidget(),
+          const SizedBox(width: UiConstant.defaultSpacing),
+          if (needSpacing) const Spacer(),
+          const SizedBox(width: UiConstant.defaultSpacing),
+          body,
         ],
       ),
     );

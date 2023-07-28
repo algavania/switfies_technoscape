@@ -38,6 +38,10 @@ import '../pages/screens.dart';
         path: '/on-boarding',
         transitionsBuilder: TransitionsBuilders.fadeIn),
     CustomRoute(
+        page: AddChildPage,
+        path: '/add-child',
+        transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
         page: DashboardPage,
         path: '/dashboard',
         transitionsBuilder: TransitionsBuilders.fadeIn,

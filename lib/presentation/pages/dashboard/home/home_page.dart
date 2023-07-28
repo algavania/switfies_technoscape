@@ -26,7 +26,17 @@ class _HomePageState extends State<HomePage> {
     return SafeArea(
       child: Column(
         children: [
-          const CustomAppBar(),
+          CustomAppBar(
+            needSpacing: true,
+            body: ClipRRect(
+              borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
+              child: Image.network(
+                'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                width: 40,
+                height: 40,
+              ),
+            ),
+          ),
           Expanded(
             child: SingleChildScrollView(
               child: Column(

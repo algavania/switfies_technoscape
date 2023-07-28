@@ -38,6 +38,7 @@ dependencies:
   auto_size_text: ^3.0.0
   http: ^0.13.6
   iconsax: ^0.0.8
+  shared_preferences: ^2.2.0
 
 dev_dependencies:
   flutter_test:

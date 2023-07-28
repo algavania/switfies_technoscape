@@ -3,8 +3,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:swifties_technoscape/application/common/shared_code.dart';
+import 'package:swifties_technoscape/application/repositories/auth/auth_repository.dart';
+import 'package:swifties_technoscape/application/repositories/repositories.dart';
+import 'package:swifties_technoscape/application/service/shared_preferences_service.dart';
+import 'package:swifties_technoscape/data/models/auth/auth_model.dart';
+import 'package:swifties_technoscape/data/models/token/token_model.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
@@ -12,6 +17,9 @@ import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_button.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart';
 import 'package:swifties_technoscape/presentation/widgets/logo_widget.dart';
+
+import '../../../data/models/user/user_model.dart';
+import '../../core/shared_data.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -22,14 +30,19 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      SharedData.setStatusBarColorPrimary(context);
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Theme.of(context).primaryColor,
-    ));
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
@@ -65,18 +78,17 @@ class _LoginPageState extends State<LoginPage> {
                         ),),
                         const SizedBox(height: UiConstant.biggerSpacing),
                         CustomTextField(
-                          controller: _emailController,
-                          validator: SharedCode.emailValidators,
+                          controller: _usernameController,
+                          validator: SharedCode.emptyValidators,
                           icon: Iconsax.sms,
                           isRequired: false,
-                          textInputType: TextInputType.emailAddress,
-                          hint: AppLocalizations.of(context).enterEmail,
-                          label: AppLocalizations.of(context).email,
+                          hint: AppLocalizations.of(context).enterUsername,
+                          label: AppLocalizations.of(context).username,
                         ),
                         const SizedBox(height: UiConstant.defaultPadding),
                         CustomTextField(
                           controller: _passwordController,
-                          validator: SharedCode.passwordValidators,
+                          validator: SharedCode.emptyValidators,
                           icon: Iconsax.key,
                           isRequired: false,
                           isPassword: true,
@@ -84,8 +96,25 @@ class _LoginPageState extends State<LoginPage> {
                           label: AppLocalizations.of(context).password,
                         ),
                         const SizedBox(height: UiConstant.biggerSpacing),
-                        CustomButton(buttonText: AppLocalizations.of(context).login, onPressed: () {
-                          AutoRouter.of(context).replace(const DashboardRoute());
+                        CustomButton(buttonText: AppLocalizations.of(context).login, onPressed: () async {
+                          if (_formKey.currentState?.validate() ?? true) {
+                            context.loaderOverlay.show();
+                            try {
+                              TokenModel tokenModel = await AuthRepository().generateToken(_usernameController.text, _passwordController.text);
+                              AuthModel authModel = await AuthRepository().getAuthInfo(tokenModel.accessToken);
+                              UserModel userModel = await UserRepository().getUserById(authModel.uid!);
+                              await SharedPreferencesService.setToken(tokenModel.accessToken);
+                              await SharedPreferencesService.setUserData(userModel);
+                              await SharedPreferencesService.setAuthData(authModel);
+                              SharedData.userData.value = userModel;
+                              AutoRouter.of(context).replace(const DashboardRoute());
+                            } catch (e) {
+                              SharedCode.showSnackbar(context: context,
+                                  message: e.toString(),
+                                  isSuccess: false);
+                            }
+                            context.loaderOverlay.hide();
+                          }
                         }),
                         const SizedBox(height: UiConstant.defaultSpacing),
                         Expanded(child: Container()),

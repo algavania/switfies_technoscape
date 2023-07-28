@@ -20,13 +20,14 @@ AuthModel _$AuthModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$AuthModel {
-  String get ktpId => throw _privateConstructorUsedError;
-  String get username => throw _privateConstructorUsedError;
-  String get loginPassword => throw _privateConstructorUsedError;
-  String get phoneNumber => throw _privateConstructorUsedError;
-  String get birthDate => throw _privateConstructorUsedError;
-  int get gender => throw _privateConstructorUsedError;
-  String get email => throw _privateConstructorUsedError;
+  int? get uid => throw _privateConstructorUsedError;
+  String? get ktpId => throw _privateConstructorUsedError;
+  String? get username => throw _privateConstructorUsedError;
+  String? get loginPassword => throw _privateConstructorUsedError;
+  String? get phoneNumber => throw _privateConstructorUsedError;
+  String? get birthDate => throw _privateConstructorUsedError;
+  dynamic get gender => throw _privateConstructorUsedError;
+  String? get email => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -40,13 +41,14 @@ abstract class $AuthModelCopyWith<$Res> {
       _$AuthModelCopyWithImpl<$Res, AuthModel>;
   @useResult
   $Res call(
-      {String ktpId,
-      String username,
-      String loginPassword,
-      String phoneNumber,
-      String birthDate,
-      int gender,
-      String email});
+      {int? uid,
+      String? ktpId,
+      String? username,
+      String? loginPassword,
+      String? phoneNumber,
+      String? birthDate,
+      dynamic gender,
+      String? email});
 }
 
 /// @nodoc
@@ -62,43 +64,48 @@ class _$AuthModelCopyWithImpl<$Res, $Val extends AuthModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? ktpId = null,
-    Object? username = null,
-    Object? loginPassword = null,
-    Object? phoneNumber = null,
-    Object? birthDate = null,
-    Object? gender = null,
-    Object? email = null,
+    Object? uid = freezed,
+    Object? ktpId = freezed,
+    Object? username = freezed,
+    Object? loginPassword = freezed,
+    Object? phoneNumber = freezed,
+    Object? birthDate = freezed,
+    Object? gender = freezed,
+    Object? email = freezed,
   }) {
     return _then(_value.copyWith(
-      ktpId: null == ktpId
+      uid: freezed == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as int?,
+      ktpId: freezed == ktpId
           ? _value.ktpId
           : ktpId // ignore: cast_nullable_to_non_nullable
-              as String,
-      username: null == username
+              as String?,
+      username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      loginPassword: null == loginPassword
+              as String?,
+      loginPassword: freezed == loginPassword
           ? _value.loginPassword
           : loginPassword // ignore: cast_nullable_to_non_nullable
-              as String,
-      phoneNumber: null == phoneNumber
+              as String?,
+      phoneNumber: freezed == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      birthDate: null == birthDate
+              as String?,
+      birthDate: freezed == birthDate
           ? _value.birthDate
           : birthDate // ignore: cast_nullable_to_non_nullable
-              as String,
-      gender: null == gender
+              as String?,
+      gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
-              as int,
-      email: null == email
+              as dynamic,
+      email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ) as $Val);
   }
 }
@@ -111,13 +118,14 @@ abstract class _$$_AuthModelCopyWith<$Res> implements $AuthModelCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String ktpId,
-      String username,
-      String loginPassword,
-      String phoneNumber,
-      String birthDate,
-      int gender,
-      String email});
+      {int? uid,
+      String? ktpId,
+      String? username,
+      String? loginPassword,
+      String? phoneNumber,
+      String? birthDate,
+      dynamic gender,
+      String? email});
 }
 
 /// @nodoc
@@ -131,43 +139,48 @@ class __$$_AuthModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? ktpId = null,
-    Object? username = null,
-    Object? loginPassword = null,
-    Object? phoneNumber = null,
-    Object? birthDate = null,
-    Object? gender = null,
-    Object? email = null,
+    Object? uid = freezed,
+    Object? ktpId = freezed,
+    Object? username = freezed,
+    Object? loginPassword = freezed,
+    Object? phoneNumber = freezed,
+    Object? birthDate = freezed,
+    Object? gender = freezed,
+    Object? email = freezed,
   }) {
     return _then(_$_AuthModel(
-      ktpId: null == ktpId
+      uid: freezed == uid
+          ? _value.uid
+          : uid // ignore: cast_nullable_to_non_nullable
+              as int?,
+      ktpId: freezed == ktpId
           ? _value.ktpId
           : ktpId // ignore: cast_nullable_to_non_nullable
-              as String,
-      username: null == username
+              as String?,
+      username: freezed == username
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
-              as String,
-      loginPassword: null == loginPassword
+              as String?,
+      loginPassword: freezed == loginPassword
           ? _value.loginPassword
           : loginPassword // ignore: cast_nullable_to_non_nullable
-              as String,
-      phoneNumber: null == phoneNumber
+              as String?,
+      phoneNumber: freezed == phoneNumber
           ? _value.phoneNumber
           : phoneNumber // ignore: cast_nullable_to_non_nullable
-              as String,
-      birthDate: null == birthDate
+              as String?,
+      birthDate: freezed == birthDate
           ? _value.birthDate
           : birthDate // ignore: cast_nullable_to_non_nullable
-              as String,
-      gender: null == gender
+              as String?,
+      gender: freezed == gender
           ? _value.gender
           : gender // ignore: cast_nullable_to_non_nullable
-              as int,
-      email: null == email
+              as dynamic,
+      email: freezed == email
           ? _value.email
           : email // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -176,35 +189,38 @@ class __$$_AuthModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_AuthModel implements _AuthModel {
   const _$_AuthModel(
-      {required this.ktpId,
-      required this.username,
-      required this.loginPassword,
-      required this.phoneNumber,
-      required this.birthDate,
-      required this.gender,
-      required this.email});
+      {this.uid,
+      this.ktpId,
+      this.username,
+      this.loginPassword,
+      this.phoneNumber,
+      this.birthDate,
+      this.gender,
+      this.email});
 
   factory _$_AuthModel.fromJson(Map<String, dynamic> json) =>
       _$$_AuthModelFromJson(json);
 
   @override
-  final String ktpId;
+  final int? uid;
   @override
-  final String username;
+  final String? ktpId;
   @override
-  final String loginPassword;
+  final String? username;
   @override
-  final String phoneNumber;
+  final String? loginPassword;
   @override
-  final String birthDate;
+  final String? phoneNumber;
   @override
-  final int gender;
+  final String? birthDate;
   @override
-  final String email;
+  final dynamic gender;
+  @override
+  final String? email;
 
   @override
   String toString() {
-    return 'AuthModel(ktpId: $ktpId, username: $username, loginPassword: $loginPassword, phoneNumber: $phoneNumber, birthDate: $birthDate, gender: $gender, email: $email)';
+    return 'AuthModel(uid: $uid, ktpId: $ktpId, username: $username, loginPassword: $loginPassword, phoneNumber: $phoneNumber, birthDate: $birthDate, gender: $gender, email: $email)';
   }
 
   @override
@@ -212,6 +228,7 @@ class _$_AuthModel implements _AuthModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_AuthModel &&
+            (identical(other.uid, uid) || other.uid == uid) &&
             (identical(other.ktpId, ktpId) || other.ktpId == ktpId) &&
             (identical(other.username, username) ||
                 other.username == username) &&
@@ -221,14 +238,22 @@ class _$_AuthModel implements _AuthModel {
                 other.phoneNumber == phoneNumber) &&
             (identical(other.birthDate, birthDate) ||
                 other.birthDate == birthDate) &&
-            (identical(other.gender, gender) || other.gender == gender) &&
+            const DeepCollectionEquality().equals(other.gender, gender) &&
             (identical(other.email, email) || other.email == email));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, ktpId, username, loginPassword,
-      phoneNumber, birthDate, gender, email);
+  int get hashCode => Object.hash(
+      runtimeType,
+      uid,
+      ktpId,
+      username,
+      loginPassword,
+      phoneNumber,
+      birthDate,
+      const DeepCollectionEquality().hash(gender),
+      email);
 
   @JsonKey(ignore: true)
   @override
@@ -246,31 +271,34 @@ class _$_AuthModel implements _AuthModel {
 
 abstract class _AuthModel implements AuthModel {
   const factory _AuthModel(
-      {required final String ktpId,
-      required final String username,
-      required final String loginPassword,
-      required final String phoneNumber,
-      required final String birthDate,
-      required final int gender,
-      required final String email}) = _$_AuthModel;
+      {final int? uid,
+      final String? ktpId,
+      final String? username,
+      final String? loginPassword,
+      final String? phoneNumber,
+      final String? birthDate,
+      final dynamic gender,
+      final String? email}) = _$_AuthModel;
 
   factory _AuthModel.fromJson(Map<String, dynamic> json) =
       _$_AuthModel.fromJson;
 
   @override
-  String get ktpId;
+  int? get uid;
   @override
-  String get username;
+  String? get ktpId;
   @override
-  String get loginPassword;
+  String? get username;
   @override
-  String get phoneNumber;
+  String? get loginPassword;
   @override
-  String get birthDate;
+  String? get phoneNumber;
   @override
-  int get gender;
+  String? get birthDate;
   @override
-  String get email;
+  dynamic get gender;
+  @override
+  String? get email;
   @override
   @JsonKey(ignore: true)
   _$$_AuthModelCopyWith<_$_AuthModel> get copyWith =>

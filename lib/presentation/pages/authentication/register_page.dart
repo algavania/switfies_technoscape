@@ -4,9 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:swifties_technoscape/application/common/db_constants.dart';
 import 'package:swifties_technoscape/application/common/shared_code.dart';
+import 'package:swifties_technoscape/application/repositories/auth/auth_repository.dart';
+import 'package:swifties_technoscape/application/service/shared_preferences_service.dart';
+import 'package:swifties_technoscape/data/models/user/user_model.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/shared_data.dart';
@@ -16,6 +21,8 @@ import 'package:swifties_technoscape/presentation/widgets/custom_button.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_dropdown_field.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart';
 import 'package:swifties_technoscape/presentation/widgets/logo_widget.dart';
+
+import '../../../data/models/auth/auth_model.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -27,32 +34,34 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final PanelController _panelController = PanelController();
+  final TextEditingController _nikController = TextEditingController();
   final TextEditingController _displayNameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _birthdateController = TextEditingController();
-  final List<DropdownMenuItem<String>> _genderItems = [];
-  String? _value;
+  final List<DropdownMenuItem<int>> _genderItems = [];
+  int? _value;
 
   @override
   void initState() {
+    Future.delayed(Duration.zero, () {
+      SharedData.setStatusBarColorPrimary(context);
+    });
     _getGenders();
-
     super.initState();
   }
 
   void _getGenders() {
-    _genderItems.add(const DropdownMenuItem(value: 'Laki-laki', child: Text('Laki-laki')));
-    _genderItems.add(const DropdownMenuItem(value: 'Perempuam', child: Text('Perempuam')));
+    _genderItems.add(
+        const DropdownMenuItem(value: 0, child: Text('Laki-laki')));
+    _genderItems.add(
+        const DropdownMenuItem(value: 1, child: Text('Perempuan')));
   }
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Theme.of(context).primaryColor,
-    ));
     return Scaffold(
       backgroundColor: Theme
           .of(context)
@@ -65,8 +74,14 @@ class _RegisterPageState extends State<RegisterPage> {
         color: ColorValues.slidingPanelBackground,
         backdropEnabled: true,
         backdropColor: ColorValues.grey50,
+        onPanelClosed: () {
+          if (SharedPreferencesService.getToken() != null) {
+            AutoRouter.of(context).replace(const DashboardRoute());
+          }
+        },
         backdropOpacity: 0.32,
-        borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(24), topRight: Radius.circular(24)),
         boxShadow: [BoxShadow(color: ColorValues.grey50.withOpacity(0))],
         panel: _buildSuccessPanel(),
         body: SafeArea(
@@ -117,6 +132,20 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           const SizedBox(height: UiConstant.biggerSpacing),
                           CustomTextField(
+                            validator: SharedCode.nikValidators,
+                            controller: _nikController,
+                            maxLength: 16,
+                            textInputType: TextInputType.number,
+                            icon: Iconsax.card,
+                            hint: AppLocalizations
+                                .of(context)
+                                .enterNik,
+                            label: AppLocalizations
+                                .of(context)
+                                .nik,
+                          ),
+                          const SizedBox(height: UiConstant.smallerSpacing),
+                          CustomTextField(
                             validator: SharedCode.emptyValidators,
                             controller: _displayNameController,
                             icon: Iconsax.user,
@@ -143,6 +172,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           CustomTextField(
                             validator: SharedCode.emailValidators,
                             controller: _emailController,
+                            textInputType: TextInputType.emailAddress,
                             icon: Iconsax.sms,
                             hint: AppLocalizations
                                 .of(context)
@@ -168,6 +198,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           CustomTextField(
                             validator: SharedCode.emptyValidators,
                             controller: _phoneController,
+                            textInputType: TextInputType.number,
                             icon: Iconsax.call,
                             hint: AppLocalizations
                                 .of(context)
@@ -186,7 +217,9 @@ class _RegisterPageState extends State<RegisterPage> {
                                   lastDate: DateTime(2100));
                               if (selectedDate != null) {
                                 setState(() {
-                                  _birthdateController.text = SharedData.regularDateFormat.format(selectedDate);
+                                  _birthdateController.text =
+                                      SharedData.regularDateFormat.format(
+                                          selectedDate);
                                 });
                               }
                             },
@@ -217,18 +250,49 @@ class _RegisterPageState extends State<RegisterPage> {
                               onChanged: (value) {
                                 if (value != null) {
                                   setState(() {
-                                    _value = value.toString();
+                                    _value = int.parse(value.toString());
                                   });
                                 }
                               }),
                           const SizedBox(height: UiConstant.biggerSpacing),
                           CustomButton(
-                            buttonText: AppLocalizations
-                                .of(context)
-                                .confirmAndContinue,
-                            onPressed: () {
-                              _panelController.open();
-                            }
+                              buttonText: AppLocalizations
+                                  .of(context)
+                                  .confirmAndContinue,
+                              onPressed: () async {
+                              if (_formKey.currentState?.validate() ?? true) {
+                                  context.loaderOverlay.show();
+                                  try {
+                                    String username = _usernameController.text.trimRight().trimLeft();
+                                    String nik = _nikController.text.trimRight().trimLeft();
+                                    String displayName = _displayNameController.text.trimRight().trimLeft();
+                                    String loginPassword = _passwordController.text;
+                                    DateTime date = SharedData.regularDateFormat.parse(_birthdateController.text);
+                                    String birthDate = SharedData.authDateFormat.format(date);
+                                    AuthModel authModel = AuthModel(
+                                        email: _emailController.text,
+                                        birthDate: birthDate,
+                                        gender: _value ?? 0,
+                                        ktpId: nik,
+                                        phoneNumber: _phoneController.text,
+                                        loginPassword: loginPassword,
+                                        username: username);
+                                    UserModel userModel = UserModel(
+                                      username: username,
+                                      role: DbConstants.parentRole,
+                                      displayName: displayName,
+                                      loginPassword: loginPassword
+                                    );
+                                    await AuthRepository().createUser(authModel, userModel);
+                                    _panelController.open();
+                                  } catch (e) {
+                                    SharedCode.showSnackbar(context: context,
+                                        message: e.toString(),
+                                        isSuccess: false);
+                                  }
+                                  context.loaderOverlay.hide();
+                                }
+                              }
                           ),
                           const SizedBox(height: UiConstant.defaultPadding),
                           Expanded(child: Container()),
@@ -263,7 +327,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                               fontWeight: FontWeight.w800),
                                           recognizer: TapGestureRecognizer()
                                             ..onTap = () {
-                                              AutoRouter.of(context).replace(const LoginRoute());
+                                              AutoRouter.of(context).replace(
+                                                  const LoginRoute());
                                             }
                                       )
                                     ])),
@@ -303,14 +368,22 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: UiConstant.sidePadding),
                 Text(
-                  AppLocalizations.of(context).parentRegistrationSuccessTitle,
-                  style: Theme.of(context).textTheme.titleMedium,
+                  AppLocalizations
+                      .of(context)
+                      .parentRegistrationSuccessTitle,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .titleMedium,
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  AppLocalizations.of(context).parentRegistrationSuccessDescription,
-                  style: Theme.of(context)
+                  AppLocalizations
+                      .of(context)
+                      .parentRegistrationSuccessDescription,
+                  style: Theme
+                      .of(context)
                       .textTheme
                       .bodySmall
                       ?.copyWith(color: ColorValues.grey50),
@@ -322,8 +395,10 @@ class _RegisterPageState extends State<RegisterPage> {
           const SizedBox(height: 24),
           Row(children: [
             Expanded(child: CustomButton(
-              buttonText: AppLocalizations.of(context).skip,
-              colorAsOutlineButton: ColorValues.greyBase,
+              buttonText: AppLocalizations
+                  .of(context)
+                  .skip,
+              colorAsOutlineButton: ColorValues.grey90,
               backgroundColor: ColorValues.slidingPanelBackground,
               onPressed: () {
                 AutoRouter.of(context).replace(const DashboardRoute());
@@ -331,8 +406,12 @@ class _RegisterPageState extends State<RegisterPage> {
             )),
             const SizedBox(width: UiConstant.defaultPadding),
             Expanded(child: CustomButton(
-              buttonText: AppLocalizations.of(context).registerChildAlt,
-              onPressed: () {},
+              buttonText: AppLocalizations
+                  .of(context)
+                  .registerChildAlt,
+              onPressed: () {
+                AutoRouter.of(context).replace(const AddChildRoute());
+              },
             )),
           ]),
         ],

@@ -9,7 +9,7 @@ class UserModel with _$UserModel {
     int? uid,
     required String displayName,
     required String role,
-    String? relatedId,
+    int? relatedId,
     required String loginPassword,
     required String username,
   }) = _UserModel;

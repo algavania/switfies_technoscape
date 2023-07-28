@@ -104,7 +104,7 @@ class _LandingPageState extends State<LandingPage> {
                             Expanded(
                               child: CustomButton(
                                 backgroundColor: Colors.transparent,
-                                colorAsOutlineButton: ColorValues.greyBase,
+                                colorAsOutlineButton: ColorValues.grey90,
                                 buttonText: _isLast()
                                     ? AppLocalizations.of(context).register
                                     : AppLocalizations.of(context).skip,

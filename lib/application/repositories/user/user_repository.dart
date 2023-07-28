@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../../data/models/user/user_model.dart';
-import '../../../presentation/core/shared_data.dart';
 import '../../common/db_constants.dart';
 import 'base_user_repository.dart';
 
@@ -12,7 +11,6 @@ class UserRepository implements BaseUserRepository {
         .collection(DbConstants.users)
         .doc(uid.toString())
         .set(userModel.toJson());
-    SharedData.userData.value = userModel;
   }
 
   @override

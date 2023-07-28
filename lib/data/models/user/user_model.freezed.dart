@@ -23,7 +23,7 @@ mixin _$UserModel {
   int? get uid => throw _privateConstructorUsedError;
   String get displayName => throw _privateConstructorUsedError;
   String get role => throw _privateConstructorUsedError;
-  String? get relatedId => throw _privateConstructorUsedError;
+  int? get relatedId => throw _privateConstructorUsedError;
   String get loginPassword => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
 
@@ -42,7 +42,7 @@ abstract class $UserModelCopyWith<$Res> {
       {int? uid,
       String displayName,
       String role,
-      String? relatedId,
+      int? relatedId,
       String loginPassword,
       String username});
 }
@@ -83,7 +83,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
       relatedId: freezed == relatedId
           ? _value.relatedId
           : relatedId // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       loginPassword: null == loginPassword
           ? _value.loginPassword
           : loginPassword // ignore: cast_nullable_to_non_nullable
@@ -107,7 +107,7 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       {int? uid,
       String displayName,
       String role,
-      String? relatedId,
+      int? relatedId,
       String loginPassword,
       String username});
 }
@@ -146,7 +146,7 @@ class __$$_UserModelCopyWithImpl<$Res>
       relatedId: freezed == relatedId
           ? _value.relatedId
           : relatedId // ignore: cast_nullable_to_non_nullable
-              as String?,
+              as int?,
       loginPassword: null == loginPassword
           ? _value.loginPassword
           : loginPassword // ignore: cast_nullable_to_non_nullable
@@ -180,7 +180,7 @@ class _$_UserModel implements _UserModel {
   @override
   final String role;
   @override
-  final String? relatedId;
+  final int? relatedId;
   @override
   final String loginPassword;
   @override
@@ -232,7 +232,7 @@ abstract class _UserModel implements UserModel {
       {final int? uid,
       required final String displayName,
       required final String role,
-      final String? relatedId,
+      final int? relatedId,
       required final String loginPassword,
       required final String username}) = _$_UserModel;
 
@@ -246,7 +246,7 @@ abstract class _UserModel implements UserModel {
   @override
   String get role;
   @override
-  String? get relatedId;
+  int? get relatedId;
   @override
   String get loginPassword;
   @override

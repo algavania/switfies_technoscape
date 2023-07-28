@@ -45,8 +45,10 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void initState() {
+    Future.delayed(Duration.zero, () {
+      SharedData.setStatusBarColorPrimary(context);
+    });
     _getGenders();
-
     super.initState();
   }
 
@@ -76,6 +78,9 @@ class _RegisterPageState extends State<RegisterPage> {
         color: ColorValues.slidingPanelBackground,
         backdropEnabled: true,
         backdropColor: ColorValues.grey50,
+        onPanelClosed: () {
+          //TODO: Navigate to Home Page if has registered
+        },
         backdropOpacity: 0.32,
         borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(24), topRight: Radius.circular(24)),
@@ -141,6 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 .of(context)
                                 .nik,
                           ),
+                          const SizedBox(height: UiConstant.smallerSpacing),
                           CustomTextField(
                             validator: SharedCode.emptyValidators,
                             controller: _displayNameController,
@@ -256,7 +262,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   .of(context)
                                   .confirmAndContinue,
                               onPressed: () async {
-                                if (_formKey.currentState?.validate() ?? true) {
+                              if (_formKey.currentState?.validate() ?? true) {
                                   context.loaderOverlay.show();
                                   try {
                                     String username = _usernameController.text.trimRight().trimLeft();
@@ -394,7 +400,7 @@ class _RegisterPageState extends State<RegisterPage> {
               buttonText: AppLocalizations
                   .of(context)
                   .skip,
-              colorAsOutlineButton: ColorValues.greyBase,
+              colorAsOutlineButton: ColorValues.grey90,
               backgroundColor: ColorValues.slidingPanelBackground,
               onPressed: () {},
             )),
@@ -403,7 +409,9 @@ class _RegisterPageState extends State<RegisterPage> {
               buttonText: AppLocalizations
                   .of(context)
                   .registerChildAlt,
-              onPressed: () {},
+              onPressed: () {
+                AutoRouter.of(context).replace(const AddChildRoute());
+              },
             )),
           ]),
         ],

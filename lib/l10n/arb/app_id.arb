@@ -31,6 +31,8 @@
   "confirmAndContinue": "Konfirmasi dan lanjutkan",
   "parentRegistrationSuccessTitle": "Registrasi Orang Tua Berhasil!",
   "parentRegistrationSuccessDescription": "Setelah mendaftarkan diri orang tua, sekarang saatnya mengisi data anak, yuk!",
+  "childRegistrationSuccessTitle": "Registrasi Anak Berhasil!",
+  "childRegistrationSuccessDescription": "Setelah mendaftarkan anak, jangan lupa untuk\nmemberi tahu email dan password anak ya!",
   "skip": "Lewati",
   "registerChildAlt": "Daftarkan Anak",
   "confirmation": "Konfirmasi",
@@ -47,5 +49,9 @@
   "loginDescription": "Masukkan email dan password yang udah didaftarin!",
   "forgotpassword": "Lupa password?",
   "dontHaveAccount": "Belum punya akun?",
-  "letsRegister": "Yuk register!"
+  "letsRegister": "Yuk register!",
+  "childDetailAccount": "Detail Rekening Anak",
+  "addChildTitle": "Yuk, daftarkan anak!",
+  "addChildDescription": "Masukkan data anak untuk bisa mengakses DuitKiddo!",
+  "registerChildAgain": "Daftarkan Anak Lagi"
 }

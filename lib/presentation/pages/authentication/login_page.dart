@@ -19,6 +19,7 @@ import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart
 import 'package:swifties_technoscape/presentation/widgets/logo_widget.dart';
 
 import '../../../data/models/user/user_model.dart';
+import '../../core/shared_data.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -33,10 +34,15 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   @override
+  void initState() {
+    Future.delayed(Duration.zero, () {
+      SharedData.setStatusBarColorPrimary(context);
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Theme.of(context).primaryColor,
-    ));
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
       body: SafeArea(
@@ -100,6 +106,7 @@ class _LoginPageState extends State<LoginPage> {
                               await SharedPreferencesService.setToken(tokenModel.accessToken);
                               await SharedPreferencesService.setUserData(userModel);
                               await SharedPreferencesService.setAuthData(authModel);
+                              SharedData.userData.value = userModel;
                               //TODO: Navigate to Home Page
                             } catch (e) {
                               SharedCode.showSnackbar(context: context,

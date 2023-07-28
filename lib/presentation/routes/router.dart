@@ -37,6 +37,10 @@ import '../pages/screens.dart';
         page: LandingPage,
         path: '/on-boarding',
         transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: AddChildPage,
+        path: '/add-child',
+        transitionsBuilder: TransitionsBuilders.fadeIn),
   ],
 )
 class $AppRouter {}

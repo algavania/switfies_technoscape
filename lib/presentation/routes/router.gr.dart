@@ -67,6 +67,15 @@ class AppRouter extends _i2.RootStackRouter {
         barrierDismissible: false,
       );
     },
+    AddChildRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.AddChildPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
   };
 
   @override
@@ -96,6 +105,10 @@ class AppRouter extends _i2.RootStackRouter {
         _i2.RouteConfig(
           LandingRoute.name,
           path: '/on-boarding',
+        ),
+        _i2.RouteConfig(
+          AddChildRoute.name,
+          path: '/add-child',
         ),
       ];
 }
@@ -158,4 +171,16 @@ class LandingRoute extends _i2.PageRouteInfo<void> {
         );
 
   static const String name = 'LandingRoute';
+}
+
+/// generated route for
+/// [_i1.AddChildPage]
+class AddChildRoute extends _i2.PageRouteInfo<void> {
+  const AddChildRoute()
+      : super(
+          AddChildRoute.name,
+          path: '/add-child',
+        );
+
+  static const String name = 'AddChildRoute';
 }

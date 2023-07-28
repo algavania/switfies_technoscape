@@ -10,7 +10,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       uid: json['uid'] as int?,
       displayName: json['displayName'] as String,
       role: json['role'] as String,
-      relatedId: json['relatedId'] as String?,
+      relatedId: json['relatedId'] as int?,
       loginPassword: json['loginPassword'] as String,
       username: json['username'] as String,
     );

@@ -134,7 +134,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     },
                     child: Icon(
                       size: 5.5.w,
-                      _isShowPassword ? Iconsax.eye_slash5 : Iconsax.eye4,
+                      _isShowPassword ? Iconsax.eye_slash : Iconsax.eye,
                     ),
                   )
                 : null,

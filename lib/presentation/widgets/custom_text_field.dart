@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:sizer/sizer.dart';
 import 'package:unicons/unicons.dart';
 
@@ -122,7 +123,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     color: ColorValues.grey50,
                   ),
             prefixIconConstraints: const BoxConstraints(
-              minWidth: 60,
+              minWidth: 50,
             ),
             suffixIcon: widget.isPassword
                 ? GestureDetector(
@@ -133,7 +134,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     },
                     child: Icon(
                       size: 5.5.w,
-                      _isShowPassword ? UniconsLine.eye_slash : UniconsLine.eye,
+                      _isShowPassword ? Iconsax.eye_slash : Iconsax.eye,
                     ),
                   )
                 : null,

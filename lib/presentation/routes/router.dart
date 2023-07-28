@@ -25,6 +25,18 @@ import '../pages/screens.dart';
         page: NoInternetPage,
         path: '/no-internet',
         transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: RegisterPage,
+        path: '/register',
+        transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: LoginPage,
+        path: '/login',
+        transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: LandingPage,
+        path: '/on-boarding',
+        transitionsBuilder: TransitionsBuilders.fadeIn),
   ],
 )
 class $AppRouter {}

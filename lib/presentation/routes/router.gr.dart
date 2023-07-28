@@ -40,6 +40,33 @@ class AppRouter extends _i2.RootStackRouter {
         barrierDismissible: false,
       );
     },
+    RegisterRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.RegisterPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    LoginRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.LoginPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    LandingRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.LandingPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
   };
 
   @override
@@ -57,6 +84,18 @@ class AppRouter extends _i2.RootStackRouter {
         _i2.RouteConfig(
           NoInternetRoute.name,
           path: '/no-internet',
+        ),
+        _i2.RouteConfig(
+          RegisterRoute.name,
+          path: '/register',
+        ),
+        _i2.RouteConfig(
+          LoginRoute.name,
+          path: '/login',
+        ),
+        _i2.RouteConfig(
+          LandingRoute.name,
+          path: '/on-boarding',
         ),
       ];
 }
@@ -83,4 +122,40 @@ class NoInternetRoute extends _i2.PageRouteInfo<void> {
         );
 
   static const String name = 'NoInternetRoute';
+}
+
+/// generated route for
+/// [_i1.RegisterPage]
+class RegisterRoute extends _i2.PageRouteInfo<void> {
+  const RegisterRoute()
+      : super(
+          RegisterRoute.name,
+          path: '/register',
+        );
+
+  static const String name = 'RegisterRoute';
+}
+
+/// generated route for
+/// [_i1.LoginPage]
+class LoginRoute extends _i2.PageRouteInfo<void> {
+  const LoginRoute()
+      : super(
+          LoginRoute.name,
+          path: '/login',
+        );
+
+  static const String name = 'LoginRoute';
+}
+
+/// generated route for
+/// [_i1.LandingPage]
+class LandingRoute extends _i2.PageRouteInfo<void> {
+  const LandingRoute()
+      : super(
+          LandingRoute.name,
+          path: '/on-boarding',
+        );
+
+  static const String name = 'LandingRoute';
 }

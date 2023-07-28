@@ -45,7 +45,7 @@ class _CustomButtonState extends State<CustomButton> {
               if (widget.prefixIcon != null)
                 Icon(widget.prefixIcon,
                     size: 18,
-                    color: widget.colorAsOutlineButton ?? ColorValues.white),
+                    color: widget.colorAsOutlineButton ?? ColorValues.surface),
               if (widget.prefixIcon != null)
                 const SizedBox(width: UiConstant.smallerSpacing),
               Text(

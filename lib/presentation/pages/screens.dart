@@ -5,3 +5,9 @@ export 'landing/landing_page.dart';
 
 export 'authentication/register_page.dart';
 export 'authentication/login_page.dart';
+
+export 'dashboard/dashboard_page.dart';
+export 'dashboard/home/home_page.dart';
+export 'dashboard/activity/activity_page.dart';
+export 'dashboard/article/article_page.dart';
+export 'dashboard/profile/profile_page.dart';

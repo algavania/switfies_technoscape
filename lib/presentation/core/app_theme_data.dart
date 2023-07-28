@@ -35,9 +35,9 @@ class AppThemeData {
           type: BottomNavigationBarType.fixed,
           selectedItemColor: ColorValues.primary50,
           unselectedItemColor: ColorValues.grey20,
-          selectedLabelStyle: GoogleFonts.nunito(
+          selectedLabelStyle: GoogleFonts.plusJakartaSans(
               color: ColorValues.primary50, fontSize: 13, fontWeight: FontWeight.bold),
-          unselectedLabelStyle: GoogleFonts.nunito(
+          unselectedLabelStyle: GoogleFonts.plusJakartaSans(
               color: ColorValues.grey20, fontSize: 13, fontWeight: FontWeight.normal),
         ),
         iconTheme: IconThemeData(size: 6.w, color: ColorValues.grey50),
@@ -49,32 +49,32 @@ class AppThemeData {
           // bodySmall: Body 3
           // labelLarge: Button 1
           // displaySmall: Button 2
-          displayLarge: GoogleFonts.nunito(
-              color: ColorValues.text50, fontSize: 22, fontWeight: FontWeight.bold),
-          displayMedium: GoogleFonts.nunito(
+          displayLarge: GoogleFonts.plusJakartaSans(
+              color: ColorValues.text50, fontSize: 20, fontWeight: FontWeight.w700),
+          displayMedium: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 19, fontWeight: FontWeight.w400),
-          displaySmall: GoogleFonts.nunito(
+          displaySmall: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 13, fontWeight: FontWeight.w800),
-          headlineMedium: GoogleFonts.nunito(
+          headlineMedium: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 34, fontWeight: FontWeight.w500),
-          headlineSmall: GoogleFonts.nunito(
+          headlineSmall: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 24, fontWeight: FontWeight.w500),
-          titleLarge: GoogleFonts.nunito(
-              color: ColorValues.text50, fontSize: 22, fontWeight: FontWeight.bold),
-          titleMedium: GoogleFonts.nunito(
+          titleLarge: GoogleFonts.plusJakartaSans(
+              color: ColorValues.text50, fontSize: 22, fontWeight: FontWeight.w700),
+          titleMedium: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 19, fontWeight: FontWeight.w800),
-          titleSmall: GoogleFonts.nunito(
+          titleSmall: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 13, fontWeight: FontWeight.w500),
-          bodyLarge: GoogleFonts.nunito(
+          bodyLarge: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 19, fontWeight: FontWeight.w500),
-          bodyMedium: GoogleFonts.nunito(
+          bodyMedium: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 15, fontWeight: FontWeight.w500),
-          labelLarge: GoogleFonts.nunito(
-              color: ColorValues.text50, fontSize: 15, fontWeight: FontWeight.w800),
-          bodySmall: GoogleFonts.nunito(
+          labelLarge: GoogleFonts.plusJakartaSans(
+              color: ColorValues.text50, fontSize: 15, fontWeight: FontWeight.w700),
+          bodySmall: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 13, fontWeight: FontWeight.w600),
-          labelSmall: GoogleFonts.nunito(
-              color: ColorValues.text50, fontSize: 10, fontWeight: FontWeight.w500, letterSpacing: 1.5),
+          labelSmall: GoogleFonts.plusJakartaSans(
+              color: ColorValues.text50, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1),
         ));
   }
 }

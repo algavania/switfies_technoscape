@@ -30,7 +30,7 @@ class _SplashPageState extends State<SplashPage> {
     return const Scaffold(
       body: SafeArea(
         child: Center(
-          child: LogoWidget()
+          child: LogoWidget(isBig: true)
         ),
       ),
     );

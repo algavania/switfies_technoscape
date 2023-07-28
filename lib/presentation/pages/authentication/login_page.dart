@@ -84,7 +84,9 @@ class _LoginPageState extends State<LoginPage> {
                           label: AppLocalizations.of(context).password,
                         ),
                         const SizedBox(height: UiConstant.biggerSpacing),
-                        CustomButton(buttonText: AppLocalizations.of(context).login, onPressed: () async {}),
+                        CustomButton(buttonText: AppLocalizations.of(context).login, onPressed: () {
+                          AutoRouter.of(context).replace(const DashboardRoute());
+                        }),
                         const SizedBox(height: UiConstant.defaultSpacing),
                         Expanded(child: Container()),
                         const SizedBox(height: UiConstant.defaultSpacing),

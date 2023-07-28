@@ -90,7 +90,7 @@ class SharedCode {
           ),
           child: Center(child: Icon(
               isSuccess ? UniconsLine.check_circle : UniconsLine.info_circle,
-              color: ColorValues.white, size: 16)),
+              color: ColorValues.surface, size: 16)),
         ),
         Expanded(child: Padding(
           padding: const EdgeInsets.symmetric(

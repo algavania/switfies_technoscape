@@ -11,7 +11,7 @@ class CustomButton extends StatefulWidget {
       this.fontSize = 15,
       this.prefixIcon,
       this.colorAsOutlineButton,
-      this.backgroundColor = ColorValues.primary50,
+      this.backgroundColor = ColorValues.info,
       this.borderRadius = UiConstant.defaultBorder})
       : super(key: key);
   final Function()? onPressed;
@@ -45,7 +45,7 @@ class _CustomButtonState extends State<CustomButton> {
               if (widget.prefixIcon != null)
                 Icon(widget.prefixIcon,
                     size: 18,
-                    color: widget.colorAsOutlineButton ?? ColorValues.white),
+                    color: widget.colorAsOutlineButton ?? ColorValues.surface),
               if (widget.prefixIcon != null)
                 const SizedBox(width: UiConstant.smallerSpacing),
               Text(

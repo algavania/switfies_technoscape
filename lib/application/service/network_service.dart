@@ -25,6 +25,7 @@ class NetworkService {
       String password = SharedPreferencesService.getUserData()!.loginPassword;
       TokenModel tokenModel = await AuthRepository().generateToken(username, password);
       await SharedPreferencesService.setToken(tokenModel.accessToken);
+      headers['Authorization'] = 'Bearer ${tokenModel.accessToken}';
       result = await http.post(Uri.parse(fullUrl), headers: headers, body: jsonEncode(body));
     }
     return result;

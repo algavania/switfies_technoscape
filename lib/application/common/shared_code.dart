@@ -15,7 +15,7 @@ class SharedCode {
     return number;
   }
 
-  static String formatThousands(int number) {
+  static String formatThousands(dynamic number) {
     NumberFormat formatter = NumberFormat.decimalPattern('vi_VN');
     return formatter.format(number);
   }

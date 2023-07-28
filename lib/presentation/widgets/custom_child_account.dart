@@ -4,9 +4,11 @@ import 'package:sizer/sizer.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
 
+import '../../data/models/user/user_model.dart';
+
 class CustomChildAccount extends StatefulWidget {
-  final String name;
-  const CustomChildAccount({Key? key, required this.name}) : super(key: key);
+  final UserModel user;
+  const CustomChildAccount({Key? key, required this.user}) : super(key: key);
 
   @override
   State<CustomChildAccount> createState() => _CustomChildAccountState();
@@ -38,7 +40,7 @@ class _CustomChildAccountState extends State<CustomChildAccount> {
           const SizedBox(width: UiConstant.defaultSpacing),
           Expanded(
             child: Text(
-              widget.name,
+              widget.user.displayName,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(fontSize: 12),
             ),
           ),

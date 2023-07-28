@@ -109,7 +109,7 @@ class CustomTransaction extends StatelessWidget {
               style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12),
             ),
           ]),
-          if (transactionModel.isNeedingApproval) Padding(
+          if (transactionModel.isApproved == null) Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Row(children: [
               Expanded(child: CustomButton(

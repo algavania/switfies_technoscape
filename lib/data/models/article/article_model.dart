@@ -1,13 +1,23 @@
-class ArticleModel {
-  final String title, thumbnailUrl, content;
-  final int readingInMinutes;
-  final DateTime createdAt;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  ArticleModel({
-      required this.title,
-      required this.thumbnailUrl,
-      required this.content,
-      required this.readingInMinutes,
-      required this.createdAt
-  });
+import '../../timestamp_converter.dart';
+
+part 'article_model.freezed.dart';
+part 'article_model.g.dart';
+
+@freezed
+class ArticleModel with _$ArticleModel {
+  const factory ArticleModel({
+    required String title,
+    required String thumbnailUrl,
+    required String content,
+    required int readingInMinutes,
+    @JsonKey(includeFromJson: false, includeToJson: false) String? id,
+    @JsonKey(includeFromJson: false, includeToJson: false) DocumentSnapshot? documentSnapshot,
+    @TimestampConverter() required DateTime createdAt,
+  }) = _ArticleModel;
+
+  factory ArticleModel.fromJson(Map<String, Object?> json)
+  => _$ArticleModelFromJson(json);
 }

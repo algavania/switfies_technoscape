@@ -7,7 +7,7 @@ part 'account_model.g.dart';
 class AccountModel with _$AccountModel {
   const factory AccountModel({
     required int uid,
-    required int balance,
+    required double balance,
     required String accountName,
     required String accountNo,
     required String status,

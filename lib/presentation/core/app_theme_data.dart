@@ -50,7 +50,7 @@ class AppThemeData {
           // labelLarge: Button 1
           // displaySmall: Button 2
           displayLarge: GoogleFonts.plusJakartaSans(
-              color: ColorValues.text50, fontSize: 22, fontWeight: FontWeight.bold),
+              color: ColorValues.text50, fontSize: 20, fontWeight: FontWeight.w700),
           displayMedium: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 19, fontWeight: FontWeight.w400),
           displaySmall: GoogleFonts.plusJakartaSans(
@@ -60,7 +60,7 @@ class AppThemeData {
           headlineSmall: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 24, fontWeight: FontWeight.w500),
           titleLarge: GoogleFonts.plusJakartaSans(
-              color: ColorValues.text50, fontSize: 22, fontWeight: FontWeight.bold),
+              color: ColorValues.text50, fontSize: 22, fontWeight: FontWeight.w700),
           titleMedium: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 19, fontWeight: FontWeight.w800),
           titleSmall: GoogleFonts.plusJakartaSans(
@@ -70,11 +70,11 @@ class AppThemeData {
           bodyMedium: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 15, fontWeight: FontWeight.w500),
           labelLarge: GoogleFonts.plusJakartaSans(
-              color: ColorValues.text50, fontSize: 15, fontWeight: FontWeight.w800),
+              color: ColorValues.text50, fontSize: 15, fontWeight: FontWeight.w700),
           bodySmall: GoogleFonts.plusJakartaSans(
               color: ColorValues.text50, fontSize: 13, fontWeight: FontWeight.w600),
           labelSmall: GoogleFonts.plusJakartaSans(
-              color: ColorValues.text50, fontSize: 10, fontWeight: FontWeight.w500, letterSpacing: 1.5),
+              color: ColorValues.text50, fontSize: 10, fontWeight: FontWeight.w700, letterSpacing: 1),
         ));
   }
 }

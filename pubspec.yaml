@@ -76,3 +76,4 @@ flutter:
     - assets/core/
     - assets/onboarding/
     - assets/authentication/
+    - assets/activity/

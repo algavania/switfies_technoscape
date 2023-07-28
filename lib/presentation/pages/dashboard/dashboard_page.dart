@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
+import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
 
@@ -16,8 +17,8 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: Theme.of(context).scaffoldBackgroundColor,
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: ColorValues.surface,
     ));
 
     return Scaffold(
@@ -44,7 +45,7 @@ class _DashboardPageState extends State<DashboardPage> {
                   label: AppLocalizations.of(context).activity,
                 ),
                 BottomNavigationBarItem(
-                  icon: const Icon(Iconsax.document5),
+                  icon: const Icon(Iconsax.document_text5),
                   label: AppLocalizations.of(context).article,
                 ),
                 BottomNavigationBarItem(

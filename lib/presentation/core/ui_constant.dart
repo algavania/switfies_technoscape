@@ -1,6 +1,8 @@
 class UiConstant {
   static const double defaultPadding = 16;
   static const double biggerPadding = 20;
+  static const double mediumPadding = 12;
+  static const double smallerPadding = 8;
   static const double contentPadding = 12;
   static const double biggerSpacing = 28;
   static const double defaultSpacing = 12;

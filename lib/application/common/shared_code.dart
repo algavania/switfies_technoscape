@@ -1,6 +1,7 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:intl/intl.dart';
 import '../../l10n/l10n.dart';
 import '../../presentation/core/color_values.dart';
 import '../../presentation/core/ui_constant.dart';
@@ -12,6 +13,12 @@ class SharedCode {
       number = number.replaceFirst('0', '+62');
     }
     return number;
+  }
+
+  static String thousandSeparatorFormat(int number) {
+    NumberFormat formatter = NumberFormat.decimalPattern('vi_VN');
+    return formatter.format(number);
+
   }
 
   static String? emptyValidators(String? value) {

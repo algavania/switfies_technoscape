@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                                 CustomTextField(
                                   controller: _emailController,
                                   validator: SharedCode.emailValidators,
-                                  icon: Iconsax.sms5,
+                                  icon: Iconsax.sms,
                                   isRequired: false,
                                   textInputType: TextInputType.emailAddress,
                                   hint: AppLocalizations.of(context).enterEmail,
@@ -99,7 +99,7 @@ class _LoginPageState extends State<LoginPage> {
                                 CustomTextField(
                                   controller: _passwordController,
                                   validator: SharedCode.passwordValidators,
-                                  icon: Iconsax.key5,
+                                  icon: Iconsax.key,
                                   isRequired: false,
                                   isPassword: true,
                                   hint: AppLocalizations.of(context).enterPassword,

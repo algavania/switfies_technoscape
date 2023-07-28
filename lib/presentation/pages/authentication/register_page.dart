@@ -119,7 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           CustomTextField(
                             validator: SharedCode.emptyValidators,
                             controller: _displayNameController,
-                            icon: Iconsax.user5,
+                            icon: Iconsax.user,
                             hint: AppLocalizations
                                 .of(context)
                                 .enterName,
@@ -131,7 +131,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           CustomTextField(
                             validator: SharedCode.usernameValidators,
                             controller: _usernameController,
-                            icon: Iconsax.user_edit5,
+                            icon: Iconsax.user_edit,
                             hint: AppLocalizations
                                 .of(context)
                                 .enterUsername,
@@ -143,7 +143,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           CustomTextField(
                             validator: SharedCode.emailValidators,
                             controller: _emailController,
-                            icon: Iconsax.sms5,
+                            icon: Iconsax.sms,
                             hint: AppLocalizations
                                 .of(context)
                                 .enterEmail,
@@ -156,7 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             validator: SharedCode.passwordValidators,
                             isPassword: true,
                             controller: _passwordController,
-                            icon: Iconsax.key5,
+                            icon: Iconsax.key,
                             hint: AppLocalizations
                                 .of(context)
                                 .enterPassword,
@@ -168,7 +168,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           CustomTextField(
                             validator: SharedCode.emptyValidators,
                             controller: _phoneController,
-                            icon: Iconsax.call5,
+                            icon: Iconsax.call,
                             hint: AppLocalizations
                                 .of(context)
                                 .enterPhoneNumber,
@@ -193,7 +193,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             child: CustomTextField(
                               validator: SharedCode.emptyValidators,
                               controller: _birthdateController,
-                              icon: Iconsax.calendar5,
+                              icon: Iconsax.calendar,
                               readOnly: true,
                               hint: AppLocalizations
                                   .of(context)
@@ -211,7 +211,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               hint: AppLocalizations
                                   .of(context)
                                   .chooseGender,
-                              icon: Iconsax.user5,
+                              icon: Iconsax.user,
                               value: _value,
                               items: _genderItems,
                               onChanged: (value) {

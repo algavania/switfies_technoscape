@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:sizer/sizer.dart';
 import 'package:swifties_technoscape/application/common/shared_code.dart';
 import 'package:swifties_technoscape/data/models/article/article_model.dart';
+import 'package:swifties_technoscape/data/models/transaction/transaction_model.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
@@ -9,6 +11,7 @@ import 'package:swifties_technoscape/presentation/widgets/custom_app_bar.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_article.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_child_account.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
+import 'package:swifties_technoscape/presentation/widgets/custom_transaction.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,6 +23,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final ValueNotifier<bool> _isBalanceVisible = ValueNotifier(false);
   final ArticleModel _dummyArticle = ArticleModel(title: '5 Langkah Simpel Buatmu Sukses Dalam Menabung', thumbnailUrl: 'https://mediacloud.theweek.co.uk/image/private/s--X-WVjvBW--/f_auto,t_content-image-full-desktop@1/v1669803330/theweek/2022/November/143276835%20-%20savings%20accounts.jpg', content: '', readingInMinutes: 5, createdAt: DateTime.now());
+  final List<TransactionModel> _dummyTransactions = [const TransactionModel(uid: 0, amount: 200000, createTime: 1686725002, senderAccountNo: '1234567890', traxType: 'Transfer Out', receiverAccountNo: '', senderName: 'Fulan bin Fulan', receiverName: 'Naluf bin Naluf', isNeedingApproval: true)];
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,8 @@ class _HomePageState extends State<HomePage> {
                   _buildBalance(),
                   const SizedBox(height: UiConstant.defaultSpacing),
                   _buildMenus(),
+                  const SizedBox(height: UiConstant.defaultSpacing),
+                  _buildApprovalRequests(),
                   const SizedBox(height: UiConstant.defaultSpacing),
                   _buildChildrenAccounts(),
                   const SizedBox(height: UiConstant.defaultSpacing),
@@ -234,6 +240,57 @@ class _HomePageState extends State<HomePage> {
           style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
         )
       ],
+    );
+  }
+
+  Widget _buildApprovalRequests() {
+    return CustomShadow(
+      isShadowAbove: true,
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
+        color: ColorValues.surface,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildSectionHeading(
+                title: AppLocalizations.of(context).approvalRequestTitle,
+                description: AppLocalizations.of(context).approvalRequestDescription,
+                onTap: () {}
+            ),
+            const SizedBox(height: 16),
+            _dummyTransactions.isEmpty
+            ? SizedBox(
+              width: 100.w,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 24),
+                child: Column(children: [
+                  Text(
+                    AppLocalizations.of(context).requestsEmptyTitle,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14),
+                  ),
+                  const SizedBox(height: UiConstant.mediumSpacing),
+                  Text(
+                    AppLocalizations.of(context).requestsEmptyDescription,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+                  )
+                ]),
+              ),
+            )
+            : ListView.separated(
+              primary: false,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: _dummyTransactions.length,
+              itemBuilder: (context, index) {
+                return CustomTransaction(transactionModel: _dummyTransactions[index]);
+              },
+              separatorBuilder: (_, __) {
+                return const SizedBox(height: UiConstant.defaultSpacing);
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 

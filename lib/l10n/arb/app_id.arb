@@ -79,5 +79,11 @@
   "to": "Ke",
   "topup": "Nabung",
   "transferIn": "Minta",
-  "transferOut": "Transfer"
+  "transferOut": "Transfer",
+  "approve": "Terima",
+  "reject": "Tolak",
+  "approvalRequestTitle": "Terima atau Tolak",
+  "approvalRequestDescription": "Hai, si kecil ada request nih!",
+  "requestsEmptyTitle": "Hmm, belum ada request nih!",
+  "requestsEmptyDescription": "Keliatannya si kecil belum bikin request lagi"
 }

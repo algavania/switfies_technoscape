@@ -16,6 +16,7 @@ _$_TransactionModel _$$_TransactionModelFromJson(Map<String, dynamic> json) =>
       receiverAccountNo: json['receiverAccountNo'] as String,
       senderName: json['senderName'] as String,
       receiverName: json['receiverName'] as String,
+      isNeedingApproval: json['isNeedingApproval'] as bool,
     );
 
 Map<String, dynamic> _$$_TransactionModelToJson(_$_TransactionModel instance) =>
@@ -28,4 +29,5 @@ Map<String, dynamic> _$$_TransactionModelToJson(_$_TransactionModel instance) =>
       'receiverAccountNo': instance.receiverAccountNo,
       'senderName': instance.senderName,
       'receiverName': instance.receiverName,
+      'isNeedingApproval': instance.isNeedingApproval,
     };

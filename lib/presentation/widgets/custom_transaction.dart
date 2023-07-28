@@ -8,6 +8,7 @@ import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/shared_data.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
+import 'package:swifties_technoscape/presentation/widgets/custom_button.dart';
 
 class CustomTransaction extends StatelessWidget {
   final TransactionModel transactionModel;
@@ -108,6 +109,28 @@ class CustomTransaction extends StatelessWidget {
               style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12),
             ),
           ]),
+          if (transactionModel.isNeedingApproval) Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Row(children: [
+              Expanded(child: CustomButton(
+                buttonText: AppLocalizations.of(context).reject,
+                height: 36,
+                fontSize: 12,
+                backgroundColor: ColorValues.danger30,
+                borderRadius: 8,
+                onPressed: () {},
+              )),
+              const SizedBox(width: 6),
+              Expanded(child: CustomButton(
+                buttonText: AppLocalizations.of(context).approve,
+                height: 36,
+                fontSize: 12,
+                backgroundColor: ColorValues.success30,
+                borderRadius: 8,
+                onPressed: () {},
+              )),
+            ]),
+          )
         ],
       ),
     );

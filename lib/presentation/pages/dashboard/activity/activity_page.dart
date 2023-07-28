@@ -17,8 +17,8 @@ class ActivityPage extends StatefulWidget {
 }
 
 class _ActivityPageState extends State<ActivityPage> {
-  final TransactionModel _dummyTransaction1 = const TransactionModel(uid: 0, amount: 200000, createTime: 1686725002, senderAccountNo: '0000000000', traxType: 'Transfer In', receiverAccountNo: '', senderName: 'E-Wallet', receiverName: 'Fulan bin Fulan');
-  final TransactionModel _dummyTransaction2 = const TransactionModel(uid: 0, amount: 200000, createTime: 1686725002, senderAccountNo: '1234567890', traxType: 'Transfer Out', receiverAccountNo: '', senderName: 'Fulan bin Fulan', receiverName: 'Naluf bin Naluf');
+  final TransactionModel _dummyTransaction1 = const TransactionModel(uid: 0, amount: 200000, createTime: 1686725002, senderAccountNo: '0000000000', traxType: 'Transfer In', receiverAccountNo: '', senderName: 'E-Wallet', receiverName: 'Fulan bin Fulan', isNeedingApproval: false);
+  final TransactionModel _dummyTransaction2 = const TransactionModel(uid: 0, amount: 200000, createTime: 1686725002, senderAccountNo: '1234567890', traxType: 'Transfer Out', receiverAccountNo: '', senderName: 'Fulan bin Fulan', receiverName: 'Naluf bin Naluf', isNeedingApproval: false);
   List<TransactionModel> _dummyTransactions = [];
 
   @override

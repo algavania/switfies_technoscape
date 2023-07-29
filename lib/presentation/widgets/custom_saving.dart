@@ -34,7 +34,7 @@ class CustomSaving extends StatelessWidget {
       decoration: BoxDecoration(
           color: ColorValues.surface,
           borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
-          border: Border.all(color: ColorValues.grey10)
+          border: Border.all(color: ColorValues.grey10, width: 1)
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

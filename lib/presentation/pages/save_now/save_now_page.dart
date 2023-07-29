@@ -8,7 +8,6 @@ import 'package:swifties_technoscape/application/common/shared_code.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
-import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_button.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_saving_method.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart';
@@ -26,6 +25,7 @@ class _SaveNowPageState extends State<SaveNowPage> {
   final PanelController _panelController = PanelController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _topUpController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
   final ValueNotifier<Widget> _panelContent = ValueNotifier(const SizedBox.shrink());
   final ValueNotifier<double> _panelHeight = ValueNotifier(0);
@@ -64,8 +64,8 @@ class _SaveNowPageState extends State<SaveNowPage> {
                       padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultSpacing),
                       child: Column(
                         children: [
-                          _buildNeoTransfer(),
-                          const SizedBox(height: 24),
+                          // _buildNeoTransfer(),
+                          // const SizedBox(height: 24),
                           _buildOtherMethods(),
                         ],
                       ),
@@ -145,10 +145,10 @@ class _SaveNowPageState extends State<SaveNowPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            AppLocalizations.of(context).otherMethods,
-            style: Theme.of(context).textTheme.labelLarge,
-          ),
+          // Text(
+          //   AppLocalizations.of(context).otherMethods,
+          //   style: Theme.of(context).textTheme.labelLarge,
+          // ),
           const SizedBox(height: 16),
           CustomSavingMethod(text: AppLocalizations.of(context).requestBalance, imageUrl: 'assets/activity/img_child_2.png', onTap: () {
             _panelContent.value = _buildRequestBalancePanel();
@@ -156,12 +156,56 @@ class _SaveNowPageState extends State<SaveNowPage> {
             _panelController.open();
           }),
           const SizedBox(height: UiConstant.defaultSpacing),
-          CustomSavingMethod(text: AppLocalizations.of(context).eWallet, imageUrl: 'assets/activity/img_child.png', onTap: () {}),
-          const SizedBox(height: UiConstant.defaultSpacing),
-          CustomSavingMethod(text: AppLocalizations.of(context).mobileBanking, imageUrl: 'assets/activity/img_child_3.png', onTap: () {}),
+          CustomSavingMethod(text: AppLocalizations.of(context).topUp, imageUrl: 'assets/activity/img_child.png', onTap: () {}),
         ],
       ),
     );
+  }
+
+  Widget _buildTopUpPanel() {
+    return Column(children: [
+      GestureDetector(
+        onTap: () => _panelController.close(),
+        child: Row(children: [
+          const Icon(
+            Iconsax.arrow_left,
+            size: 24,
+            color: ColorValues.text50,
+          ),
+          const SizedBox(width: 16),
+          Text(AppLocalizations.of(context).requestBalance, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14))
+        ]),
+      ),
+      const SizedBox(height: 24),
+      Expanded(child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildSectionHeading(
+              title: AppLocalizations.of(context).requestBalanceInstruction,
+              description: AppLocalizations.of(context).requestBalanceInstructionDescription,
+            ),
+            CustomTextField(
+              controller: _topUpController,
+              validator: SharedCode.emptyValidators,
+              isRequired: true,
+              label: AppLocalizations.of(context).amount,
+              hint: AppLocalizations.of(context).enterAmount,
+              icon: Iconsax.empty_wallet5,
+              textInputType: TextInputType.number,
+            ),
+          ],
+        ),
+      )),
+      const SizedBox(height: 24),
+      CustomButton(
+        buttonText: AppLocalizations.of(context).topUp,
+        onPressed: () {
+          _panelHeight.value = 70.h;
+          _panelContent.value = _buildSuccessPanel();
+        },
+      ),
+    ]);
   }
 
   Widget _buildRequestBalancePanel() {

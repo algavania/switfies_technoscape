@@ -201,5 +201,17 @@
   "emptyNotifications": "Belum ada request nih!",
   "emptyNotificationsDescription": "Kalau kamu bikin request, nanti bisa cek di sini ya!",
   "accountDetail": "Detail Rekening",
-  "childAccountBalance": "Saldo Rekening Anak"
+  "childAccountBalance": "Saldo Rekening Anak",
+  "personalization": "Personalisasi",
+  "changePersonalInfo": "Ubah Data Pribadi",
+  "childrenAccountsInfo": "Data Rekening Anak",
+  "changePassword": "Ubah Password",
+  "logout": "Logout",
+  "logoutTitle": "T-tunggu, Kamu Mau Logout?",
+  "logoutDescription": "Logout bikin kamu gabisa akses fitur-fitur DuitKiddo!\nTapi tenang, datanya aman kok. Yakin logout?",
+  "logoutCancel": "Hehe, Gajadi!",
+  "logoutConfirm": "Iya, Logout",
+  "relogTitle": "Yuk Login Lagi!",
+  "relogDescription": "Huhuhu, kamu udah logout nih. Mau login lagi?\nDengan login lagi kamu bisa nabung di DuitKiddo!",
+  "relog": "Login Lagi"
 }

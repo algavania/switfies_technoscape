@@ -176,9 +176,14 @@ class AppRouter extends _i2.RootStackRouter {
       );
     },
     ProfileRoute.name: (routeData) {
+      final args = routeData.argsAs<ProfileRouteArgs>();
       return _i2.CustomPage<dynamic>(
         routeData: routeData,
-        child: const _i1.ProfilePage(),
+        child: _i1.ProfilePage(
+          key: args.key,
+          openPanel: args.openPanel,
+          closePanel: args.closePanel,
+        ),
         transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
         opaque: true,
         barrierDismissible: false,
@@ -538,12 +543,39 @@ class ArticleRoute extends _i2.PageRouteInfo<void> {
 
 /// generated route for
 /// [_i1.ProfilePage]
-class ProfileRoute extends _i2.PageRouteInfo<void> {
-  const ProfileRoute()
-      : super(
+class ProfileRoute extends _i2.PageRouteInfo<ProfileRouteArgs> {
+  ProfileRoute({
+    _i4.Key? key,
+    required Function openPanel,
+    required Function closePanel,
+  }) : super(
           ProfileRoute.name,
           path: 'profile',
+          args: ProfileRouteArgs(
+            key: key,
+            openPanel: openPanel,
+            closePanel: closePanel,
+          ),
         );
 
   static const String name = 'ProfileRoute';
+}
+
+class ProfileRouteArgs {
+  const ProfileRouteArgs({
+    this.key,
+    required this.openPanel,
+    required this.closePanel,
+  });
+
+  final _i4.Key? key;
+
+  final Function openPanel;
+
+  final Function closePanel;
+
+  @override
+  String toString() {
+    return 'ProfileRouteArgs{key: $key, openPanel: $openPanel, closePanel: $closePanel}';
+  }
 }

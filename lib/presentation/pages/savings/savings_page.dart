@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:jiffy/jiffy.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:swifties_technoscape/application/common/shared_code.dart';
@@ -37,6 +38,7 @@ class _SavingsPageState extends State<SavingsPage> {
   final ValueNotifier<String> _selectedFrequency = ValueNotifier('');
   List<SavingModel> _savings = [];
   List<String> _savingCategories = [];
+  late DateTime _endDate;
 
   @override
   void initState() {
@@ -347,6 +349,7 @@ class _SavingsPageState extends State<SavingsPage> {
                             isRequired: true,
                             label: AppLocalizations.of(context).savingTarget,
                             hint: AppLocalizations.of(context).savingTargetHint,
+                            textInputType: TextInputType.number,
                             icon: Iconsax.empty_wallet_time4
                         ),
                         const SizedBox(height: 16),
@@ -359,6 +362,7 @@ class _SavingsPageState extends State<SavingsPage> {
                                 lastDate: DateTime(2100));
                             if (selectedDate != null) {
                               setState(() {
+                                _endDate = selectedDate;
                                 _endDateController.text = SharedData.monthYearDateFormat.format(selectedDate);
                               });
                             }
@@ -475,6 +479,7 @@ class _SavingsPageState extends State<SavingsPage> {
                   label: AppLocalizations.of(context).savingTarget,
                   icon: Iconsax.empty_wallet_time4,
                   readOnly: true,
+                  isRequired: false,
                 ),
               ),
               const SizedBox(height: 16),
@@ -485,6 +490,7 @@ class _SavingsPageState extends State<SavingsPage> {
                   label: AppLocalizations.of(context).whenSavingEnds,
                   icon: Iconsax.calendar5,
                   readOnly: true,
+                  isRequired: false,
                 ),
               ),
               const SizedBox(height: 16),
@@ -496,43 +502,11 @@ class _SavingsPageState extends State<SavingsPage> {
                   label: AppLocalizations.of(context).savingFrequency,
                   icon: Iconsax.menu_board5,
                   readOnly: true,
+                  isRequired: false,
                 ),
               ),
               const SizedBox(height: 16),
-              Container(
-                width: 100.w,
-                padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
-                color: ColorValues.primary10,
-                child: Row(children: [
-                  Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
-                      color: ColorValues.primary20
-                    ),
-                    child: const Icon(
-                      Iconsax.empty_wallet_time4,
-                      color: ColorValues.primary50,
-                      size: 48,
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Expanded(child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(children: [
-                        Text('${AppLocalizations.of(context).savingAdvice} ', style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14)),
-                        Text(frequency, style: Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 14)),
-                      ]),
-                      const SizedBox(height: 4),
-                      Row(children: [
-                        Text('Rp ', style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20)),
-                        Text(SharedCode.formatThousands(1000000), style: Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 20)),
-                      ])
-                    ],
-                  ))
-                ]),
-              ),
+              _buildSavingPerFrequency(frequency),
             ],
           )
         )),
@@ -560,6 +534,60 @@ class _SavingsPageState extends State<SavingsPage> {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSavingPerFrequency(String frequency) {
+    int frequencyLength = 0;
+
+    switch (_frequencyController.text) {
+      case 'Harian':
+        frequencyLength = Jiffy.parseFromDateTime(_endDate).diff(Jiffy.now(), unit: Unit.day).toInt();
+        print('days diff $frequencyLength');
+        break;
+      case 'Mingguan':
+        frequencyLength = Jiffy.parseFromDateTime(_endDate).diff(Jiffy.now(), unit: Unit.week).toInt();
+        print('weeks diff $frequencyLength');
+        break;
+      case 'Bulanan':
+        frequencyLength = Jiffy.parseFromDateTime(_endDate).diff(Jiffy.now(), unit: Unit.month).toInt();
+        print('years diff $frequencyLength');
+        break;
+    }
+
+    return Container(
+      width: 100.w,
+      padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
+      color: ColorValues.primary10,
+      child: Row(children: [
+        Container(
+          padding: const EdgeInsets.all(4),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
+              color: ColorValues.primary20
+          ),
+          child: const Icon(
+            Iconsax.empty_wallet_time4,
+            color: ColorValues.primary50,
+            size: 48,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(children: [
+              Text('${AppLocalizations.of(context).savingAdvice} ', style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14)),
+              Text(frequency, style: Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 14)),
+            ]),
+            const SizedBox(height: 4),
+            Row(children: [
+              Text('Rp ', style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 20)),
+              Text(SharedCode.formatThousands(int.parse(_targetController.text) / frequencyLength), style: Theme.of(context).textTheme.displayLarge?.copyWith(fontSize: 20)),
+            ])
+          ],
+        ))
+      ]),
     );
   }
 }

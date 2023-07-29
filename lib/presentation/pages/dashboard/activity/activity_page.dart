@@ -12,6 +12,7 @@ import 'package:swifties_technoscape/presentation/widgets/custom_app_bar.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_transaction.dart';
 
+import '../../../../application/common/shared_code.dart';
 import '../../../../application/repositories/repositories.dart';
 import '../../../../data/models/user/user_model.dart';
 import '../../../widgets/custom_child_account.dart';
@@ -41,17 +42,21 @@ class _ActivityPageState extends State<ActivityPage> {
     if (!context.loaderOverlay.visible) {
       context.loaderOverlay.show();
     }
-    if (mounted) {
+    try {
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
+      _childList = await UserRepository().getMyChildren();
+      _transactionList = await TransactionRepository()
+          .getTransactions(limit: 2, isRequestedTransaction: false);
       setState(() {
-        _isLoading = true;
+        _isLoading = false;
       });
+    } catch (e) {
+      SharedCode.showSnackbar(context: context, message: e.toString(), isSuccess: false);
     }
-    _childList = await UserRepository().getMyChildren();
-    _transactionList = await TransactionRepository()
-        .getTransactions(limit: 2, isRequestedTransaction: false);
-    setState(() {
-      _isLoading = false;
-    });
     context.loaderOverlay.hide();
   }
 

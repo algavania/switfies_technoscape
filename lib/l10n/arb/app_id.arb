@@ -62,7 +62,7 @@
   "show": "Tampilkan",
   "hide": "Sembunyikan",
   "createSavingTargetAlt": "Bikin Target\nTabungan",
-  "saveNow": "Nabung\nSekarang",
+  "saveNowAlt": "Nabung\nSekarang",
   "interestCalculator": "Kalkulator\nSuku Bunga",
   "financeArticle": "Artikel\nKeuangan",
   "childrenAccountsTitle": "Rekening Si Kecil",
@@ -111,10 +111,16 @@
   "savingTarget": "Target Nabung",
   "savingTargetHint": "Masukkan nominal target nabung",
   "whenSavingEnds": "Kapan Target Ini Tercapai?",
-  "monthYearFormat": "Bulan/Tahun",
+  "monthYearFormat": "Bulan Tahun",
   "savingFrequency": "Frekuensimu Nabung",
   "daily": "Harian",
   "weekly": "Mingguan",
   "monthly": "Bulanan",
-  "seeSavingAdvice": "Lihat Saran Nabung"
+  "seeSavingAdvice": "Lihat Saran Nabung",
+  "savingAdvice": "Saran Nabung",
+  "perDay": "Per Hari",
+  "perWeek": "Per Minggu",
+  "perMonth": "Per Bulan",
+  "saveNow": "Nabung Sekarang",
+  "seeSavings": "Lihat Tabungan"
 }

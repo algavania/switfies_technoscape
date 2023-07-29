@@ -26,6 +26,7 @@ mixin _$SavingModel {
   double get savingAdviceAmount => throw _privateConstructorUsedError;
   dynamic get currentSaving => throw _privateConstructorUsedError;
   dynamic get savingTarget => throw _privateConstructorUsedError;
+  bool? get hasClaimedReward => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
   String? get id => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -57,6 +58,7 @@ abstract class $SavingModelCopyWith<$Res> {
       double savingAdviceAmount,
       dynamic currentSaving,
       dynamic savingTarget,
+      bool? hasClaimedReward,
       @JsonKey(includeFromJson: false, includeToJson: false) String? id,
       @JsonKey(includeFromJson: false, includeToJson: false)
       DocumentSnapshot<Object?>? documentSnapshot,
@@ -84,6 +86,7 @@ class _$SavingModelCopyWithImpl<$Res, $Val extends SavingModel>
     Object? savingAdviceAmount = null,
     Object? currentSaving = freezed,
     Object? savingTarget = freezed,
+    Object? hasClaimedReward = freezed,
     Object? id = freezed,
     Object? documentSnapshot = freezed,
     Object? startDate = null,
@@ -115,6 +118,10 @@ class _$SavingModelCopyWithImpl<$Res, $Val extends SavingModel>
           ? _value.savingTarget
           : savingTarget // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      hasClaimedReward: freezed == hasClaimedReward
+          ? _value.hasClaimedReward
+          : hasClaimedReward // ignore: cast_nullable_to_non_nullable
+              as bool?,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -154,6 +161,7 @@ abstract class _$$_SavingModelCopyWith<$Res>
       double savingAdviceAmount,
       dynamic currentSaving,
       dynamic savingTarget,
+      bool? hasClaimedReward,
       @JsonKey(includeFromJson: false, includeToJson: false) String? id,
       @JsonKey(includeFromJson: false, includeToJson: false)
       DocumentSnapshot<Object?>? documentSnapshot,
@@ -179,6 +187,7 @@ class __$$_SavingModelCopyWithImpl<$Res>
     Object? savingAdviceAmount = null,
     Object? currentSaving = freezed,
     Object? savingTarget = freezed,
+    Object? hasClaimedReward = freezed,
     Object? id = freezed,
     Object? documentSnapshot = freezed,
     Object? startDate = null,
@@ -210,6 +219,10 @@ class __$$_SavingModelCopyWithImpl<$Res>
           ? _value.savingTarget
           : savingTarget // ignore: cast_nullable_to_non_nullable
               as dynamic,
+      hasClaimedReward: freezed == hasClaimedReward
+          ? _value.hasClaimedReward
+          : hasClaimedReward // ignore: cast_nullable_to_non_nullable
+              as bool?,
       id: freezed == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -244,6 +257,7 @@ class _$_SavingModel implements _SavingModel {
       required this.savingAdviceAmount,
       required this.currentSaving,
       required this.savingTarget,
+      this.hasClaimedReward,
       @JsonKey(includeFromJson: false, includeToJson: false) this.id,
       @JsonKey(includeFromJson: false, includeToJson: false)
       this.documentSnapshot,
@@ -267,6 +281,8 @@ class _$_SavingModel implements _SavingModel {
   @override
   final dynamic savingTarget;
   @override
+  final bool? hasClaimedReward;
+  @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   final String? id;
   @override
@@ -284,7 +300,7 @@ class _$_SavingModel implements _SavingModel {
 
   @override
   String toString() {
-    return 'SavingModel(title: $title, category: $category, frequency: $frequency, savingAdviceAmount: $savingAdviceAmount, currentSaving: $currentSaving, savingTarget: $savingTarget, id: $id, documentSnapshot: $documentSnapshot, startDate: $startDate, endDate: $endDate, createdAt: $createdAt)';
+    return 'SavingModel(title: $title, category: $category, frequency: $frequency, savingAdviceAmount: $savingAdviceAmount, currentSaving: $currentSaving, savingTarget: $savingTarget, hasClaimedReward: $hasClaimedReward, id: $id, documentSnapshot: $documentSnapshot, startDate: $startDate, endDate: $endDate, createdAt: $createdAt)';
   }
 
   @override
@@ -303,6 +319,8 @@ class _$_SavingModel implements _SavingModel {
                 .equals(other.currentSaving, currentSaving) &&
             const DeepCollectionEquality()
                 .equals(other.savingTarget, savingTarget) &&
+            (identical(other.hasClaimedReward, hasClaimedReward) ||
+                other.hasClaimedReward == hasClaimedReward) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.documentSnapshot, documentSnapshot) ||
                 other.documentSnapshot == documentSnapshot) &&
@@ -323,6 +341,7 @@ class _$_SavingModel implements _SavingModel {
       savingAdviceAmount,
       const DeepCollectionEquality().hash(currentSaving),
       const DeepCollectionEquality().hash(savingTarget),
+      hasClaimedReward,
       id,
       documentSnapshot,
       startDate,
@@ -351,6 +370,7 @@ abstract class _SavingModel implements SavingModel {
       required final double savingAdviceAmount,
       required final dynamic currentSaving,
       required final dynamic savingTarget,
+      final bool? hasClaimedReward,
       @JsonKey(includeFromJson: false, includeToJson: false) final String? id,
       @JsonKey(includeFromJson: false, includeToJson: false)
       final DocumentSnapshot<Object?>? documentSnapshot,
@@ -374,6 +394,8 @@ abstract class _SavingModel implements SavingModel {
   dynamic get currentSaving;
   @override
   dynamic get savingTarget;
+  @override
+  bool? get hasClaimedReward;
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   String? get id;

@@ -12,8 +12,10 @@ import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 
 class CustomSaving extends StatelessWidget {
   final SavingModel savingModel;
+  final int index;
+  final void Function(SavingModel, int) setSavingModel;
 
-  const CustomSaving({Key? key, required this.savingModel}) : super(key: key);
+  const CustomSaving({Key? key, required this.savingModel, required this.setSavingModel, required this.index}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,7 @@ class CustomSaving extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        AutoRouter.of(context).navigate(SavingDetailRoute(saving: savingModel));
+        AutoRouter.of(context).navigate(SavingDetailRoute(saving: savingModel, index: index, setSavingModel: setSavingModel));
       },
       child: Container(
         width: 100.w,

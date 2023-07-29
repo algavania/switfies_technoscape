@@ -14,6 +14,7 @@ _$_SavingModel _$$_SavingModelFromJson(Map<String, dynamic> json) =>
       savingAdviceAmount: (json['savingAdviceAmount'] as num).toDouble(),
       currentSaving: json['currentSaving'],
       savingTarget: json['savingTarget'],
+      hasClaimedReward: json['hasClaimedReward'] as bool?,
       startDate:
           const TimestampConverter().fromJson(json['startDate'] as Timestamp),
       endDate:
@@ -30,6 +31,7 @@ Map<String, dynamic> _$$_SavingModelToJson(_$_SavingModel instance) =>
       'savingAdviceAmount': instance.savingAdviceAmount,
       'currentSaving': instance.currentSaving,
       'savingTarget': instance.savingTarget,
+      'hasClaimedReward': instance.hasClaimedReward,
       'startDate': const TimestampConverter().toJson(instance.startDate),
       'endDate': const TimestampConverter().toJson(instance.endDate),
       'createdAt': const TimestampConverter().toJson(instance.createdAt),

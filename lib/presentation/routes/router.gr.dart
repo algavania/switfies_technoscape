@@ -112,6 +112,8 @@ class AppRouter extends _i2.RootStackRouter {
         child: _i1.SavingDetailPage(
           key: args.key,
           saving: args.saving,
+          index: args.index,
+          setSavingModel: args.setSavingModel,
         ),
         transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
         opaque: true,
@@ -344,12 +346,19 @@ class SavingDetailRoute extends _i2.PageRouteInfo<SavingDetailRouteArgs> {
   SavingDetailRoute({
     _i4.Key? key,
     required _i5.SavingModel saving,
+    required int index,
+    required void Function(
+      _i5.SavingModel,
+      int,
+    ) setSavingModel,
   }) : super(
           SavingDetailRoute.name,
           path: '/saving-detail',
           args: SavingDetailRouteArgs(
             key: key,
             saving: saving,
+            index: index,
+            setSavingModel: setSavingModel,
           ),
         );
 
@@ -360,15 +369,24 @@ class SavingDetailRouteArgs {
   const SavingDetailRouteArgs({
     this.key,
     required this.saving,
+    required this.index,
+    required this.setSavingModel,
   });
 
   final _i4.Key? key;
 
   final _i5.SavingModel saving;
 
+  final int index;
+
+  final void Function(
+    _i5.SavingModel,
+    int,
+  ) setSavingModel;
+
   @override
   String toString() {
-    return 'SavingDetailRouteArgs{key: $key, saving: $saving}';
+    return 'SavingDetailRouteArgs{key: $key, saving: $saving, index: $index, setSavingModel: $setSavingModel}';
   }
 }
 

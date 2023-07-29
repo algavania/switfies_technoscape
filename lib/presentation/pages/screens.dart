@@ -15,3 +15,4 @@ export 'dashboard/article/article_page.dart';
 export 'dashboard/profile/profile_page.dart';
 
 export 'savings/savings_page.dart';
+export 'save_now/save_now_page.dart';

@@ -353,7 +353,8 @@ class _SaveNowPageState extends State<SaveNowPage> {
           CustomButton(
             buttonText: AppLocalizations.of(context).waitAtHome,
             onPressed: () {
-              AutoRouter.of(context).replace(const DashboardRoute());
+              _panelController.close();
+              AutoRouter.of(context).pop();
             },
           ),
           const SizedBox(height: 8),

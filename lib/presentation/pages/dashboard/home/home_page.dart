@@ -245,7 +245,9 @@ class _HomePageState extends State<HomePage> {
                 iconData: Iconsax.direct_inbox5,
                 iconColor: ColorValues.success30,
                 backgroundColor: ColorValues.success10,
-                onTap: () {},
+                onTap: () {
+                  AutoRouter.of(context).push(const SaveNowRoute());
+                },
               ),
             ),
             Expanded(

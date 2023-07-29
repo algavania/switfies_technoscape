@@ -171,5 +171,14 @@
   "withdraw": "Tarik",
   "withdrawToMainAccount": "Dana berhasil dikirim ke rekening utama!",
   "depositToSaving": "Kamu berhasil menabung!",
-  "insufficientFund": "Saldo tidak cukup!"
+  "insufficientFund": "Saldo tidak cukup!",
+  "logout": "Logout",
+  "personalization": "Personalisasi",
+  "logoutConfirmation": "T-tunggu, Kamu Mau Logout?",
+  "logoutConfirmationDescription": "Logout bikin kamu gabisa akses fitur-fitur DuitKiddo!\nTapi tenang, datanya aman kok. Yakin logout?",
+  "confirmLogout": "Iya, Logout",
+  "cancelLogout": "Hehe, Gajadi!",
+  "reLog": "Yuk Login Lagi!",
+  "reLogDescription": "Huhuhu, kamu udah logout nih. Mau login lagi?\nDengan login lagi kamu bisa nabung di DuitKiddo!",
+  "exit": "Keluar"
 }

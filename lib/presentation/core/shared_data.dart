@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:status_bar_control/status_bar_control.dart';
 
+import '../../data/models/account/account_model.dart';
 import '../../data/models/user/user_model.dart';
 
 class SharedData {
@@ -9,6 +10,7 @@ class SharedData {
   static DateFormat regularDateFormat = DateFormat('dd/MM/yyyy');
   static DateFormat authDateFormat = DateFormat('ddMMyyyy');
   static ValueNotifier<UserModel?> userData = ValueNotifier(null);
+  static ValueNotifier<AccountModel?> myAccountData = ValueNotifier(null);
   static void setStatusBarColorPrimary(BuildContext context) {
     StatusBarControl.setColor(Theme.of(context).primaryColor, animated: true);
     StatusBarControl.setStyle(StatusBarStyle.LIGHT_CONTENT);

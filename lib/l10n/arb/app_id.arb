@@ -83,7 +83,13 @@
   "approve": "Terima",
   "reject": "Tolak",
   "approvalRequestTitle": "Terima atau Tolak",
-  "approvalRequestDescription": "Hai, si kecil ada request nih!",
+  "approvalRequestDescription": "Hai, ayo tinjau permintaan si kecil!",
   "requestsEmptyTitle": "Hmm, belum ada request nih!",
-  "requestsEmptyDescription": "Keliatannya si kecil belum bikin request lagi"
+  "requestsEmptyDescription": "Kelihatannya si kecil belum bikin request lagi",
+  "articleEmptyTitle": "Hmm, belum ada artikel nih!",
+  "articleEmptyDescription": "Kelihatannya belum ada artikel yang diunggah",
+  "childrenAccountEmptyTitle": "Hmm, belum ada rekening untuk anak nih!",
+  "childrenAccountEmptyDescription": "Kelihatannya kamu belum membuat rekening untuk si kecil",
+  "activityEmptyTitle": "Hmm, belum ada aktivitas yang dilakukan nih!",
+  "activityEmptyDescription": "Kelihatannya si kecil belum ngapa-ngapain"
 }

@@ -9,6 +9,8 @@ class DbConstants {
 
   static String users = 'users';
   static String children = 'children';
+  static String transactions = 'transactions';
+  static String articles = 'articles';
 
   static String parentRole = 'parent';
   static String childRole = 'child';

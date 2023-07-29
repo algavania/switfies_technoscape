@@ -21,7 +21,7 @@ AccountModel _$AccountModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AccountModel {
   int get uid => throw _privateConstructorUsedError;
-  int get balance => throw _privateConstructorUsedError;
+  double get balance => throw _privateConstructorUsedError;
   String get accountName => throw _privateConstructorUsedError;
   String get accountNo => throw _privateConstructorUsedError;
   String get status => throw _privateConstructorUsedError;
@@ -42,7 +42,7 @@ abstract class $AccountModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int uid,
-      int balance,
+      double balance,
       String accountName,
       String accountNo,
       String status,
@@ -79,7 +79,7 @@ class _$AccountModelCopyWithImpl<$Res, $Val extends AccountModel>
       balance: null == balance
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       accountName: null == accountName
           ? _value.accountName
           : accountName // ignore: cast_nullable_to_non_nullable
@@ -114,7 +114,7 @@ abstract class _$$_AccountModelCopyWith<$Res>
   @useResult
   $Res call(
       {int uid,
-      int balance,
+      double balance,
       String accountName,
       String accountNo,
       String status,
@@ -149,7 +149,7 @@ class __$$_AccountModelCopyWithImpl<$Res>
       balance: null == balance
           ? _value.balance
           : balance // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       accountName: null == accountName
           ? _value.accountName
           : accountName // ignore: cast_nullable_to_non_nullable
@@ -192,7 +192,7 @@ class _$_AccountModel implements _AccountModel {
   @override
   final int uid;
   @override
-  final int balance;
+  final double balance;
   @override
   final String accountName;
   @override
@@ -249,7 +249,7 @@ class _$_AccountModel implements _AccountModel {
 abstract class _AccountModel implements AccountModel {
   const factory _AccountModel(
       {required final int uid,
-      required final int balance,
+      required final double balance,
       required final String accountName,
       required final String accountNo,
       required final String status,
@@ -262,7 +262,7 @@ abstract class _AccountModel implements AccountModel {
   @override
   int get uid;
   @override
-  int get balance;
+  double get balance;
   @override
   String get accountName;
   @override

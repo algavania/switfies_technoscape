@@ -9,7 +9,7 @@ part of 'account_model.dart';
 _$_AccountModel _$$_AccountModelFromJson(Map<String, dynamic> json) =>
     _$_AccountModel(
       uid: json['uid'] as int,
-      balance: json['balance'] as int,
+      balance: (json['balance'] as num).toDouble(),
       accountName: json['accountName'] as String,
       accountNo: json['accountNo'] as String,
       status: json['status'] as String,

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'transaction_model.freezed.dart';
@@ -14,7 +15,10 @@ class TransactionModel with _$TransactionModel {
     required String receiverAccountNo,
     required String senderName,
     required String receiverName,
-    required bool isNeedingApproval,
+    bool? isApproved,
+    int? relatedId,
+    @JsonKey(includeFromJson: false, includeToJson: false) DocumentSnapshot? documentSnapshot,
+    @JsonKey(includeFromJson: false, includeToJson: false) String? id,
   }) = _TransactionModel;
 
   factory TransactionModel.fromJson(Map<String, Object?> json)

@@ -45,6 +45,7 @@ class _AddChildPageState extends State<AddChildPage> {
   final TextEditingController _birthdateController = TextEditingController();
   final List<DropdownMenuItem<int>> _genderItems = [];
   int? _value;
+  bool _isSend = false;
 
   @override
   void initState() {
@@ -311,7 +312,11 @@ class _AddChildPageState extends State<AddChildPage> {
                                           TokenModel tokenModel = await AuthRepository().generateToken(username, loginPassword);
                                           await BankRepository().createBankAccount(tokenModel.accessToken);
                                           _clearAllTextFields();
-                                          _panelController.open();
+                                          if (AutoRouter.of(context).canPop()) {
+                                            AutoRouter.of(context).pop(AppLocalizations.of(context).childRegistrationSuccessTitle);
+                                          } else {
+                                            _panelController.open();
+                                          }
                                         } catch (e) {
                                           SharedCode.showSnackbar(context: context,
                                               message: e.toString(),
@@ -322,8 +327,8 @@ class _AddChildPageState extends State<AddChildPage> {
                                     }
                                 ),
                                 const SizedBox(height: UiConstant.defaultPadding),
-                                _buildSkipButton(),
-                                const SizedBox(height: UiConstant.defaultPadding),
+                                if (!AutoRouter.of(context).canPop()) _buildSkipButton(),
+                                if (!AutoRouter.of(context).canPop()) const SizedBox(height: UiConstant.defaultPadding),
                                 Expanded(child: Container()),
                               ],
                             ),
@@ -397,8 +402,8 @@ class _AddChildPageState extends State<AddChildPage> {
                 _panelController.close();
               },
             ),
-            const SizedBox(height: UiConstant.defaultPadding),
-            _buildSkipButton(),
+            if (!AutoRouter.of(context).canPop()) const SizedBox(height: UiConstant.defaultPadding),
+            if (!AutoRouter.of(context).canPop()) _buildSkipButton(),
           ]),
         ],
       ),

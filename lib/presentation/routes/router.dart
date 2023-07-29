@@ -71,6 +71,10 @@ import '../pages/screens.dart';
         page: SaveNowPage,
         path: '/save-now',
         transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: SavingDetailPage,
+        path: '/saving-detail',
+        transitionsBuilder: TransitionsBuilders.fadeIn),
   ],
 )
 class $AppRouter {}

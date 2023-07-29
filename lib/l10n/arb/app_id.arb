@@ -132,6 +132,9 @@
   "requestBalanceSuccessDescription": "Hihihi, permintaan saldo-mu udah berhasil terkirim.\nHarap tunggu balasan dari keluarga/temanmu, ya!",
   "waitAtHome": "Tunggu di Beranda",
   "requestBalanceAgain": "Minta Saldo Lagi",
+  "topUpBalanceAgain": "Top Up Lagi",
+  "topUpSuccess": "Top Up Berhasil!",
+  "topUpSuccessDescription": "Top up saldomu sudah berhasil, nih!",
   "eWallet": "E-Wallet",
   "mobileBanking": "Mobile Banking",
   "otherMethods": "Metode lain",
@@ -154,5 +157,12 @@
   "savingTargetCreated": "Target tabungan berhasil dibuat!",
   "targetEmptyTitle": "Hmm, belum ada target tabungan nih!",
   "targetEmptyDescription": "Kelihatannya kamu belum membuat target apapun",
-  "mainBalance": "Rekening utama"
+  "mainBalance": "Rekening utama",
+  "savingTargetDetail": "Detail Target Tabungan",
+  "history": "Riwayat",
+  "startSavingDate": "Awal Nabung",
+  "endSavingDate": "Rencana Tercapai",
+  "savingHistory": "Riwayat Nabung",
+  "historyEmpty": "Hmm, belum ada pemasukan nih!",
+  "historyEmptyDescription": "Kelihatannya kamu belum mulai menabung"
 }

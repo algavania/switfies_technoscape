@@ -285,7 +285,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                       displayName: displayName,
                                       loginPassword: loginPassword
                                     );
-                                    await AuthRepository().createUser(authModel, userModel);
+                                    await AuthRepository().createUser(authModel, userModel, isAuth: true);
+
                                     TokenModel tokenModel = await AuthRepository().generateToken(username, loginPassword);
                                     await SharedPreferencesService.setToken(tokenModel.accessToken);
                                     await BankRepository().createBankAccount(tokenModel.accessToken);

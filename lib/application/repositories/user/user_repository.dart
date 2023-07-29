@@ -32,6 +32,7 @@ class UserRepository implements BaseUserRepository {
     }
     QuerySnapshot snapshot = await data.get();
     List<UserModel> list = [];
+    print('snapshot ${snapshot.docs.length} ${SharedPreferencesService.getAuthData()!.uid}');
     if (snapshot.docs.isNotEmpty) {
       for (var doc in snapshot.docs) {
         UserModel user = UserModel.fromJson(doc.data() as Map<String, dynamic>);

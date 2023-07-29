@@ -13,7 +13,7 @@ import 'base_auth_repository.dart';
 
 class AuthRepository implements BaseAuthRepository {
   @override
-  Future<ResponseModel> createUser(AuthModel authModel, UserModel userModel) async {
+  Future<ResponseModel> createUser(AuthModel authModel, UserModel userModel, {bool isAuth = false}) async {
     Response res = await NetworkService.post(url: '/user/auth/create', body: authModel.toJson());
     print('res body ${res.body}');
     ResponseModel model = ResponseModel.fromJson(jsonDecode(res.body));
@@ -24,8 +24,10 @@ class AuthRepository implements BaseAuthRepository {
     AuthModel resultAuth = AuthModel.fromJson(model.data);
     userModel = userModel.copyWith(uid: resultAuth.uid!);
     await UserRepository().addOrUpdateUser(userModel.uid!, userModel);
-    await SharedPreferencesService.setAuthData(resultAuth);
-    await SharedPreferencesService.setUserData(userModel);
+    if (isAuth) {
+      await SharedPreferencesService.setAuthData(resultAuth);
+      await SharedPreferencesService.setUserData(userModel);
+    }
     return model;
   }
 

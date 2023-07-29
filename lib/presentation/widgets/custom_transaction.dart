@@ -17,10 +17,10 @@ import '../../data/models/token/token_model.dart';
 
 class CustomTransaction extends StatefulWidget {
   final TransactionModel transactionModel;
-  final void Function() refreshPage;
+  final void Function()? refreshPage;
+  final bool isNotification;
 
-  const CustomTransaction({Key? key, required this.transactionModel, required this.refreshPage})
-      : super(key: key);
+  const CustomTransaction({Key? key, required this.transactionModel, this.refreshPage, this.isNotification = false}) : super(key: key);
 
   @override
   State<CustomTransaction> createState() => _CustomTransactionState();
@@ -72,15 +72,34 @@ class _CustomTransactionState extends State<CustomTransaction> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (_transactionModel.createTime != null)
-            Text(
-              SharedData.dateFormat.format(DateTime.fromMillisecondsSinceEpoch(
-                  _transactionModel.createTime!)),
-              style: Theme.of(context)
-                  .textTheme
-                  .displayMedium
-                  ?.copyWith(fontSize: 12, color: ColorValues.greyBase),
-            ),
+          Row(
+            children: [
+              if (_transactionModel.createTime != null) Text(
+                SharedData.dateFormat.format(DateTime.fromMillisecondsSinceEpoch(_transactionModel.createTime!)),
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12, color: ColorValues.greyBase),
+              ),
+              const Spacer(),
+              if (_transactionModel.relatedId != null && widget.isNotification) Container(
+                margin: const EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    width: 0.5,
+                    color: _transactionModel.isApproved == null ? ColorValues.warning30 : (_transactionModel.isApproved! ? ColorValues.success30 : ColorValues.danger30),
+                  ),
+                  color: _transactionModel.isApproved == null ? ColorValues.warning10.withOpacity(0.8) : (_transactionModel.isApproved! ? ColorValues.success10 : ColorValues.danger10),
+                ),
+                child: Text(
+                  _transactionModel.isApproved == null ? AppLocalizations.of(context).waiting : (_transactionModel.isApproved! ? AppLocalizations.of(context).approved : AppLocalizations.of(context).rejected),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 10,
+                    color: _transactionModel.isApproved == null ? ColorValues.warning30 : (_transactionModel.isApproved! ? ColorValues.success30 : ColorValues.danger30),
+                  ),
+                ),
+              ),
+            ],
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
             child: Row(children: [
@@ -154,7 +173,7 @@ class _CustomTransactionState extends State<CustomTransaction> {
                   ?.copyWith(fontSize: 12),
             ),
           ]),
-          if (_transactionModel.relatedId != null)
+          if (_transactionModel.relatedId != null && _transactionModel.isApproved == null)
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Row(children: [
@@ -184,7 +203,7 @@ class _CustomTransactionState extends State<CustomTransaction> {
                                 context: context,
                                 message:
                                     AppLocalizations.of(context).denySuccess);
-                            widget.refreshPage.call();
+                            widget.refreshPage?.call();
                           } catch (e) {
                             SharedCode.showSnackbar(
                                 context: context,
@@ -228,7 +247,7 @@ class _CustomTransactionState extends State<CustomTransaction> {
                                 context: context,
                                 message:
                                 AppLocalizations.of(context).acceptSuccess);
-                            widget.refreshPage.call();
+                            widget.refreshPage?.call();
                           } catch (e) {
                             SharedCode.showSnackbar(
                                 context: context,

@@ -7,5 +7,5 @@ abstract class BaseBankRepository {
   Future<List<AccountModel>> getAllAccount();
   Future<void> addBalance(String accountNo, double amount);
   Future<void> createTransaction(String senderAccountNo, String receiverAccountNo, double amount, String token);
-  Future<List<TransactionModel>> getAllTransactions({required String accountNo, int pageNumber = 1, int recordsPerPage = 50});
+  Future<List<TransactionModel>> getAllTransactions({required String accountNo, int pageNumber = 1, int recordsPerPage = 50, String? token});
 }

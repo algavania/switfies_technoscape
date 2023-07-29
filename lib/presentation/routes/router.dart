@@ -55,6 +55,10 @@ import '../pages/screens.dart';
               page: ActivityPage,
               transitionsBuilder: TransitionsBuilders.fadeIn),
           CustomRoute(
+              path: 'notifications',
+              page: NotificationsPage,
+              transitionsBuilder: TransitionsBuilders.fadeIn),
+          CustomRoute(
               path: 'article',
               page: ArticlePage,
               transitionsBuilder: TransitionsBuilders.fadeIn),
@@ -74,6 +78,10 @@ import '../pages/screens.dart';
     CustomRoute(
         page: SavingDetailPage,
         path: '/saving-detail',
+        transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: AccountDetailPage,
+        path: '/account-detail',
         transitionsBuilder: TransitionsBuilders.fadeIn),
   ],
 )

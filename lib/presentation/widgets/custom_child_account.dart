@@ -1,8 +1,10 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sizer/sizer.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
+import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 
 import '../../data/models/user/user_model.dart';
 
@@ -18,7 +20,9 @@ class _CustomChildAccountState extends State<CustomChildAccount> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        AutoRouter.of(context).navigate(AccountDetailRoute(childModel: widget.user));
+      },
       child: Container(
         width: 100.w,
         padding: const EdgeInsets.all(UiConstant.smallerPadding),
@@ -30,8 +34,8 @@ class _CustomChildAccountState extends State<CustomChildAccount> {
         child: Row(children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              'assets/activity/img_child.png',
+            child: Image.network(
+              'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
               width: 32,
               height: 32,
               fit: BoxFit.contain,

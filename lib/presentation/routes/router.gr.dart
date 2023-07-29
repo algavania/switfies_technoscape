@@ -16,6 +16,7 @@ import 'package:flutter/cupertino.dart' as _i4;
 import 'package:flutter/material.dart' as _i3;
 
 import '../../data/models/saving/saving_model.dart' as _i5;
+import '../../data/models/user/user_model.dart' as _i6;
 import '../pages/screens.dart' as _i1;
 
 class AppRouter extends _i2.RootStackRouter {
@@ -120,6 +121,19 @@ class AppRouter extends _i2.RootStackRouter {
         barrierDismissible: false,
       );
     },
+    AccountDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<AccountDetailRouteArgs>();
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: _i1.AccountDetailPage(
+          key: args.key,
+          childModel: args.childModel,
+        ),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
     HomeRoute.name: (routeData) {
       final args = routeData.argsAs<HomeRouteArgs>();
       return _i2.CustomPage<dynamic>(
@@ -138,6 +152,15 @@ class AppRouter extends _i2.RootStackRouter {
       return _i2.CustomPage<dynamic>(
         routeData: routeData,
         child: const _i1.ActivityPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    NotificationsRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.NotificationsPage(),
         transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
         opaque: true,
         barrierDismissible: false,
@@ -210,6 +233,11 @@ class AppRouter extends _i2.RootStackRouter {
               parent: DashboardRoute.name,
             ),
             _i2.RouteConfig(
+              NotificationsRoute.name,
+              path: 'notifications',
+              parent: DashboardRoute.name,
+            ),
+            _i2.RouteConfig(
               ArticleRoute.name,
               path: 'article',
               parent: DashboardRoute.name,
@@ -232,6 +260,10 @@ class AppRouter extends _i2.RootStackRouter {
         _i2.RouteConfig(
           SavingDetailRoute.name,
           path: '/saving-detail',
+        ),
+        _i2.RouteConfig(
+          AccountDetailRoute.name,
+          path: '/account-detail',
         ),
       ];
 }
@@ -396,6 +428,40 @@ class SavingDetailRouteArgs {
 }
 
 /// generated route for
+/// [_i1.AccountDetailPage]
+class AccountDetailRoute extends _i2.PageRouteInfo<AccountDetailRouteArgs> {
+  AccountDetailRoute({
+    _i4.Key? key,
+    required _i6.UserModel childModel,
+  }) : super(
+          AccountDetailRoute.name,
+          path: '/account-detail',
+          args: AccountDetailRouteArgs(
+            key: key,
+            childModel: childModel,
+          ),
+        );
+
+  static const String name = 'AccountDetailRoute';
+}
+
+class AccountDetailRouteArgs {
+  const AccountDetailRouteArgs({
+    this.key,
+    required this.childModel,
+  });
+
+  final _i4.Key? key;
+
+  final _i6.UserModel childModel;
+
+  @override
+  String toString() {
+    return 'AccountDetailRouteArgs{key: $key, childModel: $childModel}';
+  }
+}
+
+/// generated route for
 /// [_i1.HomePage]
 class HomeRoute extends _i2.PageRouteInfo<HomeRouteArgs> {
   HomeRoute({
@@ -444,6 +510,18 @@ class ActivityRoute extends _i2.PageRouteInfo<void> {
         );
 
   static const String name = 'ActivityRoute';
+}
+
+/// generated route for
+/// [_i1.NotificationsPage]
+class NotificationsRoute extends _i2.PageRouteInfo<void> {
+  const NotificationsRoute()
+      : super(
+          NotificationsRoute.name,
+          path: 'notifications',
+        );
+
+  static const String name = 'NotificationsRoute';
 }
 
 /// generated route for

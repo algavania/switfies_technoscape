@@ -26,8 +26,6 @@ class ActivityPage extends StatefulWidget {
 }
 
 class _ActivityPageState extends State<ActivityPage> {
-  final bool _isParent =
-      SharedPreferencesService.getUserData()!.relatedId == null;
   List<TransactionModel> _transactionList = [];
   List<UserModel> _childList = [];
   bool _isLoading = true;
@@ -52,10 +50,12 @@ class _ActivityPageState extends State<ActivityPage> {
         });
       }
       _childList = await UserRepository().getMyChildren();
-      _transactionList = await BankRepository().getAllTransactions(
-        accountNo: SharedPreferencesService.getUserData()!.accountNo!,
-        recordsPerPage: 3
-      );
+      try {
+        _transactionList = await BankRepository().getAllTransactions(
+            accountNo: SharedPreferencesService.getUserData()!.accountNo!,
+            recordsPerPage: 3
+        );
+      } catch (_) {}
       setState(() {
         _isLoading = false;
       });
@@ -257,15 +257,6 @@ class _ActivityPageState extends State<ActivityPage> {
             title,
             style: Theme.of(context).textTheme.labelLarge,
           )),
-          if (!isListEmpty)
-            GestureDetector(
-              onTap: onTap,
-              child: Text(
-                AppLocalizations.of(context).seeAll,
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                    fontSize: 12, color: Theme.of(context).primaryColor),
-              ),
-            )
         ]),
         const SizedBox(height: UiConstant.mediumSpacing),
         Text(

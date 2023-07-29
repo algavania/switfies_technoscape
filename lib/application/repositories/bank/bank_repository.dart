@@ -89,7 +89,7 @@ class BankRepository implements BaseBankRepository {
   Future<List<TransactionModel>> getAllTransactions(
       {required String accountNo,
       int pageNumber = 1,
-      int recordsPerPage = 50}) async {
+      int recordsPerPage = 50, String? token}) async {
     Response res = await NetworkService.post(
         url: '/bankAccount/transaction/info',
         body: {
@@ -97,7 +97,7 @@ class BankRepository implements BaseBankRepository {
           'pageNumber': pageNumber,
           'recordsPerPage': recordsPerPage
         },
-        token: SharedPreferencesService.getToken());
+        token: token ?? SharedPreferencesService.getToken());
     ResponseModel model = ResponseModel.fromJson(jsonDecode(res.body));
     if (model.errMsg != null) {
       throw model.errMsg!.isNotEmpty ? model.errMsg! : 'Error';

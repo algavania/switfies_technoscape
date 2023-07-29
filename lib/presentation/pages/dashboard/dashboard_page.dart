@@ -54,6 +54,7 @@ class _DashboardPageState extends State<DashboardPage> {
               routes: [
                 HomeRoute(openPanel: _openPanel, closePanel: _closePanel),
                 const ActivityRoute(),
+                const NotificationsRoute(),
                 const ArticleRoute(),
                 const ProfileRoute(),
               ],
@@ -71,6 +72,10 @@ class _DashboardPageState extends State<DashboardPage> {
                       BottomNavigationBarItem(
                         icon: const Icon(Iconsax.activity5),
                         label: AppLocalizations.of(context).activity,
+                      ),
+                      BottomNavigationBarItem(
+                        icon: const Icon(Iconsax.notification_bing5),
+                        label: AppLocalizations.of(context).notifications,
                       ),
                       BottomNavigationBarItem(
                         icon: const Icon(Iconsax.document_text5),

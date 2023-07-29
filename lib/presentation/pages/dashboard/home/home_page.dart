@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
         SharedData.myAccountData.value = account;
         if (user?.accountNo == null) {
           user = user?.copyWith(accountNo: account.accountNo);
-          await UserRepository().addOrUpdateUser(user!.uid!, user!);
+          await UserRepository().addOrUpdateUser(user!.uid!, user);
         }
       }
       if (_isParent) {
@@ -389,7 +389,9 @@ class _HomePageState extends State<HomePage> {
                 iconData: Iconsax.document_text5,
                 iconColor: ColorValues.warning30,
                 backgroundColor: ColorValues.warning10,
-                onTap: () {},
+                onTap: () {
+                  AutoRouter.of(context).navigate(const ArticleRoute());
+                },
               ),
             ),
           ],
@@ -479,7 +481,9 @@ class _HomePageState extends State<HomePage> {
                 title: AppLocalizations.of(context).approvalRequestTitle,
                 description:
                     AppLocalizations.of(context).approvalRequestDescription,
-                onTap: () {}),
+                onTap: () {
+                  AutoRouter.of(context).navigate(const NotificationsRoute());
+                }),
             const SizedBox(height: 16),
             _transactionList.isEmpty
                 ? _buildEmptyList(
@@ -521,7 +525,9 @@ class _HomePageState extends State<HomePage> {
                 title: AppLocalizations.of(context).childrenAccountsTitle,
                 description:
                     AppLocalizations.of(context).childrenAccountsDescription,
-                onTap: () {}),
+                onTap: () {
+                  AutoRouter.of(context).navigate(const ActivityRoute());
+                }),
             const SizedBox(height: 16),
             _childList.isEmpty
                 ? _buildEmptyList(
@@ -564,7 +570,9 @@ class _HomePageState extends State<HomePage> {
                 title: AppLocalizations.of(context).duitKiddoArticleTitle,
                 description:
                     AppLocalizations.of(context).duitKiddoArticleDescription,
-                onTap: () {}),
+                onTap: () {
+                  AutoRouter.of(context).navigate(const ArticleRoute());
+                }),
             const SizedBox(height: 16),
             _articleList.isEmpty
                 ? _buildEmptyList(

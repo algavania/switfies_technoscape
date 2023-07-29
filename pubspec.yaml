@@ -76,6 +76,5 @@ flutter:
     - assets/
     - assets/core/
     - assets/onboarding/
-    - assets/authentication/
     - assets/activity/
     - assets/save_now/

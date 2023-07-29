@@ -1,4 +1,6 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -6,6 +8,7 @@ import 'package:swifties_technoscape/application/common/shared_code.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
+import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_button.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_saving_method.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart';
@@ -226,7 +229,10 @@ class _SaveNowPageState extends State<SaveNowPage> {
       const SizedBox(height: 24),
       CustomButton(
         buttonText: AppLocalizations.of(context).sendRequest,
-        onPressed: () {},
+        onPressed: () {
+          _panelHeight.value = 70.h;
+          _panelContent.value = _buildSuccessPanel();
+        },
       ),
     ]);
   }
@@ -295,6 +301,72 @@ class _SaveNowPageState extends State<SaveNowPage> {
           ],
         );
       },
+    );
+  }
+
+  Widget _buildSuccessPanel() {
+    return Column(
+      children: [
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: UiConstant.sidePadding),
+                child: Center(
+                  child: SvgPicture.asset(
+                    'assets/core/img_action_success.svg',
+                    width: 25.h,
+                    height: 25.h,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              const SizedBox(height: UiConstant.sidePadding),
+              Text(
+                AppLocalizations
+                    .of(context)
+                    .requestBalanceSuccess,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .titleMedium,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 12),
+              Text(
+                AppLocalizations
+                    .of(context)
+                    .requestBalanceSuccessDescription,
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .displayMedium
+                    ?.copyWith(color: ColorValues.greyBase, fontSize: 12),
+                textAlign: TextAlign.center,
+              ),
+            ]),
+          ),
+        ),
+        const SizedBox(height: 24),
+        Column(children: [
+          CustomButton(
+            buttonText: AppLocalizations.of(context).waitAtHome,
+            onPressed: () {
+              AutoRouter.of(context).replace(const DashboardRoute());
+            },
+          ),
+          const SizedBox(height: 8),
+          CustomButton(
+            buttonText: AppLocalizations.of(context).requestBalanceAgain,
+            colorAsOutlineButton: ColorValues.grey90,
+            backgroundColor: ColorValues.slidingPanelBackground,
+            onPressed: () {
+              _panelController.close();
+            },
+          ),
+        ]),
+      ],
     );
   }
 }

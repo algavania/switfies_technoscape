@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
               body: ClipRRect(
                 borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
                 child: Image.network(
-                  'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                  'https://firebasestorage.googleapis.com/v0/b/swifties-technoscape.appspot.com/o/img_default_profile.png?alt=media&token=41b41973-531b-4f6e-95da-7b1e08f170a4',
                   width: 40,
                   height: 40,
                 ),
@@ -496,6 +496,7 @@ class _HomePageState extends State<HomePage> {
                     itemCount: _transactionList.length,
                     itemBuilder: (context, index) {
                       return CustomTransaction(
+                          userId: SharedPreferencesService.getUserData()!.accountNo!,
                           refreshPage: _getAllData,
                           transactionModel: _transactionList[index]);
                     },
@@ -683,6 +684,8 @@ class _HomePageState extends State<HomePage> {
                           _identifierAccountController.text.trim();
                       String username =
                           _identifierUsernameController.text.trim();
+                      UserModel myAccount = SharedPreferencesService.getUserData()!;
+                      if (accountNo == myAccount.accountNo || username == myAccount.username) throw 'Tidak bisa transfer ke diri sendiri';
                       if (_selectedIdentifier.value ==
                               AppLocalizations.of(context).accountId &&
                           accountNo.isEmpty) {
@@ -1022,7 +1025,7 @@ class _HomePageState extends State<HomePage> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: Image.network(
-                                'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                                'https://firebasestorage.googleapis.com/v0/b/swifties-technoscape.appspot.com/o/img_default_profile.png?alt=media&token=41b41973-531b-4f6e-95da-7b1e08f170a4',
                                 width: 32,
                                 height: 32,
                                 fit: BoxFit.cover,
@@ -1318,7 +1321,7 @@ class _HomePageState extends State<HomePage> {
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
                         child: Image.network(
-                          'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                          'https://firebasestorage.googleapis.com/v0/b/swifties-technoscape.appspot.com/o/img_default_profile.png?alt=media&token=41b41973-531b-4f6e-95da-7b1e08f170a4',
                           width: 32,
                           height: 32,
                           fit: BoxFit.cover,
@@ -1442,15 +1445,15 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: CustomButton(
-                    buttonText: AppLocalizations.of(context).downloadReceipt,
-                    onPressed: () {
-                      widget.closePanel();
-                    },
-                  ),
-                ),
+                // const SizedBox(width: 16),
+                // Expanded(
+                //   child: CustomButton(
+                //     buttonText: AppLocalizations.of(context).downloadReceipt,
+                //     onPressed: () {
+                //       widget.closePanel();
+                //     },
+                //   ),
+                // ),
               ],
             ),
           )

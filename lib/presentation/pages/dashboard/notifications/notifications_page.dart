@@ -69,7 +69,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
               body: ClipRRect(
                 borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
                 child: Image.network(
-                  'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                  'https://firebasestorage.googleapis.com/v0/b/swifties-technoscape.appspot.com/o/img_default_profile.png?alt=media&token=41b41973-531b-4f6e-95da-7b1e08f170a4',
                   width: 40,
                   height: 40,
                 ),
@@ -128,7 +128,9 @@ class _NotificationsPageState extends State<NotificationsPage> {
       physics: const NeverScrollableScrollPhysics(),
       itemCount: _transactionList.length,
       itemBuilder: (context, index) {
-        return CustomTransaction(transactionModel: _transactionList[index], isNotification: true);
+        return CustomTransaction(
+            userId: SharedPreferencesService.getUserData()!.accountNo!,
+            transactionModel: _transactionList[index], isNotification: true);
       },
       separatorBuilder: (_, __) {
         return const SizedBox(height: UiConstant.defaultSpacing);

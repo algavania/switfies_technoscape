@@ -114,7 +114,7 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                'https://firebasestorage.googleapis.com/v0/b/swifties-technoscape.appspot.com/o/img_default_profile.png?alt=media&token=41b41973-531b-4f6e-95da-7b1e08f170a4',
                 width: 32,
                 height: 32,
                 fit: BoxFit.cover,
@@ -267,7 +267,7 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
             _buildSectionHeading(
               isListEmpty: _transactionList.isEmpty,
               title: AppLocalizations.of(context).lastActivityTitle,
-              description: AppLocalizations.of(context).lastActivityDescription,
+              description: SharedPreferencesService.getUserData()?.relatedId == null ? AppLocalizations.of(context).childActivityDescription : AppLocalizations.of(context).lastActivityDescription,
               onTap: () {},
             ),
             const SizedBox(height: 16),
@@ -282,6 +282,7 @@ class _AccountDetailPageState extends State<AccountDetailPage> {
                     itemCount: _transactionList.length,
                     itemBuilder: (context, index) {
                       return CustomTransaction(
+                          userId: widget.childModel.accountNo!,
                           transactionModel: _transactionList[index]);
                     },
                     separatorBuilder: (_, __) {

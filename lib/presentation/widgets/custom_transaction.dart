@@ -4,6 +4,7 @@ import 'package:sizer/sizer.dart';
 import 'package:swifties_technoscape/application/common/db_constants.dart';
 import 'package:swifties_technoscape/application/common/shared_code.dart';
 import 'package:swifties_technoscape/application/repositories/repositories.dart';
+import 'package:swifties_technoscape/application/service/shared_preferences_service.dart';
 import 'package:swifties_technoscape/data/models/transaction/transaction_model.dart';
 import 'package:swifties_technoscape/data/models/user/user_model.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
@@ -19,8 +20,9 @@ class CustomTransaction extends StatefulWidget {
   final TransactionModel transactionModel;
   final void Function()? refreshPage;
   final bool isNotification;
+  final String userId;
 
-  const CustomTransaction({Key? key, required this.transactionModel, this.refreshPage, this.isNotification = false}) : super(key: key);
+  const CustomTransaction({Key? key, required this.transactionModel, this.refreshPage, this.isNotification = false, required this.userId}) : super(key: key);
 
   @override
   State<CustomTransaction> createState() => _CustomTransactionState();
@@ -122,13 +124,13 @@ class _CustomTransactionState extends State<CustomTransaction> {
               ),
               const Spacer(),
               Text(
-                traxType == AppLocalizations.of(context).transferOut
+                traxType == AppLocalizations.of(context).transferOut && _transactionModel.senderAccountNo == widget.userId
                     ? '-${SharedCode.formatToRupiah(_transactionModel.amount)}'
                     : '+${SharedCode.formatToRupiah(_transactionModel.amount)}',
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       fontSize: 12,
                       color:
-                          traxType == AppLocalizations.of(context).transferOut
+                      traxType == AppLocalizations.of(context).transferOut && _transactionModel.senderAccountNo == widget.userId
                               ? ColorValues.danger30
                               : ColorValues.success30,
                     ),

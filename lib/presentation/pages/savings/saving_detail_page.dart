@@ -733,6 +733,7 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
               itemCount: _transactions.length,
               itemBuilder: (c, i) {
                 return CustomTransaction(
+                    userId: SharedPreferencesService.getUserData()!.accountNo!,
                     refreshPage: () {},
                     transactionModel: _transactions[i]);
               },

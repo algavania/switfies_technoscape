@@ -50,4 +50,16 @@ class BankRepository implements BaseBankRepository {
     AccountModel result = AccountModel.fromJson(model.data);
     return result;
   }
+
+  @override
+  Future<void> addBalance(String accountNo, double amount) async {
+    Response res = await NetworkService.post(url: '/bankAccount/addBalance', token: SharedPreferencesService.getToken(), body: {
+      'receiverAccountNo': accountNo,
+      'amount': amount
+    });
+    ResponseModel model = ResponseModel.fromJson(jsonDecode(res.body));
+    if (model.errMsg != null) {
+      throw model.errMsg!.isNotEmpty ? model.errMsg! : 'Error';
+    }
+  }
 }

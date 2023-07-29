@@ -98,10 +98,10 @@ class _ActivityPageState extends State<ActivityPage> {
                               vertical: UiConstant.mediumPadding),
                           child: Column(
                             children: [
-                              _buildAddAccount(),
-                              const SizedBox(height: UiConstant.defaultSpacing),
-                              _buildChildrenAccounts(),
-                              const SizedBox(height: UiConstant.defaultSpacing),
+                              if (SharedPreferencesService.getUserData()!.relatedId == null) _buildAddAccount(),
+                              if (SharedPreferencesService.getUserData()!.relatedId == null) const SizedBox(height: UiConstant.defaultSpacing),
+                              if (SharedPreferencesService.getUserData()!.relatedId == null) _buildChildrenAccounts(),
+                              if (SharedPreferencesService.getUserData()!.relatedId == null) const SizedBox(height: UiConstant.defaultSpacing),
                               _buildActivities(),
                             ],
                           ),

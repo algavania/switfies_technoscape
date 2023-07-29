@@ -265,7 +265,7 @@ class _SavingsPageState extends State<SavingsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              AppLocalizations.of(context).createNewTargetTitle,
+              AppLocalizations.of(context).yourSavingTargets,
               style: Theme.of(context)
                   .textTheme
                   .labelLarge

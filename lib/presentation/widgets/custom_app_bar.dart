@@ -18,7 +18,7 @@ class CustomAppBar extends StatelessWidget {
       child: Container(
         color: color ?? Colors.white,
         padding: const EdgeInsets.fromLTRB(UiConstant.sidePadding, 12,
-            UiConstant.sidePadding, UiConstant.sidePadding),
+            UiConstant.sidePadding, UiConstant.defaultPadding),
         child: Row(
           children: [
             hasBackButton

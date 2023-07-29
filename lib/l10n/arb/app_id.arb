@@ -157,5 +157,12 @@
   "savingTargetCreated": "Target tabungan berhasil dibuat!",
   "targetEmptyTitle": "Hmm, belum ada target tabungan nih!",
   "targetEmptyDescription": "Kelihatannya kamu belum membuat target apapun",
-  "mainBalance": "Rekening utama"
+  "mainBalance": "Rekening utama",
+  "savingTargetDetail": "Detail Target Tabungan",
+  "history": "Riwayat",
+  "startSavingDate": "Awal Nabung",
+  "endSavingDate": "Rencana Tercapai",
+  "savingHistory": "Riwayat Nabung",
+  "historyEmpty": "Hmm, belum ada pemasukan nih!",
+  "historyEmptyDescription": "Kelihatannya kamu belum mulai menabung"
 }

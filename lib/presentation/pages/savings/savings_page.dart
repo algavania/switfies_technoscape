@@ -5,6 +5,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:swifties_technoscape/application/common/shared_code.dart';
+import 'package:swifties_technoscape/application/service/shared_preferences_service.dart';
 import 'package:swifties_technoscape/data/models/saving/saving_model.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
@@ -282,7 +283,7 @@ class _SavingsPageState extends State<SavingsPage> {
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: _savings.length,
                     itemBuilder: (context, index) {
-                      return CustomSaving(savingModel: _savings[index]);
+                      return CustomSaving(savingModel: _savings[index], index: index, setSavingModel: _setSavingModel,);
                     },
                     separatorBuilder: (_, __) {
                       return const SizedBox(height: UiConstant.defaultSpacing);
@@ -293,6 +294,12 @@ class _SavingsPageState extends State<SavingsPage> {
         ),
       ),
     );
+  }
+
+  void _setSavingModel(SavingModel savingModel, int index) {
+    setState(() {
+      _savings[index] = savingModel;
+    });
   }
 
   Widget _buildPanelTitle(String title) {
@@ -475,7 +482,7 @@ class _SavingsPageState extends State<SavingsPage> {
                               DateTime? selectedDate = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime(1900),
+                                  firstDate: DateTime.now(),
                                   lastDate: DateTime(2100));
                               if (selectedDate != null) {
                                 setState(() {
@@ -687,6 +694,7 @@ class _SavingsPageState extends State<SavingsPage> {
                           title: _titleController.text,
                           category: _selectedCategory.value,
                           frequency: frequency,
+                          hasClaimedReward: SharedPreferencesService.getUserData()!.relatedId == null ? null : false,
                           savingAdviceAmount: SharedCode.formatFromRupiah(
                                   _targetController.text) /
                               frequencyLength,

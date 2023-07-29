@@ -164,5 +164,12 @@
   "endSavingDate": "Rencana Tercapai",
   "savingHistory": "Riwayat Nabung",
   "historyEmpty": "Hmm, belum ada pemasukan nih!",
-  "historyEmptyDescription": "Kelihatannya kamu belum mulai menabung"
+  "historyEmptyDescription": "Kelihatannya kamu belum mulai menabung",
+  "claimReward": "Status Reward",
+  "claim": "Klaim",
+  "hasClaimReward": "Kamu sudah mengambil reward",
+  "withdraw": "Tarik",
+  "withdrawToMainAccount": "Dana berhasil dikirim ke rekening utama!",
+  "depositToSaving": "Kamu berhasil menabung!",
+  "insufficientFund": "Saldo tidak cukup!"
 }

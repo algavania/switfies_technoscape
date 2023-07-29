@@ -115,6 +115,7 @@ class _HomePageState extends State<HomePage> {
                         child: Column(
                           children: [
                             _buildBalance(),
+                            _buildActions(),
                             const SizedBox(height: UiConstant.defaultSpacing),
                             _buildMenus(),
                             const SizedBox(height: UiConstant.defaultSpacing),
@@ -201,6 +202,55 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         });
+  }
+
+  Widget _buildActions() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(32, 8, 32, UiConstant.defaultPadding),
+      color: ColorValues.surface,
+      child: Row(children: [
+        Expanded(child: _buildActionButton(
+          AppLocalizations.of(context).topup,
+          Iconsax.direct_down5,
+              () {},
+        )),
+        Expanded(child: _buildActionButton(
+          AppLocalizations.of(context).transferIn,
+          Iconsax.direct_inbox5,
+              () {},
+        )),
+        Expanded(child: _buildActionButton(
+          AppLocalizations.of(context).transferOut,
+          Iconsax.direct_up5,
+              () {},
+        )),
+      ]),
+    );
+  }
+
+  Widget _buildActionButton(String title, IconData iconData, Function() onTap) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            color: ColorValues.primary10,
+          ),
+          child: Icon(
+            iconData,
+            size: 24,
+            color: ColorValues.primary50,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+          textAlign: TextAlign.center,
+        )
+      ],
+    );
   }
 
   Widget _buildBalanceToggle() {

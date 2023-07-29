@@ -597,7 +597,10 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: 16),
             CustomButton(
               buttonText: AppLocalizations.of(context).validateReceiverAccount,
-              onPressed: () {},
+              onPressed: () {
+                widget.closePanel();
+                widget.openPanel(_buildValidationPanel());
+              },
             )
           ],
         );
@@ -650,6 +653,170 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildValidationPanel() {
+    bool isAccountId = _selectedIdentifier.value == AppLocalizations.of(context).accountId;
+    bool isAccountValid = true;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildPanelTitle(AppLocalizations.of(context).receiverAccountValidation),
+        const SizedBox(height: 16),
+        Expanded(child: SingleChildScrollView(
+          child: Column(children: [
+            AbsorbPointer(
+              child: Row(children: [
+                Expanded(
+                  child: _buildIdentifierChip(
+                    AppLocalizations.of(context).accountId,
+                    Iconsax.empty_wallet5,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: _buildIdentifierChip(
+                    AppLocalizations.of(context).username,
+                    Iconsax.frame5,
+                  ),
+                ),
+              ]),
+            ),
+            const SizedBox(height: 24),
+            CustomTextField(
+              readOnly: true,
+              controller: _identifierController,
+              isRequired: true,
+              textInputType: isAccountId ? TextInputType.number : null,
+              validator: SharedCode.emailValidators,
+              icon: isAccountId ? Iconsax.empty_wallet5 : Iconsax.frame5,
+              label: isAccountId ? AppLocalizations.of(context).receiverAccountId : AppLocalizations.of(context).receiverUsername,
+              hint: isAccountId ? AppLocalizations.of(context).enterAccountId : AppLocalizations.of(context).enterUsername,
+            ),
+            const SizedBox(height: 16),
+            isAccountValid ? _buildReceiverProfile('Fulan bin Fulan', 'fulanbinfulan', '100 000 000 1') : _buildAccountNotFound()
+          ]),
+        )),
+        const SizedBox(height: 16),
+        isAccountValid ? Row(
+          children: [
+            Expanded(
+              child: CustomButton(
+                buttonText: AppLocalizations.of(context).changeReceiver,
+                backgroundColor: ColorValues.slidingPanelBackground,
+                colorAsOutlineButton: ColorValues.text50,
+                onPressed: () {
+                  widget.closePanel();
+                  widget.openPanel(_buildTransferPanel());
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: CustomButton(
+                buttonText: AppLocalizations.of(context).proceed,
+                onPressed: () {},
+              ),
+            ),
+          ],
+        ) : CustomButton(
+          buttonText: AppLocalizations.of(context).changeReceiver,
+          onPressed: () {
+            widget.closePanel();
+            widget.openPanel(_buildTransferPanel());
+          },
+        )
+      ],
+    );
+  }
+
+  Widget _buildReceiverProfile(String name, String username, String accountId) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          AppLocalizations.of(context).accountFound,
+          style: Theme.of(context).textTheme.displaySmall,
+        ),
+        const SizedBox(height: 8),
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: UiConstant.mediumPadding, horizontal: UiConstant.defaultPadding),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
+            color: ColorValues.success10,
+          ),
+          child: Row(children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(
+                'assets/activity/img_child_3.png',
+                width: 32,
+                height: 32,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12),
+                ),
+                const SizedBox(height: 4),
+                Row(children: [
+                  Text(
+                    username,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+                  ),
+                  Container(
+                    width: 4,
+                    height: 4,
+                    margin: const EdgeInsets.symmetric(horizontal: 8),
+                    decoration: BoxDecoration(
+                      color: ColorValues.greyBase,
+                      borderRadius: BorderRadius.circular(4)
+                    ),
+                  ),
+                  Text(
+                    accountId,
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+                  ),
+                ]),
+              ],
+            )),
+            const Icon(
+              Iconsax.arrow_right_3,
+              color: ColorValues.grey90,
+              size: 16,
+            )
+          ]),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAccountNotFound() {
+    return Container(
+      width: 100.w,
+      padding: const EdgeInsets.symmetric(vertical: UiConstant.mediumPadding, horizontal: UiConstant.defaultPadding),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
+        color: ColorValues.danger10,
+      ),
+      child: Column(children: [
+        Text(
+          AppLocalizations.of(context).accountNotFound,
+          style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 14),
+        ),
+        const SizedBox(height: UiConstant.mediumSpacing),
+        Text(
+          AppLocalizations.of(context).accountNotFoundDescription,
+          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+        )
+      ]),
     );
   }
 }

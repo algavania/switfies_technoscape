@@ -112,8 +112,12 @@ class _ActivityPageState extends State<ActivityPage> {
   Widget _buildAddAccount() {
     return CustomShadow(
       child: InkWell(
-        onTap: () {
-          AutoRouter.of(context).navigate(const AddChildRoute());
+        onTap: () async {
+          var data = await AutoRouter.of(context).push(const AddChildRoute());
+          if (data is String) {
+            SharedCode.showSnackbar(context: context, message: data);
+            _getAllData();
+          }
         },
         child: Container(
           padding: const EdgeInsets.symmetric(
@@ -178,7 +182,7 @@ class _ActivityPageState extends State<ActivityPage> {
           children: [
             _buildSectionHeading(
               onTap: () {},
-              isListEmpty: _childList.isEmpty,
+              isListEmpty: true,
               title: AppLocalizations.of(context).childrenAccountsTitle,
               description:
                   AppLocalizations.of(context).childrenAccountsDescription,

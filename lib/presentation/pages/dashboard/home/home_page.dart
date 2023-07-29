@@ -36,8 +36,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ValueNotifier<bool> _isBalanceVisible = ValueNotifier(false);
+  final ValueNotifier<bool> _isBalancePanelVisible = ValueNotifier(false);
   final ValueNotifier<String> _selectedIdentifier = ValueNotifier('No. Rekening');
   final TextEditingController _identifierController = TextEditingController();
+  final TextEditingController _transferAmountController = TextEditingController();
+  final TextEditingController _transferMessageController = TextEditingController();
   List<UserModel> _childList = [];
   List<ArticleModel> _articleList = [];
   List<TransactionModel> _transactionList = [];
@@ -201,7 +204,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                   ),
-                  _buildBalanceToggle(),
+                  _buildBalanceToggle(_isBalanceVisible),
                 ]),
               ],
             ),
@@ -263,10 +266,10 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildBalanceToggle() {
+  Widget _buildBalanceToggle(ValueNotifier<bool> valueNotifier) {
     return InkWell(
       onTap: () {
-        _isBalanceVisible.value = !_isBalanceVisible.value;
+        valueNotifier.value = !valueNotifier.value;
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
@@ -276,13 +279,13 @@ class _HomePageState extends State<HomePage> {
         child: Row(
           children: [
             Icon(
-              _isBalanceVisible.value ? Iconsax.eye_slash5 : Iconsax.eye4,
+              valueNotifier.value ? Iconsax.eye_slash5 : Iconsax.eye4,
               color: ColorValues.text50,
               size: 16,
             ),
             const SizedBox(width: 4),
             Text(
-              _isBalanceVisible.value
+              valueNotifier.value
                   ? AppLocalizations.of(context).hide
                   : AppLocalizations.of(context).show,
               style: Theme.of(context)
@@ -556,55 +559,58 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildTransferPanel() {
-    return ValueListenableBuilder(
-      valueListenable: _selectedIdentifier,
-      builder: (context, _, __) {
-        bool isAccountId = _selectedIdentifier.value == AppLocalizations.of(context).accountId;
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildPanelTitle(AppLocalizations.of(context).transferToOtherUser),
-            const SizedBox(height: 16),
-            Expanded(child: SingleChildScrollView(
-              child: Column(children: [
-                Row(children: [
-                  Expanded(
-                    child: _buildIdentifierChip(
-                      AppLocalizations.of(context).accountId,
-                      Iconsax.empty_wallet5,
+    return Padding(
+      padding: const EdgeInsets.all(UiConstant.sidePadding),
+      child: ValueListenableBuilder(
+        valueListenable: _selectedIdentifier,
+        builder: (context, _, __) {
+          bool isAccountId = _selectedIdentifier.value == AppLocalizations.of(context).accountId;
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildPanelTitle(AppLocalizations.of(context).transferToOtherUser),
+              const SizedBox(height: 16),
+              Expanded(child: SingleChildScrollView(
+                child: Column(children: [
+                  Row(children: [
+                    Expanded(
+                      child: _buildIdentifierChip(
+                        AppLocalizations.of(context).accountId,
+                        Iconsax.empty_wallet5,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: _buildIdentifierChip(
-                      AppLocalizations.of(context).username,
-                      Iconsax.frame5,
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: _buildIdentifierChip(
+                        AppLocalizations.of(context).username,
+                        Iconsax.frame5,
+                      ),
                     ),
+                  ]),
+                  const SizedBox(height: 24),
+                  CustomTextField(
+                    controller: _identifierController,
+                    isRequired: true,
+                    textInputType: isAccountId ? TextInputType.number : null,
+                    validator: SharedCode.emptyValidators,
+                    icon: isAccountId ? Iconsax.empty_wallet5 : Iconsax.frame5,
+                    label: isAccountId ? AppLocalizations.of(context).receiverAccountId : AppLocalizations.of(context).receiverUsername,
+                    hint: isAccountId ? AppLocalizations.of(context).enterAccountId : AppLocalizations.of(context).enterUsername,
                   ),
                 ]),
-                const SizedBox(height: 24),
-                CustomTextField(
-                  controller: _identifierController,
-                  isRequired: true,
-                  textInputType: isAccountId ? TextInputType.number : null,
-                  validator: SharedCode.emailValidators,
-                  icon: isAccountId ? Iconsax.empty_wallet5 : Iconsax.frame5,
-                  label: isAccountId ? AppLocalizations.of(context).receiverAccountId : AppLocalizations.of(context).receiverUsername,
-                  hint: isAccountId ? AppLocalizations.of(context).enterAccountId : AppLocalizations.of(context).enterUsername,
-                ),
-              ]),
-            )),
-            const SizedBox(height: 16),
-            CustomButton(
-              buttonText: AppLocalizations.of(context).validateReceiverAccount,
-              onPressed: () {
-                widget.closePanel();
-                widget.openPanel(_buildValidationPanel());
-              },
-            )
-          ],
-        );
-      }
+              )),
+              const SizedBox(height: 16),
+              CustomButton(
+                buttonText: AppLocalizations.of(context).validateReceiverAccount,
+                onPressed: () {
+                  widget.closePanel();
+                  widget.openPanel(_buildValidationPanel());
+                },
+              )
+            ],
+          );
+        }
+      ),
     );
   }
 
@@ -660,84 +666,90 @@ class _HomePageState extends State<HomePage> {
     bool isAccountId = _selectedIdentifier.value == AppLocalizations.of(context).accountId;
     bool isAccountValid = true;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildPanelTitle(AppLocalizations.of(context).receiverAccountValidation),
-        const SizedBox(height: 16),
-        Expanded(child: SingleChildScrollView(
-          child: Column(children: [
-            AbsorbPointer(
-              child: Row(children: [
-                Expanded(
-                  child: _buildIdentifierChip(
-                    AppLocalizations.of(context).accountId,
-                    Iconsax.empty_wallet5,
+    return Padding(
+      padding: const EdgeInsets.all(UiConstant.sidePadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildPanelTitle(AppLocalizations.of(context).receiverAccountValidation),
+          const SizedBox(height: 16),
+          Expanded(child: SingleChildScrollView(
+            child: Column(children: [
+              AbsorbPointer(
+                child: Row(children: [
+                  Expanded(
+                    child: _buildIdentifierChip(
+                      AppLocalizations.of(context).accountId,
+                      Iconsax.empty_wallet5,
+                    ),
                   ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: _buildIdentifierChip(
-                    AppLocalizations.of(context).username,
-                    Iconsax.frame5,
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildIdentifierChip(
+                      AppLocalizations.of(context).username,
+                      Iconsax.frame5,
+                    ),
                   ),
+                ]),
+              ),
+              const SizedBox(height: 24),
+              CustomTextField(
+                readOnly: true,
+                controller: _identifierController,
+                isRequired: true,
+                textInputType: isAccountId ? TextInputType.number : null,
+                validator: SharedCode.emptyValidators,
+                icon: isAccountId ? Iconsax.empty_wallet5 : Iconsax.frame5,
+                label: isAccountId ? AppLocalizations.of(context).receiverAccountId : AppLocalizations.of(context).receiverUsername,
+                hint: isAccountId ? AppLocalizations.of(context).enterAccountId : AppLocalizations.of(context).enterUsername,
+              ),
+              const SizedBox(height: 16),
+              isAccountValid ? _buildReceiverProfile('Fulan bin Fulan', 'fulanbinfulan', '100 000 000 1', isValidating: true) : _buildAccountNotFound()
+            ]),
+          )),
+          const SizedBox(height: 16),
+          isAccountValid ? Row(
+            children: [
+              Expanded(
+                child: CustomButton(
+                  buttonText: AppLocalizations.of(context).changeReceiver,
+                  backgroundColor: ColorValues.slidingPanelBackground,
+                  colorAsOutlineButton: ColorValues.text50,
+                  onPressed: () {
+                    widget.closePanel();
+                    widget.openPanel(_buildTransferPanel());
+                  },
                 ),
-              ]),
-            ),
-            const SizedBox(height: 24),
-            CustomTextField(
-              readOnly: true,
-              controller: _identifierController,
-              isRequired: true,
-              textInputType: isAccountId ? TextInputType.number : null,
-              validator: SharedCode.emailValidators,
-              icon: isAccountId ? Iconsax.empty_wallet5 : Iconsax.frame5,
-              label: isAccountId ? AppLocalizations.of(context).receiverAccountId : AppLocalizations.of(context).receiverUsername,
-              hint: isAccountId ? AppLocalizations.of(context).enterAccountId : AppLocalizations.of(context).enterUsername,
-            ),
-            const SizedBox(height: 16),
-            isAccountValid ? _buildReceiverProfile('Fulan bin Fulan', 'fulanbinfulan', '100 000 000 1') : _buildAccountNotFound()
-          ]),
-        )),
-        const SizedBox(height: 16),
-        isAccountValid ? Row(
-          children: [
-            Expanded(
-              child: CustomButton(
-                buttonText: AppLocalizations.of(context).changeReceiver,
-                backgroundColor: ColorValues.slidingPanelBackground,
-                colorAsOutlineButton: ColorValues.text50,
-                onPressed: () {
-                  widget.closePanel();
-                  widget.openPanel(_buildTransferPanel());
-                },
               ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: CustomButton(
-                buttonText: AppLocalizations.of(context).proceed,
-                onPressed: () {},
+              const SizedBox(width: 16),
+              Expanded(
+                child: CustomButton(
+                  buttonText: AppLocalizations.of(context).proceed,
+                  onPressed: () {
+                    widget.closePanel();
+                    widget.openPanel(_buildAmountPanel());
+                  },
+                ),
               ),
-            ),
-          ],
-        ) : CustomButton(
-          buttonText: AppLocalizations.of(context).changeReceiver,
-          onPressed: () {
-            widget.closePanel();
-            widget.openPanel(_buildTransferPanel());
-          },
-        )
-      ],
+            ],
+          ) : CustomButton(
+            buttonText: AppLocalizations.of(context).changeReceiver,
+            onPressed: () {
+              widget.closePanel();
+              widget.openPanel(_buildTransferPanel());
+            },
+          )
+        ],
+      ),
     );
   }
 
-  Widget _buildReceiverProfile(String name, String username, String accountId) {
+  Widget _buildReceiverProfile(String name, String username, String accountId, {isValidating = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          AppLocalizations.of(context).accountFound,
+          isValidating ? AppLocalizations.of(context).accountFound : AppLocalizations.of(context).receiverAccount,
           style: Theme.of(context).textTheme.displaySmall,
         ),
         const SizedBox(height: 8),
@@ -817,6 +829,183 @@ class _HomePageState extends State<HomePage> {
           style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
         )
       ]),
+    );
+  }
+
+  Widget _buildAmountPanel() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: UiConstant.sidePadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
+            child: _buildPanelTitle(AppLocalizations.of(context).enterAmount),
+          ),
+          const SizedBox(height: 24),
+          Expanded(child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
+                  child: _buildReceiverProfile('Fulan bin Fulan', 'fulanbinfulan', '100 000 000 1'),
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
+                  child: Text(
+                    AppLocalizations.of(context).senderAccount,
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(color: ColorValues.grey10, width: 1),
+                      bottom: BorderSide(color: ColorValues.grey10, width: 1),
+                    )
+                  ),
+                  child: Column(
+                    children: [
+                      Row(children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.network(
+                            'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                            width: 32,
+                            height: 32,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                        const SizedBox(width: UiConstant.defaultSpacing),
+                        Expanded(
+                          child: Text(
+                            'Fulan bin Fulan',
+                            style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12),
+                          ),
+                        ),
+                        const SizedBox(width: UiConstant.defaultSpacing),
+                        GestureDetector(
+                          onTap: () {},
+                          child: Row(children: [
+                            Text(
+                              '100 000 000 1',
+                              style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, color: Theme.of(context).primaryColor),
+                            ),
+                            const SizedBox(width: 4),
+                            const Icon(
+                              Iconsax.copy5,
+                              size: 16,
+                              color: ColorValues.primary90,
+                            )
+                          ]),
+                        ),
+                      ]),
+                      const SizedBox(height: 16),
+                      ValueListenableBuilder(
+                          valueListenable: _isBalancePanelVisible,
+                          builder: (context, _, __) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(AppLocalizations.of(context).mainAccountBalance,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium
+                                        ?.copyWith(fontSize: 14)),
+                                const SizedBox(height: 4),
+                                Row(children: [
+                                  Expanded(
+                                    child: _isBalancePanelVisible.value
+                                        ? RichText(
+                                        text: TextSpan(
+                                            text: 'Rp',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .displayMedium
+                                                ?.copyWith(fontSize: 20),
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                ' ${SharedCode.formatThousands(SharedData.myAccountData.value!.balance)}',
+                                                style:
+                                                Theme.of(context).textTheme.displayLarge,
+                                              )
+                                            ]))
+                                        : SizedBox(
+                                      height: 12,
+                                      child: ListView.separated(
+                                        primary: false,
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: 8,
+                                        itemBuilder: (_, i) {
+                                          return Container(
+                                            width: 12,
+                                            height: 12,
+                                            decoration: BoxDecoration(
+                                              color: i % 2 == 0
+                                                  ? ColorValues.primary30
+                                                  : ColorValues.primary20,
+                                              borderRadius: BorderRadius.circular(12),
+                                            ),
+                                          );
+                                        },
+                                        separatorBuilder: (_, __) {
+                                          return const SizedBox(width: 4);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  _buildBalanceToggle(_isBalancePanelVisible),
+                                ]),
+                              ],
+                            );
+                          })
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
+                  child: CustomTextField(
+                    controller: _transferAmountController,
+                    isRequired: true,
+                    textInputType: TextInputType.number,
+                    validator: SharedCode.emptyValidators,
+                    icon: Iconsax.empty_wallet5,
+                    label: AppLocalizations.of(context).amount,
+                    hint: AppLocalizations.of(context).enterAmount,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
+                  child: CustomTextField(
+                    controller: _transferMessageController,
+                    isRequired: false,
+                    showOptional: true,
+                    icon: Iconsax.document_text5,
+                    label: AppLocalizations.of(context).message,
+                    hint: AppLocalizations.of(context).enterMessage,
+                  ),
+                ),
+              ]
+            ),
+          )),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
+            child: CustomButton(
+              buttonText: AppLocalizations.of(context).proceed,
+              onPressed: () {
+              },
+            ),
+          )
+        ],
+      ),
     );
   }
 }

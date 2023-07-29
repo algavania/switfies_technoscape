@@ -39,7 +39,7 @@ class _DashboardPageState extends State<DashboardPage> {
           return SlidingUpPanel(
             controller: _panelController,
             minHeight: 0,
-            maxHeight: 80.h,
+            maxHeight: 88.h,
             backdropTapClosesPanel: false,
             color: ColorValues.slidingPanelBackground,
             backdropEnabled: true,
@@ -49,10 +49,7 @@ class _DashboardPageState extends State<DashboardPage> {
             boxShadow: [
               BoxShadow(color: ColorValues.grey50.withOpacity(0))
             ],
-            panel: Padding(
-              padding: const EdgeInsets.all(UiConstant.sidePadding),
-              child: _panelContent.value,
-            ),
+            panel: _panelContent.value,
             body: AutoTabsScaffold(
               routes: [
                 HomeRoute(openPanel: _openPanel, closePanel: _closePanel),

@@ -181,5 +181,6 @@
   "transferSuccess": "Transfer Berhasil!",
   "transactionTotal": "Total Transaksi",
   "backToHome": "Kembali Ke Beranda",
-  "downloadReceipt": "Download Bukti"
+  "downloadReceipt": "Download Bukti",
+  "receiverAccount": "Rekening Penerima"
 }

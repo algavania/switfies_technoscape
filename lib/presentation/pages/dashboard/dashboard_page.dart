@@ -39,7 +39,7 @@ class _DashboardPageState extends State<DashboardPage> {
           return SlidingUpPanel(
             controller: _panelController,
             minHeight: 0,
-            maxHeight: 88.h,
+            maxHeight: 90.h,
             backdropTapClosesPanel: false,
             color: ColorValues.slidingPanelBackground,
             backdropEnabled: true,

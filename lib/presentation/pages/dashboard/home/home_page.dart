@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
@@ -18,6 +19,7 @@ import 'package:swifties_technoscape/presentation/widgets/custom_child_account.d
 import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_transaction.dart';
+import 'package:swifties_technoscape/presentation/widgets/logo_widget.dart';
 
 import '../../../../application/common/db_constants.dart';
 import '../../../../application/service/shared_preferences_service.dart';
@@ -780,7 +782,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 4),
                 Row(children: [
                   Text(
-                    username,
+                    '@$username',
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
                   ),
                   Container(
@@ -1001,7 +1003,182 @@ class _HomePageState extends State<HomePage> {
             child: CustomButton(
               buttonText: AppLocalizations.of(context).proceed,
               onPressed: () {
+                widget.closePanel();
+                widget.openPanel(_buildTransferSuccessPanel());
               },
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTransferSuccessPanel() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: UiConstant.sidePadding),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(child: SingleChildScrollView(
+            child: Column(
+                children: [
+                  const Center(child: LogoWidget()),
+                  const SizedBox(height: 24),
+                  SvgPicture.asset(
+                    'assets/core/ic_success.svg',
+                    width: 96,
+                    height: 96,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    AppLocalizations.of(context).transferSuccess,
+                    style: Theme.of(context).textTheme.displayLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    SharedData.dateTimeFormat.format(DateTime.now()),
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14, color: ColorValues.greyBase),
+                  ),
+                  const SizedBox(height: 22),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
+                    child: _buildReceiverProfile('Fulan bin Fulan', 'fulanbinfulan', '100 000 000 1'),
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
+                    width: 100.w,
+                    child: Text(
+                      AppLocalizations.of(context).senderAccount,
+                      style: Theme.of(context).textTheme.displaySmall,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: UiConstant.smallerPadding, horizontal: UiConstant.sidePadding),
+                    decoration: const BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: ColorValues.grey10, width: 1),
+                          bottom: BorderSide(color: ColorValues.grey10, width: 1),
+                        )
+                    ),
+                    child: Column(
+                      children: [
+                        Row(children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.network(
+                              'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                              width: 32,
+                              height: 32,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(width: UiConstant.defaultSpacing),
+                          Expanded(
+                            child: Text(
+                              'Fulan bin Fulan',
+                              style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12),
+                            ),
+                          ),
+                          const SizedBox(width: UiConstant.defaultSpacing),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Row(children: [
+                              Text(
+                                '100 000 000 1',
+                                style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, color: Theme.of(context).primaryColor),
+                              ),
+                              const SizedBox(width: 4),
+                              const Icon(
+                                Iconsax.copy5,
+                                size: 16,
+                                color: ColorValues.primary90,
+                              )
+                            ]),
+                          ),
+                        ]),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
+                    decoration: const BoxDecoration(
+                      color: ColorValues.background,
+                      border: Border(
+                        top: BorderSide(color: ColorValues.grey10, width: 1),
+                        bottom: BorderSide(color: ColorValues.grey10, width: 1),
+                      )
+                    ),
+                    child: Row(children: [
+                      Expanded(
+                        child: Text(
+                          AppLocalizations.of(context).transactionTotal,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12),
+                        ),
+                      ),
+                      const SizedBox(width: UiConstant.defaultSpacing),
+                      Expanded(
+                        child: Text(
+                          SharedCode.formatToRupiah(int.parse(_transferAmountController.text)),
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                    ]),
+                  ),
+                  if (_transferMessageController.text != '') Container(
+                    width: 100.w,
+                    padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
+                    decoration: const BoxDecoration(
+                        border: Border(
+                          top: BorderSide(color: ColorValues.grey10, width: 1),
+                          bottom: BorderSide(color: ColorValues.grey10, width: 1),
+                        )
+                    ),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            AppLocalizations.of(context).message,
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            _transferMessageController.text,
+                            style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+                            textAlign: TextAlign.right,
+                          ),
+                        ]),
+                  ),
+                ]
+            ),
+          )),
+          const SizedBox(height: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
+            child: Row(
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    buttonText: AppLocalizations.of(context).backToHome,
+                    backgroundColor: ColorValues.slidingPanelBackground,
+                    colorAsOutlineButton: ColorValues.text50,
+                    onPressed: () {
+                      widget.closePanel();
+                    },
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: CustomButton(
+                    buttonText: AppLocalizations.of(context).downloadReceipt,
+                    onPressed: () {
+                      widget.closePanel();
+                    },
+                  ),
+                ),
+              ],
             ),
           )
         ],

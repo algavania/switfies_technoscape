@@ -20,9 +20,14 @@ class SharedCode {
     return formatter.format(number);
   }
 
-  static String formatToRupiah(int number) {
+  static String formatToRupiah(dynamic number) {
     NumberFormat formatter = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
     return formatter.format(number);
+  }
+
+  static num formatFromRupiah(String text) {
+    NumberFormat formatter = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
+    return formatter.parse(text);
   }
 
   static String? emptyValidators(String? value) {
@@ -201,5 +206,24 @@ class SharedCode {
         },
       );
     });
+  }
+
+  static rupiahTextField(String? value, TextEditingController controller) {
+    if (value?.isNotEmpty ?? false) {
+      // Parse the value as a double
+      double amount =
+      double.parse(value!.replaceAll(',', ''));
+      // Format the value as currency
+      String formattedValue =
+      SharedCode.formatToRupiah(amount);
+      // Set the formatted value back to the text field
+      controller.value = TextEditingValue(
+        text: formattedValue,
+        selection: TextSelection.fromPosition(
+          TextPosition(
+              offset: formattedValue.length),
+        ),
+      );
+    }
   }
 }

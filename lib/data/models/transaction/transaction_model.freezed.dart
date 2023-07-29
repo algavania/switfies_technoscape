@@ -21,7 +21,7 @@ TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TransactionModel {
   int get uid => throw _privateConstructorUsedError;
-  int get amount => throw _privateConstructorUsedError;
+  double get amount => throw _privateConstructorUsedError;
   int get createTime => throw _privateConstructorUsedError;
   String get senderAccountNo => throw _privateConstructorUsedError;
   String get traxType => throw _privateConstructorUsedError;
@@ -50,7 +50,7 @@ abstract class $TransactionModelCopyWith<$Res> {
   @useResult
   $Res call(
       {int uid,
-      int amount,
+      double amount,
       int createTime,
       String senderAccountNo,
       String traxType,
@@ -98,7 +98,7 @@ class _$TransactionModelCopyWithImpl<$Res, $Val extends TransactionModel>
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       createTime: null == createTime
           ? _value.createTime
           : createTime // ignore: cast_nullable_to_non_nullable
@@ -153,7 +153,7 @@ abstract class _$$_TransactionModelCopyWith<$Res>
   @useResult
   $Res call(
       {int uid,
-      int amount,
+      double amount,
       int createTime,
       String senderAccountNo,
       String traxType,
@@ -199,7 +199,7 @@ class __$$_TransactionModelCopyWithImpl<$Res>
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
-              as int,
+              as double,
       createTime: null == createTime
           ? _value.createTime
           : createTime // ignore: cast_nullable_to_non_nullable
@@ -268,7 +268,7 @@ class _$_TransactionModel implements _TransactionModel {
   @override
   final int uid;
   @override
-  final int amount;
+  final double amount;
   @override
   final int createTime;
   @override
@@ -359,7 +359,7 @@ class _$_TransactionModel implements _TransactionModel {
 abstract class _TransactionModel implements TransactionModel {
   const factory _TransactionModel(
       {required final int uid,
-      required final int amount,
+      required final double amount,
       required final int createTime,
       required final String senderAccountNo,
       required final String traxType,
@@ -379,7 +379,7 @@ abstract class _TransactionModel implements TransactionModel {
   @override
   int get uid;
   @override
-  int get amount;
+  double get amount;
   @override
   int get createTime;
   @override

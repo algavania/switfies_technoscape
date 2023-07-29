@@ -12,6 +12,7 @@ import 'package:swifties_technoscape/presentation/widgets/custom_app_bar.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_transaction.dart';
 
+import '../../../../application/common/shared_code.dart';
 import '../../../../application/repositories/repositories.dart';
 import '../../../../data/models/user/user_model.dart';
 import '../../../widgets/custom_child_account.dart';
@@ -41,17 +42,21 @@ class _ActivityPageState extends State<ActivityPage> {
     if (!context.loaderOverlay.visible) {
       context.loaderOverlay.show();
     }
-    if (mounted) {
+    try {
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
+      _childList = await UserRepository().getMyChildren();
+      _transactionList = await TransactionRepository()
+          .getTransactions(limit: 2, isRequestedTransaction: false);
       setState(() {
-        _isLoading = true;
+        _isLoading = false;
       });
+    } catch (e) {
+      SharedCode.showSnackbar(context: context, message: e.toString(), isSuccess: false);
     }
-    _childList = await UserRepository().getMyChildren();
-    _transactionList = await TransactionRepository()
-        .getTransactions(limit: 2, isRequestedTransaction: false);
-    setState(() {
-      _isLoading = false;
-    });
     context.loaderOverlay.hide();
   }
 
@@ -107,8 +112,12 @@ class _ActivityPageState extends State<ActivityPage> {
   Widget _buildAddAccount() {
     return CustomShadow(
       child: InkWell(
-        onTap: () {
-          AutoRouter.of(context).navigate(const AddChildRoute());
+        onTap: () async {
+          var data = await AutoRouter.of(context).push(const AddChildRoute());
+          if (data is String) {
+            SharedCode.showSnackbar(context: context, message: data);
+            _getAllData();
+          }
         },
         child: Container(
           padding: const EdgeInsets.symmetric(
@@ -173,7 +182,7 @@ class _ActivityPageState extends State<ActivityPage> {
           children: [
             _buildSectionHeading(
               onTap: () {},
-              isListEmpty: _childList.isEmpty,
+              isListEmpty: true,
               title: AppLocalizations.of(context).childrenAccountsTitle,
               description:
                   AppLocalizations.of(context).childrenAccountsDescription,

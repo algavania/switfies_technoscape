@@ -8,7 +8,7 @@ part 'transaction_model.g.dart';
 class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
     required int uid,
-    required int amount,
+    required double amount,
     required int createTime,
     required String senderAccountNo,
     required String traxType,

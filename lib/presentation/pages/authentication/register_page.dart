@@ -75,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
         backdropTapClosesPanel: false,
         color: ColorValues.slidingPanelBackground,
         backdropEnabled: true,
-        backdropColor: ColorValues.grey50,
+        backdropColor: ColorValues.grey90,
         onPanelClosed: () {
           if (SharedPreferencesService.getToken() != null) {
             AutoRouter.of(context).replace(const DashboardRoute());
@@ -285,7 +285,8 @@ class _RegisterPageState extends State<RegisterPage> {
                                       displayName: displayName,
                                       loginPassword: loginPassword
                                     );
-                                    await AuthRepository().createUser(authModel, userModel);
+                                    await AuthRepository().createUser(authModel, userModel, isAuth: true);
+
                                     TokenModel tokenModel = await AuthRepository().generateToken(username, loginPassword);
                                     await SharedPreferencesService.setToken(tokenModel.accessToken);
                                     await BankRepository().createBankAccount(tokenModel.accessToken);
@@ -364,7 +365,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       vertical: UiConstant.sidePadding),
                   child: Center(
                     child: SvgPicture.asset(
-                      'assets/authentication/img_registration_success.svg',
+                      'assets/core/img_action_success.svg',
                       width: 25.h,
                       height: 25.h,
                       fit: BoxFit.contain,
@@ -382,7 +383,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       .titleMedium,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 Text(
                   AppLocalizations
                       .of(context)
@@ -390,8 +391,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   style: Theme
                       .of(context)
                       .textTheme
-                      .bodySmall
-                      ?.copyWith(color: ColorValues.grey50),
+                      .displayMedium
+                      ?.copyWith(color: ColorValues.greyBase, fontSize: 12),
                   textAlign: TextAlign.center,
                 ),
               ]),

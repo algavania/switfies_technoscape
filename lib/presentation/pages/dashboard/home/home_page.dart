@@ -20,6 +20,7 @@ import 'package:swifties_technoscape/presentation/widgets/custom_transaction.dar
 import '../../../../application/common/db_constants.dart';
 import '../../../../application/service/shared_preferences_service.dart';
 import '../../../../data/models/account/account_model.dart';
+import '../../../../data/models/saving/saving_model.dart';
 import '../../../../data/models/user/user_model.dart';
 import '../../../routes/router.gr.dart';
 
@@ -52,21 +53,34 @@ class _HomePageState extends State<HomePage> {
     if (!context.loaderOverlay.visible) {
       context.loaderOverlay.show();
     }
-    if (mounted) {
+    try {
+      if (mounted) {
+        setState(() {
+          _isLoading = true;
+        });
+      }
+      List<AccountModel> accounts = await BankRepository().getAllAccount();
+      List<SavingModel> savings = await SavingRepository().getSavingList(null);
+      if (accounts.isNotEmpty) {
+        AccountModel account = accounts.first;
+        num balance = account.balance;
+        for (var data in savings) {
+          balance -= data.currentSaving;
+        }
+        account = account.copyWith(balance: balance.toDouble());
+        SharedData.myAccountData.value = account;
+      }
+      if (_isParent) {
+        _childList = await UserRepository().getMyChildren(limit: 2);
+        _transactionList = await TransactionRepository().getTransactions(limit: 2, isRequestedTransaction: true);
+      }
+      _articleList = await ArticleRepository().getArticleList(2);
       setState(() {
-        _isLoading = true;
+        _isLoading = false;
       });
+    } catch (e) {
+      SharedCode.showSnackbar(context: context, message: e.toString(), isSuccess: false);
     }
-    List<AccountModel> accounts = await BankRepository().getAllAccount();
-    SharedData.myAccountData.value = accounts.isEmpty ? null : accounts.first;
-    if (_isParent) {
-      _childList = await UserRepository().getMyChildren(limit: 2);
-      _transactionList = await TransactionRepository().getTransactions(limit: 2, isRequestedTransaction: true);
-    }
-    _articleList = await ArticleRepository().getArticleList(2);
-    setState(() {
-      _isLoading = false;
-    });
     context.loaderOverlay.hide();
   }
 
@@ -133,7 +147,7 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(AppLocalizations.of(context).yourSavings,
+                Text(AppLocalizations.of(context).mainBalance,
                     style: Theme.of(context)
                         .textTheme
                         .displayMedium
@@ -245,7 +259,9 @@ class _HomePageState extends State<HomePage> {
                 iconData: Iconsax.direct_inbox5,
                 iconColor: ColorValues.success30,
                 backgroundColor: ColorValues.success10,
-                onTap: () {},
+                onTap: () {
+                  AutoRouter.of(context).push(const SaveNowRoute());
+                },
               ),
             ),
             Expanded(

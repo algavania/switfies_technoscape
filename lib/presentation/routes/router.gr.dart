@@ -12,8 +12,10 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i2;
+import 'package:flutter/cupertino.dart' as _i4;
 import 'package:flutter/material.dart' as _i3;
 
+import '../../data/models/saving/saving_model.dart' as _i5;
 import '../pages/screens.dart' as _i1;
 
 class AppRouter extends _i2.RootStackRouter {
@@ -89,6 +91,28 @@ class AppRouter extends _i2.RootStackRouter {
       return _i2.CustomPage<dynamic>(
         routeData: routeData,
         child: const _i1.SavingsPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    SaveNowRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.SaveNowPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    SavingDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<SavingDetailRouteArgs>();
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: _i1.SavingDetailPage(
+          key: args.key,
+          saving: args.saving,
+        ),
         transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
         opaque: true,
         barrierDismissible: false,
@@ -194,6 +218,14 @@ class AppRouter extends _i2.RootStackRouter {
           SavingsRoute.name,
           path: '/savings',
         ),
+        _i2.RouteConfig(
+          SaveNowRoute.name,
+          path: '/save-now',
+        ),
+        _i2.RouteConfig(
+          SavingDetailRoute.name,
+          path: '/saving-detail',
+        ),
       ];
 }
 
@@ -292,6 +324,52 @@ class SavingsRoute extends _i2.PageRouteInfo<void> {
         );
 
   static const String name = 'SavingsRoute';
+}
+
+/// generated route for
+/// [_i1.SaveNowPage]
+class SaveNowRoute extends _i2.PageRouteInfo<void> {
+  const SaveNowRoute()
+      : super(
+          SaveNowRoute.name,
+          path: '/save-now',
+        );
+
+  static const String name = 'SaveNowRoute';
+}
+
+/// generated route for
+/// [_i1.SavingDetailPage]
+class SavingDetailRoute extends _i2.PageRouteInfo<SavingDetailRouteArgs> {
+  SavingDetailRoute({
+    _i4.Key? key,
+    required _i5.SavingModel saving,
+  }) : super(
+          SavingDetailRoute.name,
+          path: '/saving-detail',
+          args: SavingDetailRouteArgs(
+            key: key,
+            saving: saving,
+          ),
+        );
+
+  static const String name = 'SavingDetailRoute';
+}
+
+class SavingDetailRouteArgs {
+  const SavingDetailRouteArgs({
+    this.key,
+    required this.saving,
+  });
+
+  final _i4.Key? key;
+
+  final _i5.SavingModel saving;
+
+  @override
+  String toString() {
+    return 'SavingDetailRouteArgs{key: $key, saving: $saving}';
+  }
 }
 
 /// generated route for

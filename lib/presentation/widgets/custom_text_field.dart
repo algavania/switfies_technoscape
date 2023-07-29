@@ -67,11 +67,9 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   style: Theme.of(context).textTheme.displaySmall,
                   children: [
                 if (widget.isRequired)
-                  const TextSpan(
-                      text: '*', style: TextStyle(color: ColorValues.danger50)),
+                  const TextSpan(text: '*', style: TextStyle(color: ColorValues.danger50)),
                 if (widget.showOptional)
-                  TextSpan(
-                      text: ' (${AppLocalizations.of(context).optional})', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600)),
+                  TextSpan(text: ' (${AppLocalizations.of(context).optional})', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w400, color: ColorValues.greyBase)),
               ])),
         if (widget.label != null) const SizedBox(height: 8),
         if (widget.readOnly) AbsorbPointer(child: _buildTextField()),

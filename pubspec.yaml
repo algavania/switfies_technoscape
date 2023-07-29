@@ -39,6 +39,7 @@ dependencies:
   http: ^0.13.6
   iconsax: ^0.0.8
   shared_preferences: ^2.2.0
+  jiffy: ^6.2.1
 
 dev_dependencies:
   flutter_test:
@@ -76,5 +77,5 @@ flutter:
     - assets/
     - assets/core/
     - assets/onboarding/
-    - assets/authentication/
     - assets/activity/
+    - assets/save_now/

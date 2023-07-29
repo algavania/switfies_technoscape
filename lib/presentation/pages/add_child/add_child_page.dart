@@ -134,10 +134,6 @@ class _AddChildPageState extends State<AddChildPage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const SizedBox(height: UiConstant.biggerPadding),
-                                const Center(child: LogoWidget()),
-                                const SizedBox(height: UiConstant.biggerSpacing),
-                                const SizedBox(height: UiConstant.defaultPadding),
                                 Text(
                                   AppLocalizations
                                       .of(context)

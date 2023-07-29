@@ -8,6 +8,7 @@ import '../../data/models/user/user_model.dart';
 class SharedData {
   static DateFormat dateFormat = DateFormat('d MMMM yyyy', 'id_ID');
   static DateFormat regularDateFormat = DateFormat('dd/MM/yyyy');
+  static DateFormat monthYearDateFormat = DateFormat('MMMM yyyy');
   static DateFormat authDateFormat = DateFormat('ddMMyyyy');
   static ValueNotifier<UserModel?> userData = ValueNotifier(null);
   static ValueNotifier<AccountModel?> myAccountData = ValueNotifier(null);

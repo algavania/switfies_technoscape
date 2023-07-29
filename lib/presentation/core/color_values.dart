@@ -2,7 +2,7 @@ import 'dart:ui';
 
 class ColorValues {
   static const background = Color(0xFFFAFAFA);
-  static const slidingPanelBackground = Color(0xFFFAFAFE);
+  static const slidingPanelBackground = Color(0xFFFFFFFF);
   static const primary90 = Color(0xFF00252C);
   static const primary80 = Color(0xFF014B58);
   static const primary50 = Color(0xFF02BBDD);

@@ -23,7 +23,7 @@ class CustomTextField extends StatefulWidget {
       this.icon,
       this.textInputType,
       this.onChanged,
-      this.verticalPadding = 14,
+      this.verticalPadding = 16,
       this.horizontalPadding = UiConstant.defaultPadding,
       this.minLines = 1,
       this.maxLines = 1,
@@ -106,14 +106,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
             hintText: widget.hint,
             hintStyle: Theme.of(context)
                 .textTheme
-                .bodySmall
-                ?.copyWith(color: ColorValues.grey50),
+                .displayMedium
+                ?.copyWith(color: ColorValues.greyBase, fontSize: 13),
             filled: true,
             fillColor: Colors.white,
             border: _getBorder(),
             isDense: widget.isDense,
-            focusedBorder: _getBorder(color: ColorValues.grey50),
-            enabledBorder: _getBorder(color: _isEmpty.value ? ColorValues.grey10 : ColorValues.grey50),
+            focusedBorder: _getBorder(color: ColorValues.greyBase),
+            enabledBorder: _getBorder(color: _isEmpty.value ? ColorValues.grey10 : ColorValues.greyBase),
             disabledBorder: _getBorder(),
             errorBorder: _getBorder(color: ColorValues.danger50),
             focusedErrorBorder: _getBorder(color: ColorValues.danger50),
@@ -122,7 +122,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 : Icon(
                     widget.icon,
                     size: 16,
-                    color: ColorValues.grey50,
+                    color: ColorValues.greyBase,
                   ),
             prefixIconConstraints: const BoxConstraints(
               minWidth: 50,

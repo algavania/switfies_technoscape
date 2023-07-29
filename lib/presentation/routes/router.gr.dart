@@ -143,6 +143,15 @@ class AppRouter extends _i2.RootStackRouter {
         barrierDismissible: false,
       );
     },
+    NotificationsRoute.name: (routeData) {
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: const _i1.NotificationsPage(),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
     ArticleRoute.name: (routeData) {
       return _i2.CustomPage<dynamic>(
         routeData: routeData,
@@ -207,6 +216,11 @@ class AppRouter extends _i2.RootStackRouter {
             _i2.RouteConfig(
               ActivityRoute.name,
               path: 'activity',
+              parent: DashboardRoute.name,
+            ),
+            _i2.RouteConfig(
+              NotificationsRoute.name,
+              path: 'notifications',
               parent: DashboardRoute.name,
             ),
             _i2.RouteConfig(
@@ -444,6 +458,18 @@ class ActivityRoute extends _i2.PageRouteInfo<void> {
         );
 
   static const String name = 'ActivityRoute';
+}
+
+/// generated route for
+/// [_i1.NotificationsPage]
+class NotificationsRoute extends _i2.PageRouteInfo<void> {
+  const NotificationsRoute()
+      : super(
+          NotificationsRoute.name,
+          path: 'notifications',
+        );
+
+  static const String name = 'NotificationsRoute';
 }
 
 /// generated route for

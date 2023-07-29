@@ -55,6 +55,10 @@ import '../pages/screens.dart';
               page: ActivityPage,
               transitionsBuilder: TransitionsBuilders.fadeIn),
           CustomRoute(
+              path: 'notifications',
+              page: NotificationsPage,
+              transitionsBuilder: TransitionsBuilders.fadeIn),
+          CustomRoute(
               path: 'article',
               page: ArticlePage,
               transitionsBuilder: TransitionsBuilders.fadeIn),

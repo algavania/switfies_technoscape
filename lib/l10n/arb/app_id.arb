@@ -201,5 +201,10 @@
   "emptyNotifications": "Belum ada request nih!",
   "emptyNotificationsDescription": "Kalau kamu bikin request, nanti bisa cek di sini ya!",
   "accountDetail": "Detail Rekening",
-  "childAccountBalance": "Saldo Rekening Anak"
+  "childAccountBalance": "Saldo Rekening Anak",
+  "personalization": "Personalisasi",
+  "changePersonalInfo": "Ubah Data Pribadi",
+  "childrenAccountsInfo": "Data Rekening Anak",
+  "changePassword": "Ubah Password",
+  "logout": "Logout"
 }

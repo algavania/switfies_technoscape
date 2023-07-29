@@ -75,6 +75,10 @@ import '../pages/screens.dart';
         page: SavingDetailPage,
         path: '/saving-detail',
         transitionsBuilder: TransitionsBuilders.fadeIn),
+    CustomRoute(
+        page: DetailArticlePage,
+        path: '/article-detail',
+        transitionsBuilder: TransitionsBuilders.fadeIn),
   ],
 )
 class $AppRouter {}

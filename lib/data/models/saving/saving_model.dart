@@ -15,6 +15,7 @@ class SavingModel with _$SavingModel {
     required double savingAdviceAmount,
     required dynamic currentSaving,
     required dynamic savingTarget,
+    bool? hasClaimedReward,
     @JsonKey(includeFromJson: false, includeToJson: false) String? id,
     @JsonKey(includeFromJson: false, includeToJson: false) DocumentSnapshot? documentSnapshot,
     @TimestampConverter() required DateTime startDate,

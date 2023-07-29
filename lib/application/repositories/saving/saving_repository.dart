@@ -57,4 +57,16 @@ class SavingRepository implements BaseSavingRepository {
     }
     return list;
   }
+
+  @override
+  Future<SavingModel> getSavingById(String savingId) async {
+    String id = SharedPreferencesService.getUserData()!.uid.toString();
+    var snapshot = await DbConstants.db.collection(DbConstants.users).doc(id).collection(DbConstants.savings).doc(savingId).get();
+    if (snapshot.exists) {
+      SavingModel model = SavingModel.fromJson(snapshot.data() as Map<String, dynamic>);
+      model = model.copyWith(id: snapshot.id, documentSnapshot: snapshot);
+      return model;
+    }
+    throw 'Tabungan tidak tersedia';
+  }
 }

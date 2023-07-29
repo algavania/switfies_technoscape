@@ -155,60 +155,65 @@ class _HomePageState extends State<HomePage> {
                 vertical: UiConstant.defaultPadding,
                 horizontal: UiConstant.sidePadding),
             color: ColorValues.surface,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(AppLocalizations.of(context).mainBalance,
-                    style: Theme.of(context)
-                        .textTheme
-                        .displayMedium
-                        ?.copyWith(fontSize: 14)),
-                const SizedBox(height: 4),
-                Row(children: [
-                  Expanded(
-                    child: _isBalanceVisible.value
-                        ? RichText(
-                            text: TextSpan(
-                                text: 'Rp',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .displayMedium
-                                    ?.copyWith(fontSize: 20),
-                                children: [
-                                TextSpan(
-                                  text:
-                                      ' ${SharedCode.formatThousands(SharedData.myAccountData.value!.balance)}',
-                                  style:
-                                      Theme.of(context).textTheme.displayLarge,
-                                )
-                              ]))
-                        : SizedBox(
-                            height: 12,
-                            child: ListView.separated(
-                              primary: false,
-                              scrollDirection: Axis.horizontal,
-                              itemCount: 8,
-                              itemBuilder: (_, i) {
-                                return Container(
-                                  width: 12,
-                                  height: 12,
-                                  decoration: BoxDecoration(
-                                    color: i % 2 == 0
-                                        ? ColorValues.primary30
-                                        : ColorValues.primary20,
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (_, __) {
-                                return const SizedBox(width: 4);
-                              },
-                            ),
-                          ),
-                  ),
-                  _buildBalanceToggle(_isBalanceVisible),
-                ]),
-              ],
+            child: ValueListenableBuilder(
+              valueListenable: SharedData.myAccountData,
+              builder: (_, __, ___) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(AppLocalizations.of(context).mainBalance,
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayMedium
+                            ?.copyWith(fontSize: 14)),
+                    const SizedBox(height: 4),
+                    Row(children: [
+                      Expanded(
+                        child: _isBalanceVisible.value
+                            ? RichText(
+                                text: TextSpan(
+                                    text: 'Rp',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium
+                                        ?.copyWith(fontSize: 20),
+                                    children: [
+                                    TextSpan(
+                                      text:
+                                          ' ${SharedCode.formatThousands(SharedData.myAccountData.value!.balance)}',
+                                      style:
+                                          Theme.of(context).textTheme.displayLarge,
+                                    )
+                                  ]))
+                            : SizedBox(
+                                height: 12,
+                                child: ListView.separated(
+                                  primary: false,
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: 8,
+                                  itemBuilder: (_, i) {
+                                    return Container(
+                                      width: 12,
+                                      height: 12,
+                                      decoration: BoxDecoration(
+                                        color: i % 2 == 0
+                                            ? ColorValues.primary30
+                                            : ColorValues.primary20,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                    );
+                                  },
+                                  separatorBuilder: (_, __) {
+                                    return const SizedBox(width: 4);
+                                  },
+                                ),
+                              ),
+                      ),
+                      _buildBalanceToggle(_isBalanceVisible),
+                    ]),
+                  ],
+                );
+              }
             ),
           );
         });

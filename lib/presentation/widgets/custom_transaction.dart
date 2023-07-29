@@ -12,8 +12,9 @@ import 'package:swifties_technoscape/presentation/widgets/custom_button.dart';
 
 class CustomTransaction extends StatelessWidget {
   final TransactionModel transactionModel;
+  final bool isNotification;
 
-  const CustomTransaction({Key? key, required this.transactionModel}) : super(key: key);
+  const CustomTransaction({Key? key, required this.transactionModel, this.isNotification = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,9 +49,33 @@ class CustomTransaction extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            SharedData.dateFormat.format(DateTime.fromMillisecondsSinceEpoch(transactionModel.createTime)),
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12, color: ColorValues.greyBase),
+          Row(
+            children: [
+              Text(
+                SharedData.dateFormat.format(DateTime.fromMillisecondsSinceEpoch(transactionModel.createTime)),
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12, color: ColorValues.greyBase),
+              ),
+              const Spacer(),
+              if (transactionModel.relatedId != null && isNotification) Container(
+                margin: const EdgeInsets.only(top: 8),
+                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(
+                    width: 0.5,
+                    color: transactionModel.isApproved == null ? ColorValues.warning30 : (transactionModel.isApproved! ? ColorValues.success30 : ColorValues.danger30),
+                  ),
+                  color: transactionModel.isApproved == null ? ColorValues.warning10.withOpacity(0.8) : (transactionModel.isApproved! ? ColorValues.success10 : ColorValues.danger10),
+                ),
+                child: Text(
+                  transactionModel.isApproved == null ? AppLocalizations.of(context).waiting : (transactionModel.isApproved! ? AppLocalizations.of(context).approved : AppLocalizations.of(context).rejected),
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    fontSize: 10,
+                    color: transactionModel.isApproved == null ? ColorValues.warning30 : (transactionModel.isApproved! ? ColorValues.success30 : ColorValues.danger30),
+                  ),
+                ),
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -75,13 +100,13 @@ class CustomTransaction extends StatelessWidget {
               const Spacer(),
               Text(
                 traxType == AppLocalizations.of(context).transferOut
-                  ? '-${SharedCode.formatToRupiah(transactionModel.amount)}'
-                  : '+${SharedCode.formatToRupiah(transactionModel.amount)}',
+                    ? '-${SharedCode.formatToRupiah(transactionModel.amount)}'
+                    : '+${SharedCode.formatToRupiah(transactionModel.amount)}',
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(
                   fontSize: 12,
                   color: traxType == AppLocalizations.of(context).transferOut
-                    ? ColorValues.danger30
-                    : ColorValues.success30,
+                      ? ColorValues.danger30
+                      : ColorValues.success30,
                 ),
               ),
             ]),
@@ -109,7 +134,7 @@ class CustomTransaction extends StatelessWidget {
               style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12),
             ),
           ]),
-          if (transactionModel.relatedId != null) Padding(
+          if (transactionModel.relatedId == null) Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Row(children: [
               Expanded(child: CustomButton(
@@ -130,7 +155,7 @@ class CustomTransaction extends StatelessWidget {
                 onPressed: () {},
               )),
             ]),
-          )
+          ),
         ],
       ),
     );

@@ -190,5 +190,12 @@
   "transactionTotal": "Total Transaksi",
   "backToHome": "Kembali Ke Beranda",
   "downloadReceipt": "Download Bukti",
-  "receiverAccount": "Rekening Penerima"
+  "receiverAccount": "Rekening Penerima",
+  "notifications": "Notifikasi",
+  "notificationsDescription": "Kamu bisa lihat request-mu di sini!",
+  "approved": "Diterima",
+  "rejected": "Ditolak",
+  "waiting": "Menunggu",
+  "emptyNotifications": "Belum ada request nih!",
+  "emptyNotificationsDescription": "Kalau kamu bikin request, nanti bisa cek di sini ya!"
 }

@@ -21,6 +21,7 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   final PanelController _panelController = PanelController();
   final ValueNotifier<Widget> _panelContent = ValueNotifier(const SizedBox.shrink());
+  final ValueNotifier<bool> _isPanelSmall = ValueNotifier(false);
 
   @override
   void initState() {
@@ -39,7 +40,7 @@ class _DashboardPageState extends State<DashboardPage> {
           return SlidingUpPanel(
             controller: _panelController,
             minHeight: 0,
-            maxHeight: 90.h,
+            maxHeight: _isPanelSmall.value ? 63.h : 90.h,
             backdropTapClosesPanel: false,
             color: ColorValues.slidingPanelBackground,
             backdropEnabled: true,
@@ -56,7 +57,7 @@ class _DashboardPageState extends State<DashboardPage> {
                 const ActivityRoute(),
                 const NotificationsRoute(),
                 const ArticleRoute(),
-                const ProfileRoute(),
+                ProfileRoute(openPanel: _openPanel, closePanel: _closePanel),
               ],
               bottomNavigationBuilder: (_, tabsRouter) {
                 return CustomShadow(
@@ -96,7 +97,8 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  void _openPanel(Widget content) {
+  void _openPanel(Widget content, {isPanelSmall = false}) {
+    _isPanelSmall.value = isPanelSmall;
     _panelContent.value = content;
     _panelController.open();
   }

@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:sizer/sizer.dart';
 import 'package:swifties_technoscape/application/common/shared_code.dart';
 import 'package:swifties_technoscape/application/service/shared_preferences_service.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
@@ -10,9 +12,11 @@ import 'package:swifties_technoscape/presentation/core/shared_data.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
 import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_app_bar.dart';
+import 'package:swifties_technoscape/presentation/widgets/custom_button.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final Function openPanel, closePanel;
+  const ProfilePage({Key? key, required this.openPanel, required this.closePanel}) : super(key: key);
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -20,6 +24,15 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final ValueNotifier<bool> _isBalanceVisible = ValueNotifier(false);
+  late String _displayName;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _displayName = SharedPreferencesService.getUserData()!.displayName;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(width: UiConstant.defaultSpacing),
             Expanded(
               child: Text(
-                SharedData.userData.value!.displayName,
+                _displayName,
                 style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12),
               ),
             ),
@@ -220,13 +233,8 @@ class _ProfilePageState extends State<ProfilePage> {
           _buildMenu(
             title: AppLocalizations.of(context).logout,
             iconData: Iconsax.logout5,
-            onTap: () async {
-              context.loaderOverlay.show();
-              await Future.delayed(const Duration(milliseconds: 500));
-              await SharedPreferencesService.clearAllPrefs();
-              SharedData.userData.value = null;
-              context.loaderOverlay.hide();
-              AutoRouter.of(context).replace(const LoginRoute());
+            onTap: () {
+              widget.openPanel(_buildLogoutPanel(), isPanelSmall: true);
             },
             isLogout: true,
           ),
@@ -268,6 +276,140 @@ class _ProfilePageState extends State<ProfilePage> {
             color: ColorValues.text50,
           ),
         ]),
+      ),
+    );
+  }
+
+  Widget _buildLogoutPanel() {
+    return Padding(
+      padding: const EdgeInsets.all(UiConstant.sidePadding),
+      child: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: UiConstant.sidePadding),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      'assets/profile/img_logout.svg',
+                      width: 25.h,
+                      height: 25.h,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: UiConstant.sidePadding),
+                Text(
+                  AppLocalizations
+                      .of(context)
+                      .logoutTitle,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  AppLocalizations
+                      .of(context)
+                      .logoutDescription,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .displayMedium
+                      ?.copyWith(color: ColorValues.greyBase, fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
+              ]),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Row(children: [
+            Expanded(child: CustomButton(
+              buttonText: AppLocalizations.of(context).logoutCancel,
+              colorAsOutlineButton: ColorValues.grey90,
+              backgroundColor: ColorValues.slidingPanelBackground,
+              onPressed: () {
+                widget.closePanel();
+              },
+            )),
+            const SizedBox(width: UiConstant.defaultPadding),
+            Expanded(child: CustomButton(
+              backgroundColor: ColorValues.danger30,
+              buttonText: AppLocalizations.of(context).logoutConfirm,
+              onPressed: () {
+                widget.closePanel();
+                widget.openPanel(_buildReLogPanel(), isPanelSmall: true);
+              },
+            )),
+          ]),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReLogPanel() {
+    return Padding(
+      padding: const EdgeInsets.all(UiConstant.sidePadding),
+      child: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: UiConstant.sidePadding),
+                  child: Center(
+                    child: SvgPicture.asset(
+                      'assets/profile/img_relog.svg',
+                      width: 25.h,
+                      height: 25.h,
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: UiConstant.sidePadding),
+                Text(
+                  AppLocalizations
+                      .of(context)
+                      .relogTitle,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .titleMedium,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  AppLocalizations
+                      .of(context)
+                      .relogDescription,
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .displayMedium
+                      ?.copyWith(color: ColorValues.greyBase, fontSize: 12),
+                  textAlign: TextAlign.center,
+                ),
+              ]),
+            ),
+          ),
+          const SizedBox(height: 24),
+          CustomButton(
+              buttonText: AppLocalizations.of(context).relog,
+              onPressed: () async {
+                context.loaderOverlay.show();
+                await Future.delayed(const Duration(milliseconds: 500));
+                await SharedPreferencesService.clearAllPrefs();
+                SharedData.userData.value = null;
+                context.loaderOverlay.hide();
+                AutoRouter.of(context).replace(const LoginRoute());
+              }
+          )
+        ],
       ),
     );
   }

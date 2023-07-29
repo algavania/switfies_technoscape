@@ -105,5 +105,16 @@
   "entertainment": "Hiburan",
   "vehicle": "Kendaraan",
   "others": "Lainnya",
-  "proceed": "Lanjutkan"
+  "proceed": "Lanjutkan",
+  "savingTitle": "Nama Tabungan",
+  "savingTitleHint": "Misal: Beli PS5 (max. 20 karakter)",
+  "savingTarget": "Target Nabung",
+  "savingTargetHint": "Masukkan nominal target nabung",
+  "whenSavingEnds": "Kapan Target Ini Tercapai?",
+  "monthYearFormat": "Bulan/Tahun",
+  "savingFrequency": "Frekuensimu Nabung",
+  "daily": "Harian",
+  "weekly": "Mingguan",
+  "monthly": "Bulanan",
+  "seeSavingAdvice": "Lihat Saran Nabung"
 }

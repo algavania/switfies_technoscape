@@ -241,7 +241,7 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
               child: _buildMenuItem(
-                title: AppLocalizations.of(context).saveNow,
+                title: AppLocalizations.of(context).saveNowAlt,
                 iconData: Iconsax.direct_inbox5,
                 iconColor: ColorValues.success30,
                 backgroundColor: ColorValues.success10,

@@ -207,4 +207,23 @@ class SharedCode {
       );
     });
   }
+
+  static rupiahTextField(String? value, TextEditingController controller) {
+    if (value?.isNotEmpty ?? false) {
+      // Parse the value as a double
+      double amount =
+      double.parse(value!.replaceAll(',', ''));
+      // Format the value as currency
+      String formattedValue =
+      SharedCode.formatToRupiah(amount);
+      // Set the formatted value back to the text field
+      controller.value = TextEditingValue(
+        text: formattedValue,
+        selection: TextSelection.fromPosition(
+          TextPosition(
+              offset: formattedValue.length),
+        ),
+      );
+    }
+  }
 }

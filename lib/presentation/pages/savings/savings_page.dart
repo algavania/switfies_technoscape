@@ -466,22 +466,7 @@ class _SavingsPageState extends State<SavingsPage> {
                                   AppLocalizations.of(context).savingTargetHint,
                               textInputType: TextInputType.number,
                               onChanged: (value) {
-                                if (value?.isNotEmpty ?? false) {
-                                  // Parse the value as a double
-                                  double amount =
-                                      double.parse(value!.replaceAll(',', ''));
-                                  // Format the value as currency
-                                  String formattedValue =
-                                      SharedCode.formatToRupiah(amount);
-                                  // Set the formatted value back to the text field
-                                  _targetController.value = TextEditingValue(
-                                    text: formattedValue,
-                                    selection: TextSelection.fromPosition(
-                                      TextPosition(
-                                          offset: formattedValue.length),
-                                    ),
-                                  );
-                                }
+                                SharedCode.rupiahTextField(value, _targetController);
                               },
                               icon: Iconsax.empty_wallet_time4),
                           const SizedBox(height: 16),

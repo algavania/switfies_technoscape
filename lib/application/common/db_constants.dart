@@ -11,6 +11,7 @@ class DbConstants {
   static String children = 'children';
   static String transactions = 'transactions';
   static String articles = 'articles';
+  static String savings = 'savings';
 
   static String parentRole = 'parent';
   static String childRole = 'child';

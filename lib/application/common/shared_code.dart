@@ -20,9 +20,14 @@ class SharedCode {
     return formatter.format(number);
   }
 
-  static String formatToRupiah(int number) {
+  static String formatToRupiah(dynamic number) {
     NumberFormat formatter = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
     return formatter.format(number);
+  }
+
+  static num formatFromRupiah(String text) {
+    NumberFormat formatter = NumberFormat.currency(locale: 'id', symbol: 'Rp ', decimalDigits: 0);
+    return formatter.parse(text);
   }
 
   static String? emptyValidators(String? value) {

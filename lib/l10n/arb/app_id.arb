@@ -85,7 +85,7 @@
   "approvalRequestTitle": "Terima atau Tolak",
   "approvalRequestDescription": "Hai, ayo tinjau permintaan si kecil!",
   "requestsEmptyTitle": "Hmm, belum ada request nih!",
-  "requestsEmptyDescription": "Keliatannya si kecil belum bikin request lagi",
+  "requestsEmptyDescription": "Kelihatannya si kecil belum bikin request lagi",
   "createSavingTarget": "Bikin target tabungan",
   "createNewTargetTitle": "Buat Target Baru",
   "createNewTargetDescription": "Hemat pangkal kaya! Yuk bikin target tabungan baru",
@@ -100,6 +100,7 @@
   "activityEmptyTitle": "Hmm, belum ada aktivitas yang dilakukan nih!",
   "activityEmptyDescription": "Kelihatannya si kecil belum ngapa-ngapain",
   "createNewSavingTarget": "Buat Target Tabungan Baru",
+  "createSavingTargetButton": "Buat Target Tabungan",
   "savingPurpose": "Tujuan Nabung",
   "education": "Pendidikan",
   "entertainment": "Hiburan",
@@ -122,5 +123,9 @@
   "perWeek": "Per Minggu",
   "perMonth": "Per Bulan",
   "saveNow": "Nabung Sekarang",
-  "seeSavings": "Lihat Tabungan"
+  "seeSavings": "Lihat Tabungan",
+  "savingTargetCreated": "Target tabungan berhasil dibuat!",
+  "targetEmptyTitle": "Hmm, belum ada target tabungan nih!",
+  "targetEmptyDescription": "Kelihatannya kamu belum membuat target apapun",
+  "mainBalance": "Rekening utama"
 }

@@ -121,9 +121,14 @@ class AppRouter extends _i2.RootStackRouter {
       );
     },
     HomeRoute.name: (routeData) {
+      final args = routeData.argsAs<HomeRouteArgs>();
       return _i2.CustomPage<dynamic>(
         routeData: routeData,
-        child: const _i1.HomePage(),
+        child: _i1.HomePage(
+          key: args.key,
+          openPanel: args.openPanel,
+          closePanel: args.closePanel,
+        ),
         transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
         opaque: true,
         barrierDismissible: false,
@@ -392,14 +397,41 @@ class SavingDetailRouteArgs {
 
 /// generated route for
 /// [_i1.HomePage]
-class HomeRoute extends _i2.PageRouteInfo<void> {
-  const HomeRoute()
-      : super(
+class HomeRoute extends _i2.PageRouteInfo<HomeRouteArgs> {
+  HomeRoute({
+    _i4.Key? key,
+    required Function openPanel,
+    required Function closePanel,
+  }) : super(
           HomeRoute.name,
           path: 'home',
+          args: HomeRouteArgs(
+            key: key,
+            openPanel: openPanel,
+            closePanel: closePanel,
+          ),
         );
 
   static const String name = 'HomeRoute';
+}
+
+class HomeRouteArgs {
+  const HomeRouteArgs({
+    this.key,
+    required this.openPanel,
+    required this.closePanel,
+  });
+
+  final _i4.Key? key;
+
+  final Function openPanel;
+
+  final Function closePanel;
+
+  @override
+  String toString() {
+    return 'HomeRouteArgs{key: $key, openPanel: $openPanel, closePanel: $closePanel}';
+  }
 }
 
 /// generated route for

@@ -10,6 +10,7 @@ class SharedData {
   static DateFormat regularDateFormat = DateFormat('dd/MM/yyyy');
   static DateFormat monthYearDateFormat = DateFormat('MMMM yyyy');
   static DateFormat authDateFormat = DateFormat('ddMMyyyy');
+  static DateFormat dateTimeFormat = DateFormat('d MMM yyyy | HH:mm');
   static ValueNotifier<UserModel?> userData = ValueNotifier(null);
   static ValueNotifier<AccountModel?> myAccountData = ValueNotifier(null);
   static void setStatusBarColorPrimary(BuildContext context) {

@@ -113,7 +113,7 @@ class _SavingsPageState extends State<SavingsPage> {
                 backdropTapClosesPanel: false,
                 color: ColorValues.slidingPanelBackground,
                 backdropEnabled: true,
-                backdropColor: ColorValues.grey50,
+                backdropColor: ColorValues.grey90,
                 backdropOpacity: 0.32,
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(24),

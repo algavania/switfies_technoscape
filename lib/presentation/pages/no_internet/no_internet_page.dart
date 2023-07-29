@@ -38,7 +38,7 @@ class _NoInternetPageState extends State<NoInternetPage> {
           child: NoAccessWidget(
             title: AppLocalizations.of(context).noInternetTitle,
             description: AppLocalizations.of(context).noInternetAlt,
-            path: 'assets/core/no_internet.png',
+            path: 'assets/core/img_no_internet.png',
             buttonText: AppLocalizations.of(context).tryAgain,
             buttonColor: ColorValues.danger50,
             onTap: () async {

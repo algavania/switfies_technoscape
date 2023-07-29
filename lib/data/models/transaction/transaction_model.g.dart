@@ -8,14 +8,14 @@ part of 'transaction_model.dart';
 
 _$_TransactionModel _$$_TransactionModelFromJson(Map<String, dynamic> json) =>
     _$_TransactionModel(
-      uid: json['uid'] as int,
+      uid: json['uid'] as int?,
       amount: (json['amount'] as num).toDouble(),
-      createTime: json['createTime'] as int,
+      createTime: json['createTime'] as int?,
       senderAccountNo: json['senderAccountNo'] as String,
       traxType: json['traxType'] as String,
       receiverAccountNo: json['receiverAccountNo'] as String,
-      senderName: json['senderName'] as String,
-      receiverName: json['receiverName'] as String,
+      senderName: json['senderName'] as String?,
+      receiverName: json['receiverName'] as String?,
       isApproved: json['isApproved'] as bool?,
       relatedId: json['relatedId'] as int?,
     );

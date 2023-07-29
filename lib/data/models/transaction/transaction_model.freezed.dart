@@ -20,14 +20,14 @@ TransactionModel _$TransactionModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$TransactionModel {
-  int get uid => throw _privateConstructorUsedError;
+  int? get uid => throw _privateConstructorUsedError;
   double get amount => throw _privateConstructorUsedError;
-  int get createTime => throw _privateConstructorUsedError;
+  int? get createTime => throw _privateConstructorUsedError;
   String get senderAccountNo => throw _privateConstructorUsedError;
   String get traxType => throw _privateConstructorUsedError;
   String get receiverAccountNo => throw _privateConstructorUsedError;
-  String get senderName => throw _privateConstructorUsedError;
-  String get receiverName => throw _privateConstructorUsedError;
+  String? get senderName => throw _privateConstructorUsedError;
+  String? get receiverName => throw _privateConstructorUsedError;
   bool? get isApproved => throw _privateConstructorUsedError;
   int? get relatedId => throw _privateConstructorUsedError;
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -49,14 +49,14 @@ abstract class $TransactionModelCopyWith<$Res> {
       _$TransactionModelCopyWithImpl<$Res, TransactionModel>;
   @useResult
   $Res call(
-      {int uid,
+      {int? uid,
       double amount,
-      int createTime,
+      int? createTime,
       String senderAccountNo,
       String traxType,
       String receiverAccountNo,
-      String senderName,
-      String receiverName,
+      String? senderName,
+      String? receiverName,
       bool? isApproved,
       int? relatedId,
       @JsonKey(includeFromJson: false, includeToJson: false)
@@ -77,32 +77,32 @@ class _$TransactionModelCopyWithImpl<$Res, $Val extends TransactionModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uid = null,
+    Object? uid = freezed,
     Object? amount = null,
-    Object? createTime = null,
+    Object? createTime = freezed,
     Object? senderAccountNo = null,
     Object? traxType = null,
     Object? receiverAccountNo = null,
-    Object? senderName = null,
-    Object? receiverName = null,
+    Object? senderName = freezed,
+    Object? receiverName = freezed,
     Object? isApproved = freezed,
     Object? relatedId = freezed,
     Object? documentSnapshot = freezed,
     Object? id = freezed,
   }) {
     return _then(_value.copyWith(
-      uid: null == uid
+      uid: freezed == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as double,
-      createTime: null == createTime
+      createTime: freezed == createTime
           ? _value.createTime
           : createTime // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       senderAccountNo: null == senderAccountNo
           ? _value.senderAccountNo
           : senderAccountNo // ignore: cast_nullable_to_non_nullable
@@ -115,14 +115,14 @@ class _$TransactionModelCopyWithImpl<$Res, $Val extends TransactionModel>
           ? _value.receiverAccountNo
           : receiverAccountNo // ignore: cast_nullable_to_non_nullable
               as String,
-      senderName: null == senderName
+      senderName: freezed == senderName
           ? _value.senderName
           : senderName // ignore: cast_nullable_to_non_nullable
-              as String,
-      receiverName: null == receiverName
+              as String?,
+      receiverName: freezed == receiverName
           ? _value.receiverName
           : receiverName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isApproved: freezed == isApproved
           ? _value.isApproved
           : isApproved // ignore: cast_nullable_to_non_nullable
@@ -152,14 +152,14 @@ abstract class _$$_TransactionModelCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int uid,
+      {int? uid,
       double amount,
-      int createTime,
+      int? createTime,
       String senderAccountNo,
       String traxType,
       String receiverAccountNo,
-      String senderName,
-      String receiverName,
+      String? senderName,
+      String? receiverName,
       bool? isApproved,
       int? relatedId,
       @JsonKey(includeFromJson: false, includeToJson: false)
@@ -178,32 +178,32 @@ class __$$_TransactionModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? uid = null,
+    Object? uid = freezed,
     Object? amount = null,
-    Object? createTime = null,
+    Object? createTime = freezed,
     Object? senderAccountNo = null,
     Object? traxType = null,
     Object? receiverAccountNo = null,
-    Object? senderName = null,
-    Object? receiverName = null,
+    Object? senderName = freezed,
+    Object? receiverName = freezed,
     Object? isApproved = freezed,
     Object? relatedId = freezed,
     Object? documentSnapshot = freezed,
     Object? id = freezed,
   }) {
     return _then(_$_TransactionModel(
-      uid: null == uid
+      uid: freezed == uid
           ? _value.uid
           : uid // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       amount: null == amount
           ? _value.amount
           : amount // ignore: cast_nullable_to_non_nullable
               as double,
-      createTime: null == createTime
+      createTime: freezed == createTime
           ? _value.createTime
           : createTime // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       senderAccountNo: null == senderAccountNo
           ? _value.senderAccountNo
           : senderAccountNo // ignore: cast_nullable_to_non_nullable
@@ -216,14 +216,14 @@ class __$$_TransactionModelCopyWithImpl<$Res>
           ? _value.receiverAccountNo
           : receiverAccountNo // ignore: cast_nullable_to_non_nullable
               as String,
-      senderName: null == senderName
+      senderName: freezed == senderName
           ? _value.senderName
           : senderName // ignore: cast_nullable_to_non_nullable
-              as String,
-      receiverName: null == receiverName
+              as String?,
+      receiverName: freezed == receiverName
           ? _value.receiverName
           : receiverName // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
       isApproved: freezed == isApproved
           ? _value.isApproved
           : isApproved // ignore: cast_nullable_to_non_nullable
@@ -248,14 +248,14 @@ class __$$_TransactionModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_TransactionModel implements _TransactionModel {
   const _$_TransactionModel(
-      {required this.uid,
+      {this.uid,
       required this.amount,
-      required this.createTime,
+      this.createTime,
       required this.senderAccountNo,
       required this.traxType,
       required this.receiverAccountNo,
-      required this.senderName,
-      required this.receiverName,
+      this.senderName,
+      this.receiverName,
       this.isApproved,
       this.relatedId,
       @JsonKey(includeFromJson: false, includeToJson: false)
@@ -266,11 +266,11 @@ class _$_TransactionModel implements _TransactionModel {
       _$$_TransactionModelFromJson(json);
 
   @override
-  final int uid;
+  final int? uid;
   @override
   final double amount;
   @override
-  final int createTime;
+  final int? createTime;
   @override
   final String senderAccountNo;
   @override
@@ -278,9 +278,9 @@ class _$_TransactionModel implements _TransactionModel {
   @override
   final String receiverAccountNo;
   @override
-  final String senderName;
+  final String? senderName;
   @override
-  final String receiverName;
+  final String? receiverName;
   @override
   final bool? isApproved;
   @override
@@ -358,14 +358,14 @@ class _$_TransactionModel implements _TransactionModel {
 
 abstract class _TransactionModel implements TransactionModel {
   const factory _TransactionModel(
-      {required final int uid,
+      {final int? uid,
       required final double amount,
-      required final int createTime,
+      final int? createTime,
       required final String senderAccountNo,
       required final String traxType,
       required final String receiverAccountNo,
-      required final String senderName,
-      required final String receiverName,
+      final String? senderName,
+      final String? receiverName,
       final bool? isApproved,
       final int? relatedId,
       @JsonKey(includeFromJson: false, includeToJson: false)
@@ -377,11 +377,11 @@ abstract class _TransactionModel implements TransactionModel {
       _$_TransactionModel.fromJson;
 
   @override
-  int get uid;
+  int? get uid;
   @override
   double get amount;
   @override
-  int get createTime;
+  int? get createTime;
   @override
   String get senderAccountNo;
   @override
@@ -389,9 +389,9 @@ abstract class _TransactionModel implements TransactionModel {
   @override
   String get receiverAccountNo;
   @override
-  String get senderName;
+  String? get senderName;
   @override
-  String get receiverName;
+  String? get receiverName;
   @override
   bool? get isApproved;
   @override

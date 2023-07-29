@@ -16,7 +16,7 @@ class TransactionRepository implements BaseTransactionRepository {
   }
 
   @override
-  Future<List<TransactionModel>> getTransactions(
+  Future<List<TransactionModel>> getRequestedTransactions(
       {required int limit,
       required bool isRequestedTransaction,
       DocumentSnapshot<Object?>? document}) async {

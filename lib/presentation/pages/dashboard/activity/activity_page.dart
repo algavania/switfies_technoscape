@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
+import 'package:swifties_technoscape/application/service/shared_preferences_service.dart';
 import 'package:swifties_technoscape/data/models/transaction/transaction_model.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
@@ -25,6 +26,8 @@ class ActivityPage extends StatefulWidget {
 }
 
 class _ActivityPageState extends State<ActivityPage> {
+  final bool _isParent =
+      SharedPreferencesService.getUserData()!.relatedId == null;
   List<TransactionModel> _transactionList = [];
   List<UserModel> _childList = [];
   bool _isLoading = true;
@@ -49,13 +52,16 @@ class _ActivityPageState extends State<ActivityPage> {
         });
       }
       _childList = await UserRepository().getMyChildren();
-      _transactionList = await TransactionRepository()
-          .getTransactions(limit: 2, isRequestedTransaction: false);
+      _transactionList = await BankRepository().getAllTransactions(
+        accountNo: SharedPreferencesService.getUserData()!.accountNo!,
+        recordsPerPage: 3
+      );
       setState(() {
         _isLoading = false;
       });
     } catch (e) {
-      SharedCode.showSnackbar(context: context, message: e.toString(), isSuccess: false);
+      SharedCode.showSnackbar(
+          context: context, message: e.toString(), isSuccess: false);
     }
     context.loaderOverlay.hide();
   }
@@ -190,22 +196,23 @@ class _ActivityPageState extends State<ActivityPage> {
             const SizedBox(height: 16),
             _childList.isEmpty
                 ? _buildEmptyList(
-                AppLocalizations.of(context).childrenAccountEmptyTitle,
-                AppLocalizations.of(context).childrenAccountEmptyDescription)
+                    AppLocalizations.of(context).childrenAccountEmptyTitle,
+                    AppLocalizations.of(context)
+                        .childrenAccountEmptyDescription)
                 : ListView.separated(
-              primary: false,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _childList.length,
-              itemBuilder: (context, index) {
-                return CustomChildAccount(
-                  user: _childList[index],
-                );
-              },
-              separatorBuilder: (_, __) {
-                return const SizedBox(height: UiConstant.defaultSpacing);
-              },
-            ),
+                    primary: false,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _childList.length,
+                    itemBuilder: (context, index) {
+                      return CustomChildAccount(
+                        user: _childList[index],
+                      );
+                    },
+                    separatorBuilder: (_, __) {
+                      return const SizedBox(height: UiConstant.defaultSpacing);
+                    },
+                  ),
           ],
         ),
       ),
@@ -298,6 +305,7 @@ class _ActivityPageState extends State<ActivityPage> {
                     itemCount: _transactionList.length,
                     itemBuilder: (context, index) {
                       return CustomTransaction(
+                          refreshPage: _getAllData,
                           transactionModel: _transactionList[index]);
                     },
                     separatorBuilder: (_, __) {

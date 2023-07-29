@@ -13,6 +13,7 @@ _$_UserModel _$$_UserModelFromJson(Map<String, dynamic> json) => _$_UserModel(
       relatedId: json['relatedId'] as int?,
       loginPassword: json['loginPassword'] as String,
       username: json['username'] as String,
+      accountNo: json['accountNo'] as String?,
     );
 
 Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$$_UserModelToJson(_$_UserModel instance) =>
       'relatedId': instance.relatedId,
       'loginPassword': instance.loginPassword,
       'username': instance.username,
+      'accountNo': instance.accountNo,
     };

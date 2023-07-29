@@ -190,5 +190,11 @@
   "transactionTotal": "Total Transaksi",
   "backToHome": "Kembali Ke Beranda",
   "downloadReceipt": "Download Bukti",
-  "receiverAccount": "Rekening Penerima"
+  "receiverAccount": "Rekening Penerima",
+  "accountClipboardSuccess": "Nomor Rekening berhasil disalin!",
+  "waitForParentApproval": "Tunggu tinjauan orang tua dulu ya!",
+  "denyConfirmationDescription": "Apakah kamu yakin ingin menolak permintaan ini?",
+  "acceptConfirmationDescription": "Apakah kamu yakin ingin menerima permintaan ini?",
+  "denySuccess": "Kamu berhasil menolak permintaan ini!",
+  "acceptSuccess": "Kamu berhasil menerima permintaan ini!"
 }

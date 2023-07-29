@@ -9,6 +9,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:swifties_technoscape/application/common/db_constants.dart';
 import 'package:swifties_technoscape/application/common/shared_code.dart';
 import 'package:swifties_technoscape/application/repositories/auth/auth_repository.dart';
+import 'package:swifties_technoscape/application/repositories/repositories.dart';
 import 'package:swifties_technoscape/application/service/shared_preferences_service.dart';
 import 'package:swifties_technoscape/data/models/user/user_model.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
@@ -18,9 +19,9 @@ import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_button.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_dropdown_field.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart';
-import 'package:swifties_technoscape/presentation/widgets/logo_widget.dart';
 
 import '../../../application/repositories/bank/bank_repository.dart';
+import '../../../data/models/account/account_model.dart';
 import '../../../data/models/auth/auth_model.dart';
 import '../../../data/models/token/token_model.dart';
 import '../../routes/router.gr.dart';
@@ -45,7 +46,6 @@ class _AddChildPageState extends State<AddChildPage> {
   final TextEditingController _birthdateController = TextEditingController();
   final List<DropdownMenuItem<int>> _genderItems = [];
   int? _value;
-  bool _isSend = false;
 
   @override
   void initState() {
@@ -308,9 +308,11 @@ class _AddChildPageState extends State<AddChildPage> {
                                             displayName: displayName,
                                             loginPassword: loginPassword
                                           );
-                                          await AuthRepository().createUser(authModel, userModel);
+                                          AuthModel result = await AuthRepository().createUser(authModel, userModel);
                                           TokenModel tokenModel = await AuthRepository().generateToken(username, loginPassword);
-                                          await BankRepository().createBankAccount(tokenModel.accessToken);
+                                          AccountModel accountModel = await BankRepository().createBankAccount(tokenModel.accessToken);
+                                          userModel = userModel.copyWith(accountNo: accountModel.accountNo, uid: result.uid);
+                                          await UserRepository().addOrUpdateUser(result.uid!, userModel);
                                           _clearAllTextFields();
                                           if (AutoRouter.of(context).canPop()) {
                                             AutoRouter.of(context).pop(AppLocalizations.of(context).childRegistrationSuccessTitle);

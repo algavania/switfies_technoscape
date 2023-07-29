@@ -31,6 +31,15 @@ class UserRepository implements BaseUserRepository {
     }
     throw 'User tidak ditemukan';
   }
+  @override
+  Future<UserModel> getUserByAccountNo(String accountNo) async {
+    QuerySnapshot snapshot = await DbConstants.db.collection(DbConstants.users).where('accountNo', isEqualTo: accountNo).get();
+    if (snapshot.docs.isNotEmpty) {
+      return UserModel.fromJson(snapshot.docs.first.data() as Map<String, dynamic>);
+    }
+    throw 'User tidak ditemukan';
+  }
+
 
   @override
   Future<List<UserModel>> getMyChildren({int? limit}) async {

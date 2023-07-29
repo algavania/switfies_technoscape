@@ -69,7 +69,7 @@ class _SavingsPageState extends State<SavingsPage> {
               backdropTapClosesPanel: false,
               color: ColorValues.slidingPanelBackground,
               backdropEnabled: true,
-              backdropColor: ColorValues.grey50,
+              backdropColor: ColorValues.grey90,
               backdropOpacity: 0.32,
               borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), topRight: Radius.circular(24)),
               boxShadow: [BoxShadow(color: ColorValues.grey50.withOpacity(0))],
@@ -344,7 +344,7 @@ class _SavingsPageState extends State<SavingsPage> {
                           isRequired: true,
                           label: AppLocalizations.of(context).savingTarget,
                           hint: AppLocalizations.of(context).savingTargetHint,
-                          icon: Iconsax.empty_wallet_time4
+                          icon: Iconsax.empty_wallet5
                       ),
                       const SizedBox(height: 16),
                       GestureDetector(

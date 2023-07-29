@@ -141,5 +141,11 @@
   "neoBankTransferTitle": "Transfer via NeoBank",
   "neoBankTransferDesc1": "Yuk, sambungin ke",
   "neoBankTransferDesc2": "NeoBank",
-  "neoBankTransferDesc3": "dan dapetin top-up tanpa admin"
+  "neoBankTransferDesc3": "dan dapetin top-up tanpa admin",
+  "requestBalanceInstruction": "Cara minta-nya",
+  "requestBalanceInstructionDescription": "Eits, jangan marah kalau ga dikasih ya, hihi.",
+  "requestBalanceStep1": "Masukin username keluarga atau temen kamu",
+  "requestBalanceStep2": "Masukin nominal yang diminta",
+  "requestBalanceStep3": "Dirayu ya! Masukin pesan permintaannya, hehe!",
+  "requestBalanceStep4": "Udah deh, tinggal kirim permintaannya!"
 }

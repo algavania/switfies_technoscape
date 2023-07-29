@@ -75,7 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
         backdropTapClosesPanel: false,
         color: ColorValues.slidingPanelBackground,
         backdropEnabled: true,
-        backdropColor: ColorValues.grey50,
+        backdropColor: ColorValues.grey90,
         onPanelClosed: () {
           if (SharedPreferencesService.getToken() != null) {
             AutoRouter.of(context).replace(const DashboardRoute());

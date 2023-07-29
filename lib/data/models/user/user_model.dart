@@ -12,6 +12,7 @@ class UserModel with _$UserModel {
     int? relatedId,
     required String loginPassword,
     required String username,
+    String? accountNo,
   }) = _UserModel;
 
   factory UserModel.fromJson(Map<String, Object?> json)

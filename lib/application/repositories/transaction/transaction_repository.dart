@@ -16,9 +16,9 @@ class TransactionRepository implements BaseTransactionRepository {
   }
 
   @override
-  Future<List<TransactionModel>> getTransactions(
+  Future<List<TransactionModel>> getRequestedTransactions(
       {required int limit,
-      required bool isRequestedTransaction,
+      bool? isRequestedTransaction,
       DocumentSnapshot<Object?>? document}) async {
     bool isParent =
         SharedPreferencesService.getUserData()!.role == DbConstants.parentRole;
@@ -30,10 +30,12 @@ class TransactionRepository implements BaseTransactionRepository {
     } else {
       query = query.where('uid', isEqualTo: uid);
     }
-    if (isRequestedTransaction) {
-      query = query.where('isApproved', isNull: isRequestedTransaction);
-    } else {
-      query = query.where('isApproved', isEqualTo: true);
+    if (isRequestedTransaction != null) {
+      if (isRequestedTransaction) {
+        query = query.where('isApproved', isNull: isRequestedTransaction);
+      } else {
+        query = query.where('isApproved', isEqualTo: true);
+      }
     }
     query = query.orderBy('createTime');
     if (document != null) {

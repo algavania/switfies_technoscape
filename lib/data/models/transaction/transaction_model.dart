@@ -7,14 +7,14 @@ part 'transaction_model.g.dart';
 @freezed
 class TransactionModel with _$TransactionModel {
   const factory TransactionModel({
-    required int uid,
+    int? uid,
     required double amount,
-    required int createTime,
+    int? createTime,
     required String senderAccountNo,
     required String traxType,
     required String receiverAccountNo,
-    required String senderName,
-    required String receiverName,
+    String? senderName,
+    String? receiverName,
     bool? isApproved,
     int? relatedId,
     @JsonKey(includeFromJson: false, includeToJson: false) DocumentSnapshot? documentSnapshot,

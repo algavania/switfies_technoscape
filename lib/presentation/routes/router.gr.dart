@@ -15,6 +15,7 @@ import 'package:auto_route/auto_route.dart' as _i2;
 import 'package:flutter/cupertino.dart' as _i4;
 import 'package:flutter/material.dart' as _i3;
 
+import '../../data/models/article/article_model.dart' as _i7;
 import '../../data/models/saving/saving_model.dart' as _i5;
 import '../../data/models/user/user_model.dart' as _i6;
 import '../pages/screens.dart' as _i1;
@@ -128,6 +129,19 @@ class AppRouter extends _i2.RootStackRouter {
         child: _i1.AccountDetailPage(
           key: args.key,
           childModel: args.childModel,
+        ),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    DetailArticleRoute.name: (routeData) {
+      final args = routeData.argsAs<DetailArticleRouteArgs>();
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: _i1.DetailArticlePage(
+          key: args.key,
+          articleModel: args.articleModel,
         ),
         transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
         opaque: true,
@@ -269,6 +283,10 @@ class AppRouter extends _i2.RootStackRouter {
         _i2.RouteConfig(
           AccountDetailRoute.name,
           path: '/account-detail',
+        ),
+        _i2.RouteConfig(
+          DetailArticleRoute.name,
+          path: '/article-detail',
         ),
       ];
 }
@@ -463,6 +481,40 @@ class AccountDetailRouteArgs {
   @override
   String toString() {
     return 'AccountDetailRouteArgs{key: $key, childModel: $childModel}';
+  }
+}
+
+/// generated route for
+/// [_i1.DetailArticlePage]
+class DetailArticleRoute extends _i2.PageRouteInfo<DetailArticleRouteArgs> {
+  DetailArticleRoute({
+    _i4.Key? key,
+    required _i7.ArticleModel articleModel,
+  }) : super(
+          DetailArticleRoute.name,
+          path: '/article-detail',
+          args: DetailArticleRouteArgs(
+            key: key,
+            articleModel: articleModel,
+          ),
+        );
+
+  static const String name = 'DetailArticleRoute';
+}
+
+class DetailArticleRouteArgs {
+  const DetailArticleRouteArgs({
+    this.key,
+    required this.articleModel,
+  });
+
+  final _i4.Key? key;
+
+  final _i7.ArticleModel articleModel;
+
+  @override
+  String toString() {
+    return 'DetailArticleRouteArgs{key: $key, articleModel: $articleModel}';
   }
 }
 

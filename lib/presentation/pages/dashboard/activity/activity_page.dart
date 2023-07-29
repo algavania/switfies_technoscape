@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:sizer/sizer.dart';
+import 'package:swifties_technoscape/application/service/shared_preferences_service.dart';
 import 'package:swifties_technoscape/data/models/transaction/transaction_model.dart';
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
@@ -49,13 +50,18 @@ class _ActivityPageState extends State<ActivityPage> {
         });
       }
       _childList = await UserRepository().getMyChildren();
-      _transactionList = await TransactionRepository()
-          .getTransactions(limit: 2, isRequestedTransaction: false);
+      try {
+        _transactionList = await BankRepository().getAllTransactions(
+            accountNo: SharedPreferencesService.getUserData()!.accountNo!,
+            recordsPerPage: 3
+        );
+      } catch (_) {}
       setState(() {
         _isLoading = false;
       });
     } catch (e) {
-      SharedCode.showSnackbar(context: context, message: e.toString(), isSuccess: false);
+      SharedCode.showSnackbar(
+          context: context, message: e.toString(), isSuccess: false);
     }
     context.loaderOverlay.hide();
   }
@@ -74,7 +80,7 @@ class _ActivityPageState extends State<ActivityPage> {
               body: ClipRRect(
                 borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
                 child: Image.network(
-                  'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                  'https://firebasestorage.googleapis.com/v0/b/swifties-technoscape.appspot.com/o/img_default_profile.png?alt=media&token=41b41973-531b-4f6e-95da-7b1e08f170a4',
                   width: 40,
                   height: 40,
                 ),
@@ -190,22 +196,23 @@ class _ActivityPageState extends State<ActivityPage> {
             const SizedBox(height: 16),
             _childList.isEmpty
                 ? _buildEmptyList(
-                AppLocalizations.of(context).childrenAccountEmptyTitle,
-                AppLocalizations.of(context).childrenAccountEmptyDescription)
+                    AppLocalizations.of(context).childrenAccountEmptyTitle,
+                    AppLocalizations.of(context)
+                        .childrenAccountEmptyDescription)
                 : ListView.separated(
-              primary: false,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: _childList.length,
-              itemBuilder: (context, index) {
-                return CustomChildAccount(
-                  user: _childList[index],
-                );
-              },
-              separatorBuilder: (_, __) {
-                return const SizedBox(height: UiConstant.defaultSpacing);
-              },
-            ),
+                    primary: false,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: _childList.length,
+                    itemBuilder: (context, index) {
+                      return CustomChildAccount(
+                        user: _childList[index],
+                      );
+                    },
+                    separatorBuilder: (_, __) {
+                      return const SizedBox(height: UiConstant.defaultSpacing);
+                    },
+                  ),
           ],
         ),
       ),
@@ -250,15 +257,6 @@ class _ActivityPageState extends State<ActivityPage> {
             title,
             style: Theme.of(context).textTheme.labelLarge,
           )),
-          if (!isListEmpty)
-            GestureDetector(
-              onTap: onTap,
-              child: Text(
-                AppLocalizations.of(context).seeAll,
-                style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                    fontSize: 12, color: Theme.of(context).primaryColor),
-              ),
-            )
         ]),
         const SizedBox(height: UiConstant.mediumSpacing),
         Text(
@@ -298,6 +296,8 @@ class _ActivityPageState extends State<ActivityPage> {
                     itemCount: _transactionList.length,
                     itemBuilder: (context, index) {
                       return CustomTransaction(
+                          userId: SharedPreferencesService.getUserData()!.accountNo!,
+                          refreshPage: _getAllData,
                           transactionModel: _transactionList[index]);
                     },
                     separatorBuilder: (_, __) {

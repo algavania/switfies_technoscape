@@ -182,15 +182,15 @@ class _SaveNowPageState extends State<SaveNowPage> {
           //   style: Theme.of(context).textTheme.labelLarge,
           // ),
           const SizedBox(height: 16),
-          CustomSavingMethod(
-              text: AppLocalizations.of(context).requestBalance,
-              imageUrl: 'assets/activity/img_child_2.png',
-              onTap: () {
-                _panelContent.value = _buildRequestBalancePanel();
-                _panelHeight.value = 90.h;
-                _panelController.open();
-              }),
-          const SizedBox(height: UiConstant.defaultSpacing),
+          // CustomSavingMethod(
+          //     text: AppLocalizations.of(context).requestBalance,
+          //     imageUrl: 'assets/activity/img_child_2.png',
+          //     onTap: () {
+          //       _panelContent.value = _buildRequestBalancePanel();
+          //       _panelHeight.value = 90.h;
+          //       _panelController.open();
+          //     }),
+          // const SizedBox(height: UiConstant.defaultSpacing),
           CustomSavingMethod(
               text: AppLocalizations.of(context).topUp,
               imageUrl: 'assets/activity/img_child.png',

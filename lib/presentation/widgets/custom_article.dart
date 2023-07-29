@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:sizer/sizer.dart';
@@ -6,6 +7,7 @@ import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/shared_data.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
+import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 
 class CustomArticle extends StatefulWidget {
   final ArticleModel article;
@@ -18,54 +20,59 @@ class CustomArticle extends StatefulWidget {
 class _CustomArticleState extends State<CustomArticle> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 100.w,
-      padding: const EdgeInsets.all(UiConstant.mediumPadding),
-      decoration: BoxDecoration(
-        color: ColorValues.surface,
-        border: Border.all(color: ColorValues.grey10, width: 1),
-        borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
-      ),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
-            child: Image.network(
-              widget.article.thumbnailUrl,
-              width: 64,
-              height: 64,
-              fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () {
+        AutoRouter.of(context).navigate(DetailArticleRoute(articleModel: widget.article));
+      },
+      child: Container(
+        width: 100.w,
+        padding: const EdgeInsets.all(UiConstant.mediumPadding),
+        decoration: BoxDecoration(
+          color: ColorValues.surface,
+          border: Border.all(color: ColorValues.grey10, width: 1),
+          borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
+        ),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
+              child: Image.network(
+                widget.article.thumbnailUrl,
+                width: 64,
+                height: 64,
+                fit: BoxFit.cover,
+              ),
             ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.article.title,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, decoration: TextDecoration.underline),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: UiConstant.defaultSpacing),
-                Row(children: [
-                  _buildIconText('${widget.article.readingInMinutes} ${AppLocalizations.of(context).minutes}', Iconsax.clock5),
-                  Container(
-                    width: 4,
-                    height: 4,
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    decoration: BoxDecoration(
-                      color: ColorValues.greyBase,
-                      borderRadius: BorderRadius.circular(4)
-                    ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.article.title,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, decoration: TextDecoration.underline),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  _buildIconText(SharedData.regularDateFormat.format(widget.article.createdAt), Iconsax.calendar)
-                ])
-              ],
-            ),
-          )
-        ],
+                  const SizedBox(height: UiConstant.defaultSpacing),
+                  Row(children: [
+                    _buildIconText('${widget.article.readingInMinutes} ${AppLocalizations.of(context).minutes}', Iconsax.clock5),
+                    Container(
+                      width: 4,
+                      height: 4,
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                        color: ColorValues.greyBase,
+                        borderRadius: BorderRadius.circular(4)
+                      ),
+                    ),
+                    _buildIconText(SharedData.regularDateFormat.format(widget.article.createdAt), Iconsax.calendar)
+                  ])
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -73,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: Image.network(
-                'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                'https://firebasestorage.googleapis.com/v0/b/swifties-technoscape.appspot.com/o/img_default_profile.png?alt=media&token=41b41973-531b-4f6e-95da-7b1e08f170a4',
                 width: 32,
                 height: 32,
                 fit: BoxFit.cover,
@@ -88,10 +89,17 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             const SizedBox(width: UiConstant.defaultSpacing),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Clipboard.setData(ClipboardData(
+                    text: SharedPreferencesService.getUserData()!.accountNo!));
+                SharedCode.showSnackbar(
+                    context: context,
+                    message: AppLocalizations.of(context)
+                        .accountClipboardSuccess);
+              },
               child: Row(children: [
                 Text(
-                  SharedData.myAccountData.value!.accountNo,
+                  SharedPreferencesService.getUserData()!.accountNo!,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, color: Theme.of(context).primaryColor),
                 ),
                 const SizedBox(width: 4),
@@ -211,24 +219,24 @@ class _ProfilePageState extends State<ProfilePage> {
             AppLocalizations.of(context).personalization,
             style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14),
           ),
-          const SizedBox(height: 16),
-          _buildMenu(
-            title: AppLocalizations.of(context).changePersonalInfo,
-            iconData: Iconsax.frame5,
-            onTap: () {},
-          ),
-          const SizedBox(height: UiConstant.defaultSpacing),
-          _buildMenu(
-            title: AppLocalizations.of(context).childrenAccountsInfo,
-            iconData: Iconsax.profile_2user5,
-            onTap: () {},
-          ),
-          const SizedBox(height: UiConstant.defaultSpacing),
-          _buildMenu(
-            title: AppLocalizations.of(context).changePassword,
-            iconData: Iconsax.key5,
-            onTap: () {},
-          ),
+          // const SizedBox(height: 16),
+          // _buildMenu(
+          //   title: AppLocalizations.of(context).changePersonalInfo,
+          //   iconData: Iconsax.frame5,
+          //   onTap: () {},
+          // ),
+          // const SizedBox(height: UiConstant.defaultSpacing),
+          // _buildMenu(
+          //   title: AppLocalizations.of(context).childrenAccountsInfo,
+          //   iconData: Iconsax.profile_2user5,
+          //   onTap: () {},
+          // ),
+          // const SizedBox(height: UiConstant.defaultSpacing),
+          // _buildMenu(
+          //   title: AppLocalizations.of(context).changePassword,
+          //   iconData: Iconsax.key5,
+          //   onTap: () {},
+          // ),
           const SizedBox(height: UiConstant.defaultSpacing),
           _buildMenu(
             title: AppLocalizations.of(context).logout,

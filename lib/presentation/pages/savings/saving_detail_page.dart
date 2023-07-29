@@ -732,7 +732,10 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _transactions.length,
               itemBuilder: (c, i) {
-                return CustomTransaction(transactionModel: _transactions[i]);
+                return CustomTransaction(
+                    userId: SharedPreferencesService.getUserData()!.accountNo!,
+                    refreshPage: () {},
+                    transactionModel: _transactions[i]);
               },
               separatorBuilder: (_, __) {
                 return const SizedBox(height: UiConstant.defaultSpacing);

@@ -26,6 +26,7 @@ mixin _$UserModel {
   int? get relatedId => throw _privateConstructorUsedError;
   String get loginPassword => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
+  String? get accountNo => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,7 +45,8 @@ abstract class $UserModelCopyWith<$Res> {
       String role,
       int? relatedId,
       String loginPassword,
-      String username});
+      String username,
+      String? accountNo});
 }
 
 /// @nodoc
@@ -66,6 +68,7 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
     Object? relatedId = freezed,
     Object? loginPassword = null,
     Object? username = null,
+    Object? accountNo = freezed,
   }) {
     return _then(_value.copyWith(
       uid: freezed == uid
@@ -92,6 +95,10 @@ class _$UserModelCopyWithImpl<$Res, $Val extends UserModel>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
+      accountNo: freezed == accountNo
+          ? _value.accountNo
+          : accountNo // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -109,7 +116,8 @@ abstract class _$$_UserModelCopyWith<$Res> implements $UserModelCopyWith<$Res> {
       String role,
       int? relatedId,
       String loginPassword,
-      String username});
+      String username,
+      String? accountNo});
 }
 
 /// @nodoc
@@ -129,6 +137,7 @@ class __$$_UserModelCopyWithImpl<$Res>
     Object? relatedId = freezed,
     Object? loginPassword = null,
     Object? username = null,
+    Object? accountNo = freezed,
   }) {
     return _then(_$_UserModel(
       uid: freezed == uid
@@ -155,6 +164,10 @@ class __$$_UserModelCopyWithImpl<$Res>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
+      accountNo: freezed == accountNo
+          ? _value.accountNo
+          : accountNo // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -168,7 +181,8 @@ class _$_UserModel implements _UserModel {
       required this.role,
       this.relatedId,
       required this.loginPassword,
-      required this.username});
+      required this.username,
+      this.accountNo});
 
   factory _$_UserModel.fromJson(Map<String, dynamic> json) =>
       _$$_UserModelFromJson(json);
@@ -185,10 +199,12 @@ class _$_UserModel implements _UserModel {
   final String loginPassword;
   @override
   final String username;
+  @override
+  final String? accountNo;
 
   @override
   String toString() {
-    return 'UserModel(uid: $uid, displayName: $displayName, role: $role, relatedId: $relatedId, loginPassword: $loginPassword, username: $username)';
+    return 'UserModel(uid: $uid, displayName: $displayName, role: $role, relatedId: $relatedId, loginPassword: $loginPassword, username: $username, accountNo: $accountNo)';
   }
 
   @override
@@ -205,13 +221,15 @@ class _$_UserModel implements _UserModel {
             (identical(other.loginPassword, loginPassword) ||
                 other.loginPassword == loginPassword) &&
             (identical(other.username, username) ||
-                other.username == username));
+                other.username == username) &&
+            (identical(other.accountNo, accountNo) ||
+                other.accountNo == accountNo));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, uid, displayName, role, relatedId, loginPassword, username);
+  int get hashCode => Object.hash(runtimeType, uid, displayName, role,
+      relatedId, loginPassword, username, accountNo);
 
   @JsonKey(ignore: true)
   @override
@@ -234,7 +252,8 @@ abstract class _UserModel implements UserModel {
       required final String role,
       final int? relatedId,
       required final String loginPassword,
-      required final String username}) = _$_UserModel;
+      required final String username,
+      final String? accountNo}) = _$_UserModel;
 
   factory _UserModel.fromJson(Map<String, dynamic> json) =
       _$_UserModel.fromJson;
@@ -251,6 +270,8 @@ abstract class _UserModel implements UserModel {
   String get loginPassword;
   @override
   String get username;
+  @override
+  String? get accountNo;
   @override
   @JsonKey(ignore: true)
   _$$_UserModelCopyWith<_$_UserModel> get copyWith =>

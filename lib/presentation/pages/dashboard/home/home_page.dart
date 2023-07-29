@@ -20,6 +20,7 @@ import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_transaction.dart';
 import 'package:swifties_technoscape/presentation/widgets/logo_widget.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../application/common/db_constants.dart';
 import '../../../../application/service/shared_preferences_service.dart';
@@ -30,28 +31,40 @@ import '../../../routes/router.gr.dart';
 
 class HomePage extends StatefulWidget {
   final Function openPanel, closePanel;
-  const HomePage({Key? key, required this.openPanel, required this.closePanel}) : super(key: key);
+
+  const HomePage({Key? key, required this.openPanel, required this.closePanel})
+      : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  final _formKey = GlobalKey<FormState>();
   final ValueNotifier<bool> _isBalanceVisible = ValueNotifier(false);
   final ValueNotifier<bool> _isBalancePanelVisible = ValueNotifier(false);
-  final ValueNotifier<String> _selectedIdentifier = ValueNotifier('No. Rekening');
-  final TextEditingController _identifierController = TextEditingController();
-  final TextEditingController _transferAmountController = TextEditingController();
-  final TextEditingController _transferMessageController = TextEditingController();
+  final ValueNotifier<String> _selectedIdentifier =
+      ValueNotifier('No. Rekening');
+  final TextEditingController _identifierAccountController =
+      TextEditingController();
+  final TextEditingController _identifierUsernameController =
+      TextEditingController();
+  final TextEditingController _transferAmountController =
+      TextEditingController();
+  final TextEditingController _transferMessageController =
+      TextEditingController();
   List<UserModel> _childList = [];
   List<ArticleModel> _articleList = [];
   List<TransactionModel> _transactionList = [];
   bool _isLoading = true;
   bool _isParent = true;
+  UserModel? _recipientModel;
+  String _transactionAmount = '';
 
   @override
   void initState() {
-    _isParent = SharedPreferencesService.getUserData()!.role == DbConstants.parentRole;
+    _isParent =
+        SharedPreferencesService.getUserData()!.role == DbConstants.parentRole;
     Future.delayed(Duration.zero, () {
       context.loaderOverlay.show();
     });
@@ -59,17 +72,24 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  Future<void> _getAllData() async {
-    if (!context.loaderOverlay.visible) {
+  Future<void> _getAllData({bool withLoading = true}) async {
+    if (!context.loaderOverlay.visible && withLoading) {
       context.loaderOverlay.show();
     }
     try {
-      if (mounted) {
-        setState(() {
-          _isLoading = true;
-        });
+      if (withLoading) {
+        if (mounted) {
+          setState(() {
+            _isLoading = true;
+          });
+        }
       }
       List<AccountModel> accounts = await BankRepository().getAllAccount();
+      UserModel? user = SharedData.userData.value;
+      if (user == null) {
+        user = SharedPreferencesService.getUserData();
+        SharedData.userData.value = user;
+      }
       List<SavingModel> savings = await SavingRepository().getSavingList(null);
       if (accounts.isNotEmpty) {
         AccountModel account = accounts.first;
@@ -79,19 +99,29 @@ class _HomePageState extends State<HomePage> {
         }
         account = account.copyWith(balance: balance.toDouble());
         SharedData.myAccountData.value = account;
+        if (user?.accountNo == null) {
+          user = user?.copyWith(accountNo: account.accountNo);
+          await UserRepository().addOrUpdateUser(user!.uid!, user);
+        }
       }
       if (_isParent) {
         _childList = await UserRepository().getMyChildren(limit: 2);
-        _transactionList = await TransactionRepository().getTransactions(limit: 2, isRequestedTransaction: true);
+        _transactionList = await TransactionRepository()
+            .getRequestedTransactions(limit: 2, isRequestedTransaction: true);
       }
       _articleList = await ArticleRepository().getArticleList(2);
-      setState(() {
-        _isLoading = false;
-      });
+      if (withLoading) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     } catch (e) {
-      SharedCode.showSnackbar(context: context, message: e.toString(), isSuccess: false);
+      SharedCode.showSnackbar(
+          context: context, message: e.toString(), isSuccess: false);
     }
-    context.loaderOverlay.hide();
+    if (withLoading) {
+      context.loaderOverlay.hide();
+    }
   }
 
   @override
@@ -108,7 +138,7 @@ class _HomePageState extends State<HomePage> {
               body: ClipRRect(
                 borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
                 child: Image.network(
-                  'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
+                  'https://firebasestorage.googleapis.com/v0/b/swifties-technoscape.appspot.com/o/img_default_profile.png?alt=media&token=41b41973-531b-4f6e-95da-7b1e08f170a4',
                   width: 40,
                   height: 40,
                 ),
@@ -121,22 +151,24 @@ class _HomePageState extends State<HomePage> {
                   _isLoading
                       ? Container()
                       : SingleChildScrollView(
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    child: Column(
-                      children: [
-                        _buildBalance(),
-                        _buildActions(),
-                        const SizedBox(height: UiConstant.defaultSpacing),
-                        _buildMenus(),
-                        const SizedBox(height: UiConstant.defaultSpacing),
-                        if (_isParent) _buildApprovalRequests(),
-                        if (_isParent) const SizedBox(height: UiConstant.defaultSpacing),
-                        if (_isParent) _buildChildrenAccounts(),
-                        if (_isParent)  const SizedBox(height: UiConstant.defaultSpacing),
-                        _buildArticles(),
-                      ],
-                    ),
-                  ),
+                          physics: const AlwaysScrollableScrollPhysics(),
+                          child: Column(
+                            children: [
+                              _buildBalance(),
+                              _buildMenus(),
+                              const SizedBox(height: UiConstant.defaultSpacing),
+                              if (_isParent) _buildApprovalRequests(),
+                              if (_isParent)
+                                const SizedBox(
+                                    height: UiConstant.defaultSpacing),
+                              if (_isParent) _buildChildrenAccounts(),
+                              if (_isParent)
+                                const SizedBox(
+                                    height: UiConstant.defaultSpacing),
+                              _buildArticles(),
+                            ],
+                          ),
+                        ),
                 ],
               ),
             ),
@@ -156,65 +188,66 @@ class _HomePageState extends State<HomePage> {
                 horizontal: UiConstant.sidePadding),
             color: ColorValues.surface,
             child: ValueListenableBuilder(
-              valueListenable: SharedData.myAccountData,
-              builder: (_, __, ___) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(AppLocalizations.of(context).mainBalance,
-                        style: Theme.of(context)
-                            .textTheme
-                            .displayMedium
-                            ?.copyWith(fontSize: 14)),
-                    const SizedBox(height: 4),
-                    Row(children: [
-                      Expanded(
-                        child: _isBalanceVisible.value
-                            ? RichText(
-                                text: TextSpan(
-                                    text: 'Rp',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayMedium
-                                        ?.copyWith(fontSize: 20),
-                                    children: [
-                                    TextSpan(
-                                      text:
-                                          ' ${SharedCode.formatThousands(SharedData.myAccountData.value!.balance)}',
-                                      style:
-                                          Theme.of(context).textTheme.displayLarge,
-                                    )
-                                  ]))
-                            : SizedBox(
-                                height: 12,
-                                child: ListView.separated(
-                                  primary: false,
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 8,
-                                  itemBuilder: (_, i) {
-                                    return Container(
-                                      width: 12,
-                                      height: 12,
-                                      decoration: BoxDecoration(
-                                        color: i % 2 == 0
-                                            ? ColorValues.primary30
-                                            : ColorValues.primary20,
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                    );
-                                  },
-                                  separatorBuilder: (_, __) {
-                                    return const SizedBox(width: 4);
-                                  },
+                valueListenable: SharedData.myAccountData,
+                builder: (_, __, ___) {
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(AppLocalizations.of(context).mainBalance,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium
+                              ?.copyWith(fontSize: 14)),
+                      const SizedBox(height: 4),
+                      Row(children: [
+                        Expanded(
+                          child: _isBalanceVisible.value
+                              ? RichText(
+                                  text: TextSpan(
+                                      text: 'Rp',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayMedium
+                                          ?.copyWith(fontSize: 20),
+                                      children: [
+                                      TextSpan(
+                                        text:
+                                            ' ${SharedCode.formatThousands(SharedData.myAccountData.value!.balance)}',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displayLarge,
+                                      )
+                                    ]))
+                              : SizedBox(
+                                  height: 12,
+                                  child: ListView.separated(
+                                    primary: false,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: 8,
+                                    itemBuilder: (_, i) {
+                                      return Container(
+                                        width: 12,
+                                        height: 12,
+                                        decoration: BoxDecoration(
+                                          color: i % 2 == 0
+                                              ? ColorValues.primary30
+                                              : ColorValues.primary20,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                      );
+                                    },
+                                    separatorBuilder: (_, __) {
+                                      return const SizedBox(width: 4);
+                                    },
+                                  ),
                                 ),
-                              ),
-                      ),
-                      _buildBalanceToggle(_isBalanceVisible),
-                    ]),
-                  ],
-                );
-              }
-            ),
+                        ),
+                        _buildBalanceToggle(_isBalanceVisible),
+                      ]),
+                    ],
+                  );
+                }),
           );
         });
   }
@@ -224,22 +257,23 @@ class _HomePageState extends State<HomePage> {
       padding: const EdgeInsets.fromLTRB(32, 8, 32, UiConstant.defaultPadding),
       color: ColorValues.surface,
       child: Row(children: [
-        Expanded(child: _buildActionButton(
+        Expanded(
+            child: _buildActionButton(
           AppLocalizations.of(context).topup,
           Iconsax.direct_down5,
-              () {},
+          () {},
         )),
-        Expanded(child: _buildActionButton(
+        Expanded(
+            child: _buildActionButton(
           AppLocalizations.of(context).transferIn,
           Iconsax.direct_inbox5,
-              () {},
+          () {},
         )),
-        Expanded(child: _buildActionButton(
+        Expanded(
+            child: _buildActionButton(
           AppLocalizations.of(context).transferOut,
           Iconsax.direct_up5,
-          () {
-            widget.openPanel(_buildTransferPanel());
-          },
+          () {},
         )),
       ]),
     );
@@ -265,7 +299,10 @@ class _HomePageState extends State<HomePage> {
           const SizedBox(height: 4),
           Text(
             title,
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+            style: Theme.of(context)
+                .textTheme
+                .displayMedium
+                ?.copyWith(fontSize: 12),
             textAlign: TextAlign.center,
           )
         ],
@@ -320,7 +357,8 @@ class _HomePageState extends State<HomePage> {
                 iconData: Iconsax.status_up5,
                 iconColor: ColorValues.primary50,
                 backgroundColor: ColorValues.primary10,
-                onTap: () => AutoRouter.of(context).navigate(const SavingsRoute()),
+                onTap: () =>
+                    AutoRouter.of(context).navigate(const SavingsRoute()),
               ),
             ),
             Expanded(
@@ -336,11 +374,13 @@ class _HomePageState extends State<HomePage> {
             ),
             Expanded(
               child: _buildMenuItem(
-                title: AppLocalizations.of(context).interestCalculator,
-                iconData: Iconsax.calculator5,
+                title: '${AppLocalizations.of(context).transferOut}\n',
+                iconData: Iconsax.direct_up5,
                 iconColor: ColorValues.danger30,
                 backgroundColor: ColorValues.danger10,
-                onTap: () {},
+                onTap: () {
+                  widget.openPanel(_buildTransferPanel());
+                },
               ),
             ),
             Expanded(
@@ -349,7 +389,9 @@ class _HomePageState extends State<HomePage> {
                 iconData: Iconsax.document_text5,
                 iconColor: ColorValues.warning30,
                 backgroundColor: ColorValues.warning10,
-                onTap: () {},
+                onTap: () {
+                  AutoRouter.of(context).navigate(const ArticleRoute());
+                },
               ),
             ),
           ],
@@ -358,7 +400,12 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildMenuItem({required String title, required IconData iconData, required Color iconColor, required Color backgroundColor, required Function() onTap}) {
+  Widget _buildMenuItem(
+      {required String title,
+      required IconData iconData,
+      required Color iconColor,
+      required Color backgroundColor,
+      required Function() onTap}) {
     return GestureDetector(
       onTap: onTap,
       child: Column(children: [
@@ -366,8 +413,7 @@ class _HomePageState extends State<HomePage> {
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
               color: backgroundColor,
-              borderRadius: BorderRadius.circular(UiConstant.smallerBorder)
-          ),
+              borderRadius: BorderRadius.circular(UiConstant.smallerBorder)),
           child: Icon(
             iconData,
             color: iconColor,
@@ -377,18 +423,19 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(height: 4),
         Text(
           title,
-          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+          style:
+              Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
           textAlign: TextAlign.center,
         )
       ]),
     );
   }
 
-
   Widget _buildSectionHeading(
       {required String title,
       required String description,
-      required Function() onTap, required bool isListEmpty}) {
+      required Function() onTap,
+      required bool isListEmpty}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -398,14 +445,15 @@ class _HomePageState extends State<HomePage> {
             title,
             style: Theme.of(context).textTheme.labelLarge,
           )),
-          if (!isListEmpty) GestureDetector(
-            onTap: onTap,
-            child: Text(
-              AppLocalizations.of(context).seeAll,
-              style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                  fontSize: 12, color: Theme.of(context).primaryColor),
-            ),
-          )
+          if (!isListEmpty)
+            GestureDetector(
+              onTap: onTap,
+              child: Text(
+                AppLocalizations.of(context).seeAll,
+                style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                    fontSize: 12, color: Theme.of(context).primaryColor),
+              ),
+            )
         ]),
         const SizedBox(height: UiConstant.mediumSpacing),
         Text(
@@ -433,7 +481,9 @@ class _HomePageState extends State<HomePage> {
                 title: AppLocalizations.of(context).approvalRequestTitle,
                 description:
                     AppLocalizations.of(context).approvalRequestDescription,
-                onTap: () {}),
+                onTap: () {
+                  AutoRouter.of(context).navigate(const NotificationsRoute());
+                }),
             const SizedBox(height: 16),
             _transactionList.isEmpty
                 ? _buildEmptyList(
@@ -446,6 +496,8 @@ class _HomePageState extends State<HomePage> {
                     itemCount: _transactionList.length,
                     itemBuilder: (context, index) {
                       return CustomTransaction(
+                          userId: SharedPreferencesService.getUserData()!.accountNo!,
+                          refreshPage: _getAllData,
                           transactionModel: _transactionList[index]);
                     },
                     separatorBuilder: (_, __) {
@@ -474,7 +526,9 @@ class _HomePageState extends State<HomePage> {
                 title: AppLocalizations.of(context).childrenAccountsTitle,
                 description:
                     AppLocalizations.of(context).childrenAccountsDescription,
-                onTap: () {}),
+                onTap: () {
+                  AutoRouter.of(context).navigate(const ActivityRoute());
+                }),
             const SizedBox(height: 16),
             _childList.isEmpty
                 ? _buildEmptyList(
@@ -517,7 +571,9 @@ class _HomePageState extends State<HomePage> {
                 title: AppLocalizations.of(context).duitKiddoArticleTitle,
                 description:
                     AppLocalizations.of(context).duitKiddoArticleDescription,
-                onTap: () {}),
+                onTap: () {
+                  AutoRouter.of(context).navigate(const ArticleRoute());
+                }),
             const SizedBox(height: 16),
             _articleList.isEmpty
                 ? _buildEmptyList(
@@ -569,55 +625,100 @@ class _HomePageState extends State<HomePage> {
     return Padding(
       padding: const EdgeInsets.all(UiConstant.sidePadding),
       child: ValueListenableBuilder(
-        valueListenable: _selectedIdentifier,
-        builder: (context, _, __) {
-          bool isAccountId = _selectedIdentifier.value == AppLocalizations.of(context).accountId;
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildPanelTitle(AppLocalizations.of(context).transferToOtherUser),
-              const SizedBox(height: 16),
-              Expanded(child: SingleChildScrollView(
-                child: Column(children: [
-                  Row(children: [
-                    Expanded(
-                      child: _buildIdentifierChip(
-                        AppLocalizations.of(context).accountId,
-                        Iconsax.empty_wallet5,
+          valueListenable: _selectedIdentifier,
+          builder: (context, _, __) {
+            bool isAccountId = _selectedIdentifier.value ==
+                AppLocalizations.of(context).accountId;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildPanelTitle(
+                    AppLocalizations.of(context).transferToOtherUser),
+                const SizedBox(height: 16),
+                Expanded(
+                    child: SingleChildScrollView(
+                  child: Column(children: [
+                    Row(children: [
+                      Expanded(
+                        child: _buildIdentifierChip(
+                          AppLocalizations.of(context).accountId,
+                          Iconsax.empty_wallet5,
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: _buildIdentifierChip(
-                        AppLocalizations.of(context).username,
-                        Iconsax.frame5,
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: _buildIdentifierChip(
+                          AppLocalizations.of(context).username,
+                          Iconsax.frame5,
+                        ),
                       ),
+                    ]),
+                    const SizedBox(height: 24),
+                    CustomTextField(
+                      controller: isAccountId
+                          ? _identifierAccountController
+                          : _identifierUsernameController,
+                      isRequired: true,
+                      textInputType: isAccountId
+                          ? TextInputType.number
+                          : TextInputType.text,
+                      validator: SharedCode.emptyValidators,
+                      icon:
+                          isAccountId ? Iconsax.empty_wallet5 : Iconsax.frame5,
+                      label: isAccountId
+                          ? AppLocalizations.of(context).receiverAccountId
+                          : AppLocalizations.of(context).receiverUsername,
+                      hint: isAccountId
+                          ? AppLocalizations.of(context).enterAccountId
+                          : AppLocalizations.of(context).enterUsername,
                     ),
                   ]),
-                  const SizedBox(height: 24),
-                  CustomTextField(
-                    controller: _identifierController,
-                    isRequired: true,
-                    textInputType: isAccountId ? TextInputType.number : null,
-                    validator: SharedCode.emptyValidators,
-                    icon: isAccountId ? Iconsax.empty_wallet5 : Iconsax.frame5,
-                    label: isAccountId ? AppLocalizations.of(context).receiverAccountId : AppLocalizations.of(context).receiverUsername,
-                    hint: isAccountId ? AppLocalizations.of(context).enterAccountId : AppLocalizations.of(context).enterUsername,
-                  ),
-                ]),
-              )),
-              const SizedBox(height: 16),
-              CustomButton(
-                buttonText: AppLocalizations.of(context).validateReceiverAccount,
-                onPressed: () {
-                  widget.closePanel();
-                  widget.openPanel(_buildValidationPanel());
-                },
-              )
-            ],
-          );
-        }
-      ),
+                )),
+                const SizedBox(height: 16),
+                CustomButton(
+                  buttonText:
+                      AppLocalizations.of(context).validateReceiverAccount,
+                  onPressed: () async {
+                    try {
+                      String accountNo =
+                          _identifierAccountController.text.trim();
+                      String username =
+                          _identifierUsernameController.text.trim();
+                      UserModel myAccount = SharedPreferencesService.getUserData()!;
+                      if (accountNo == myAccount.accountNo || username == myAccount.username) throw 'Tidak bisa transfer ke diri sendiri';
+                      if (_selectedIdentifier.value ==
+                              AppLocalizations.of(context).accountId &&
+                          accountNo.isEmpty) {
+                        throw 'Tidak boleh kosong';
+                      }
+                      if (_selectedIdentifier.value ==
+                              AppLocalizations.of(context).username &&
+                          username.isEmpty) {
+                        throw 'Tidak boleh kosong';
+                      }
+                      context.loaderOverlay.show();
+                      if (isAccountId) {
+                        _recipientModel = await UserRepository()
+                            .getUserByAccountNo(accountNo);
+                      } else {
+                        _recipientModel =
+                            await UserRepository().getUserByUsername(username);
+                      }
+                      context.loaderOverlay.hide();
+                      widget.closePanel();
+                      widget.openPanel(_buildValidationPanel());
+                    } catch (e) {
+                      context.loaderOverlay.hide();
+                      SharedCode.showSnackbar(
+                          context: context,
+                          message: e.toString(),
+                          isSuccess: false);
+                    }
+                  },
+                )
+              ],
+            );
+          }),
     );
   }
 
@@ -631,7 +732,9 @@ class _HomePageState extends State<HomePage> {
           color: ColorValues.text50,
         ),
         const SizedBox(width: 16),
-        Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14))
+        Text(title,
+            style:
+                Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14))
       ]),
     );
   }
@@ -644,11 +747,14 @@ class _HomePageState extends State<HomePage> {
         }
       },
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: UiConstant.smallerPadding, horizontal: UiConstant.mediumPadding),
+        padding: const EdgeInsets.symmetric(
+            vertical: UiConstant.smallerPadding,
+            horizontal: UiConstant.mediumPadding),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           border: Border.all(width: 1, color: ColorValues.primary50),
-          color: _selectedIdentifier.value == title ? ColorValues.primary10 : null,
+          color:
+              _selectedIdentifier.value == title ? ColorValues.primary10 : null,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -659,10 +765,11 @@ class _HomePageState extends State<HomePage> {
               color: ColorValues.primary50,
             ),
             const SizedBox(width: 8),
-            Text(
-                title,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: ColorValues.primary50, fontSize: 12)
-            ),
+            Text(title,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium
+                    ?.copyWith(color: ColorValues.primary50, fontSize: 12)),
           ],
         ),
       ),
@@ -670,7 +777,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildValidationPanel() {
-    bool isAccountId = _selectedIdentifier.value == AppLocalizations.of(context).accountId;
+    bool isAccountId =
+        _selectedIdentifier.value == AppLocalizations.of(context).accountId;
     bool isAccountValid = true;
 
     return Padding(
@@ -678,9 +786,11 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildPanelTitle(AppLocalizations.of(context).receiverAccountValidation),
+          _buildPanelTitle(
+              AppLocalizations.of(context).receiverAccountValidation),
           const SizedBox(height: 16),
-          Expanded(child: SingleChildScrollView(
+          Expanded(
+              child: SingleChildScrollView(
             child: Column(children: [
               AbsorbPointer(
                 child: Row(children: [
@@ -702,66 +812,81 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 24),
               CustomTextField(
                 readOnly: true,
-                controller: _identifierController,
+                controller: isAccountId
+                    ? _identifierAccountController
+                    : _identifierUsernameController,
                 isRequired: true,
-                textInputType: isAccountId ? TextInputType.number : null,
+                textInputType:
+                    isAccountId ? TextInputType.number : TextInputType.text,
                 validator: SharedCode.emptyValidators,
                 icon: isAccountId ? Iconsax.empty_wallet5 : Iconsax.frame5,
-                label: isAccountId ? AppLocalizations.of(context).receiverAccountId : AppLocalizations.of(context).receiverUsername,
-                hint: isAccountId ? AppLocalizations.of(context).enterAccountId : AppLocalizations.of(context).enterUsername,
+                label: isAccountId
+                    ? AppLocalizations.of(context).receiverAccountId
+                    : AppLocalizations.of(context).receiverUsername,
+                hint: isAccountId
+                    ? AppLocalizations.of(context).enterAccountId
+                    : AppLocalizations.of(context).enterUsername,
               ),
               const SizedBox(height: 16),
-              isAccountValid ? _buildReceiverProfile('Fulan bin Fulan', 'fulanbinfulan', '100 000 000 1', isValidating: true) : _buildAccountNotFound()
+              isAccountValid
+                  ? _buildReceiverProfile(isValidating: true)
+                  : _buildAccountNotFound()
             ]),
           )),
           const SizedBox(height: 16),
-          isAccountValid ? Row(
-            children: [
-              Expanded(
-                child: CustomButton(
+          isAccountValid
+              ? Row(
+                  children: [
+                    Expanded(
+                      child: CustomButton(
+                        buttonText: AppLocalizations.of(context).changeReceiver,
+                        backgroundColor: ColorValues.slidingPanelBackground,
+                        colorAsOutlineButton: ColorValues.text50,
+                        onPressed: () {
+                          widget.closePanel();
+                          widget.openPanel(_buildTransferPanel());
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: CustomButton(
+                        buttonText: AppLocalizations.of(context).proceed,
+                        onPressed: () {
+                          widget.closePanel();
+                          widget.openPanel(_buildAmountPanel());
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              : CustomButton(
                   buttonText: AppLocalizations.of(context).changeReceiver,
-                  backgroundColor: ColorValues.slidingPanelBackground,
-                  colorAsOutlineButton: ColorValues.text50,
                   onPressed: () {
                     widget.closePanel();
                     widget.openPanel(_buildTransferPanel());
                   },
-                ),
-              ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: CustomButton(
-                  buttonText: AppLocalizations.of(context).proceed,
-                  onPressed: () {
-                    widget.closePanel();
-                    widget.openPanel(_buildAmountPanel());
-                  },
-                ),
-              ),
-            ],
-          ) : CustomButton(
-            buttonText: AppLocalizations.of(context).changeReceiver,
-            onPressed: () {
-              widget.closePanel();
-              widget.openPanel(_buildTransferPanel());
-            },
-          )
+                )
         ],
       ),
     );
   }
 
-  Widget _buildReceiverProfile(String name, String username, String accountId, {isValidating = false}) {
+  Widget _buildReceiverProfile({isValidating = false}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          isValidating ? AppLocalizations.of(context).accountFound : AppLocalizations.of(context).receiverAccount,
+          isValidating
+              ? AppLocalizations.of(context).accountFound
+              : AppLocalizations.of(context).receiverAccount,
           style: Theme.of(context).textTheme.displaySmall,
         ),
         const SizedBox(height: 8),
         Container(
-          padding: const EdgeInsets.symmetric(vertical: UiConstant.mediumPadding, horizontal: UiConstant.defaultPadding),
+          padding: const EdgeInsets.symmetric(
+              vertical: UiConstant.mediumPadding,
+              horizontal: UiConstant.defaultPadding),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
             color: ColorValues.success10,
@@ -777,31 +902,40 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(width: 12),
-            Expanded(child: Column(
+            Expanded(
+                child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  name,
-                  style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12),
+                  _recipientModel!.displayName,
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelLarge
+                      ?.copyWith(fontSize: 12),
                 ),
                 const SizedBox(height: 4),
                 Row(children: [
                   Text(
-                    '@$username',
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+                    '@${_recipientModel!.username}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(fontSize: 12),
                   ),
                   Container(
                     width: 4,
                     height: 4,
                     margin: const EdgeInsets.symmetric(horizontal: 8),
                     decoration: BoxDecoration(
-                      color: ColorValues.greyBase,
-                      borderRadius: BorderRadius.circular(4)
-                    ),
+                        color: ColorValues.greyBase,
+                        borderRadius: BorderRadius.circular(4)),
                   ),
                   Text(
-                    accountId,
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+                    _recipientModel!.accountNo ?? '-',
+                    style: Theme.of(context)
+                        .textTheme
+                        .displayMedium
+                        ?.copyWith(fontSize: 12),
                   ),
                 ]),
               ],
@@ -820,7 +954,9 @@ class _HomePageState extends State<HomePage> {
   Widget _buildAccountNotFound() {
     return Container(
       width: 100.w,
-      padding: const EdgeInsets.symmetric(vertical: UiConstant.mediumPadding, horizontal: UiConstant.defaultPadding),
+      padding: const EdgeInsets.symmetric(
+          vertical: UiConstant.mediumPadding,
+          horizontal: UiConstant.defaultPadding),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
         color: ColorValues.danger10,
@@ -833,189 +969,295 @@ class _HomePageState extends State<HomePage> {
         const SizedBox(height: UiConstant.mediumSpacing),
         Text(
           AppLocalizations.of(context).accountNotFoundDescription,
-          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+          style:
+              Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
         )
       ]),
     );
   }
 
   Widget _buildAmountPanel() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: UiConstant.sidePadding),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
-            child: _buildPanelTitle(AppLocalizations.of(context).enterAmount),
-          ),
-          const SizedBox(height: 24),
-          Expanded(child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
-                  child: _buildReceiverProfile('Fulan bin Fulan', 'fulanbinfulan', '100 000 000 1'),
-                ),
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
-                  child: Text(
-                    AppLocalizations.of(context).senderAccount,
-                    style: Theme.of(context).textTheme.displaySmall,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Container(
-                  padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
-                  decoration: const BoxDecoration(
-                    border: Border(
-                      top: BorderSide(color: ColorValues.grey10, width: 1),
-                      bottom: BorderSide(color: ColorValues.grey10, width: 1),
-                    )
-                  ),
-                  child: Column(
-                    children: [
-                      Row(children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(8),
-                          child: Image.network(
-                            'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
-                            width: 32,
-                            height: 32,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(width: UiConstant.defaultSpacing),
-                        Expanded(
-                          child: Text(
-                            'Fulan bin Fulan',
-                            style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12),
-                          ),
-                        ),
-                        const SizedBox(width: UiConstant.defaultSpacing),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Row(children: [
-                            Text(
-                              '100 000 000 1',
-                              style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, color: Theme.of(context).primaryColor),
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: UiConstant.sidePadding),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: UiConstant.sidePadding),
+              child: _buildPanelTitle(AppLocalizations.of(context).enterAmount),
+            ),
+            const SizedBox(height: 24),
+            Expanded(
+                child: SingleChildScrollView(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: UiConstant.sidePadding),
+                      child: _buildReceiverProfile(),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: UiConstant.sidePadding),
+                      child: Text(
+                        AppLocalizations.of(context).senderAccount,
+                        style: Theme.of(context).textTheme.displaySmall,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: UiConstant.defaultPadding,
+                          horizontal: UiConstant.sidePadding),
+                      decoration: const BoxDecoration(
+                          border: Border(
+                        top: BorderSide(color: ColorValues.grey10, width: 1),
+                        bottom: BorderSide(color: ColorValues.grey10, width: 1),
+                      )),
+                      child: Column(
+                        children: [
+                          Row(children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: Image.network(
+                                'https://firebasestorage.googleapis.com/v0/b/swifties-technoscape.appspot.com/o/img_default_profile.png?alt=media&token=41b41973-531b-4f6e-95da-7b1e08f170a4',
+                                width: 32,
+                                height: 32,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                            const SizedBox(width: 4),
-                            const Icon(
-                              Iconsax.copy5,
-                              size: 16,
-                              color: ColorValues.primary90,
-                            )
+                            const SizedBox(width: UiConstant.defaultSpacing),
+                            Expanded(
+                              child: Text(
+                                SharedData.userData.value!.displayName,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .labelLarge
+                                    ?.copyWith(fontSize: 12),
+                              ),
+                            ),
+                            const SizedBox(width: UiConstant.defaultSpacing),
+                            GestureDetector(
+                              onTap: () {
+                                Clipboard.setData(ClipboardData(
+                                    text: SharedData
+                                        .myAccountData.value!.accountNo));
+                                SharedCode.showSnackbar(
+                                    context: context,
+                                    message: AppLocalizations.of(context)
+                                        .accountClipboardSuccess);
+                              },
+                              child: Row(children: [
+                                Text(
+                                  SharedData.myAccountData.value!.accountNo,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelLarge
+                                      ?.copyWith(
+                                          fontSize: 12,
+                                          color:
+                                              Theme.of(context).primaryColor),
+                                ),
+                                const SizedBox(width: 4),
+                                const Icon(
+                                  Iconsax.copy5,
+                                  size: 16,
+                                  color: ColorValues.primary90,
+                                )
+                              ]),
+                            ),
                           ]),
-                        ),
-                      ]),
-                      const SizedBox(height: 16),
-                      ValueListenableBuilder(
-                          valueListenable: _isBalancePanelVisible,
-                          builder: (context, _, __) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(AppLocalizations.of(context).mainAccountBalance,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .displayMedium
-                                        ?.copyWith(fontSize: 14)),
-                                const SizedBox(height: 4),
-                                Row(children: [
-                                  Expanded(
-                                    child: _isBalancePanelVisible.value
-                                        ? RichText(
-                                        text: TextSpan(
-                                            text: 'Rp',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .displayMedium
-                                                ?.copyWith(fontSize: 20),
-                                            children: [
-                                              TextSpan(
-                                                text:
-                                                ' ${SharedCode.formatThousands(SharedData.myAccountData.value!.balance)}',
-                                                style:
-                                                Theme.of(context).textTheme.displayLarge,
-                                              )
-                                            ]))
-                                        : SizedBox(
-                                      height: 12,
-                                      child: ListView.separated(
-                                        primary: false,
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: 8,
-                                        itemBuilder: (_, i) {
-                                          return Container(
-                                            width: 12,
-                                            height: 12,
-                                            decoration: BoxDecoration(
-                                              color: i % 2 == 0
-                                                  ? ColorValues.primary30
-                                                  : ColorValues.primary20,
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                          );
-                                        },
-                                        separatorBuilder: (_, __) {
-                                          return const SizedBox(width: 4);
-                                        },
+                          const SizedBox(height: 16),
+                          ValueListenableBuilder(
+                              valueListenable: _isBalancePanelVisible,
+                              builder: (context, _, __) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        AppLocalizations.of(context)
+                                            .mainAccountBalance,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .displayMedium
+                                            ?.copyWith(fontSize: 14)),
+                                    const SizedBox(height: 4),
+                                    Row(children: [
+                                      Expanded(
+                                        child: _isBalancePanelVisible.value
+                                            ? RichText(
+                                                text: TextSpan(
+                                                    text: 'Rp',
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .displayMedium
+                                                        ?.copyWith(
+                                                            fontSize: 20),
+                                                    children: [
+                                                    TextSpan(
+                                                      text:
+                                                          ' ${SharedCode.formatThousands(SharedData.myAccountData.value!.balance)}',
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .displayLarge,
+                                                    )
+                                                  ]))
+                                            : SizedBox(
+                                                height: 12,
+                                                child: ListView.separated(
+                                                  primary: false,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemCount: 8,
+                                                  itemBuilder: (_, i) {
+                                                    return Container(
+                                                      width: 12,
+                                                      height: 12,
+                                                      decoration: BoxDecoration(
+                                                        color: i % 2 == 0
+                                                            ? ColorValues
+                                                                .primary30
+                                                            : ColorValues
+                                                                .primary20,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                      ),
+                                                    );
+                                                  },
+                                                  separatorBuilder: (_, __) {
+                                                    return const SizedBox(
+                                                        width: 4);
+                                                  },
+                                                ),
+                                              ),
                                       ),
-                                    ),
-                                  ),
-                                  _buildBalanceToggle(_isBalancePanelVisible),
-                                ]),
-                              ],
-                            );
-                          })
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
-                  child: CustomTextField(
-                    controller: _transferAmountController,
-                    isRequired: true,
-                    textInputType: TextInputType.number,
-                    validator: SharedCode.emptyValidators,
-                    icon: Iconsax.empty_wallet5,
-                    label: AppLocalizations.of(context).amount,
-                    hint: AppLocalizations.of(context).enterAmount,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
-                  child: CustomTextField(
-                    controller: _transferMessageController,
-                    isRequired: false,
-                    showOptional: true,
-                    icon: Iconsax.document_text5,
-                    label: AppLocalizations.of(context).message,
-                    hint: AppLocalizations.of(context).enterMessage,
-                  ),
-                ),
-              ]
-            ),
-          )),
-          const SizedBox(height: 16),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
-            child: CustomButton(
-              buttonText: AppLocalizations.of(context).proceed,
-              onPressed: () {
-                widget.closePanel();
-                widget.openPanel(_buildTransferSuccessPanel());
-              },
-            ),
-          )
-        ],
+                                      _buildBalanceToggle(
+                                          _isBalancePanelVisible),
+                                    ]),
+                                  ],
+                                );
+                              })
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: UiConstant.sidePadding),
+                      child: CustomTextField(
+                        controller: _transferAmountController,
+                        isRequired: true,
+                        textInputType: TextInputType.number,
+                        onChanged: (value) {
+                          SharedCode.rupiahTextField(
+                              value, _transferAmountController);
+                        },
+                        validator: SharedCode.emptyValidators,
+                        icon: Iconsax.empty_wallet5,
+                        label: AppLocalizations.of(context).amount,
+                        hint: AppLocalizations.of(context).enterAmount,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: UiConstant.sidePadding),
+                      child: CustomTextField(
+                        controller: _transferMessageController,
+                        isRequired: false,
+                        showOptional: true,
+                        icon: Iconsax.document_text5,
+                        label: AppLocalizations.of(context).message,
+                        hint: AppLocalizations.of(context).enterMessage,
+                      ),
+                    ),
+                  ]),
+            )),
+            const SizedBox(height: 16),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: UiConstant.sidePadding),
+              child: CustomButton(
+                buttonText: AppLocalizations.of(context).proceed,
+                onPressed: () async {
+                  if (_formKey.currentState?.validate() ?? true) {
+                    context.loaderOverlay.show();
+                    try {
+                      await _getAllData();
+                      String senderAccountNo =
+                          SharedData.myAccountData.value!.accountNo;
+                      String receiverAccountNo = _recipientModel!.accountNo!;
+                      double amount = SharedCode.formatFromRupiah(
+                              _transferAmountController.text)
+                          .toDouble();
+                      if (SharedData.myAccountData.value!.balance - amount <
+                          0) {
+                        throw AppLocalizations.of(context).insufficientFund;
+                      }
+                      String token = SharedPreferencesService.getToken()!;
+                      UserModel user = SharedPreferencesService.getUserData()!;
+                      TransactionModel transaction = TransactionModel(
+                          uid: user.uid!,
+                          amount: amount,
+                          createTime: DateTime.now().millisecondsSinceEpoch,
+                          senderAccountNo: senderAccountNo,
+                          traxType: DbConstants.transferOut,
+                          receiverAccountNo: receiverAccountNo,
+                          relatedId: user.relatedId,
+                          senderName: user.displayName,
+                          receiverName: _recipientModel!.displayName);
+                      if (SharedData.userData.value!.role ==
+                          DbConstants.parentRole) {
+                        await BankRepository().createTransaction(
+                            senderAccountNo, receiverAccountNo, amount, token);
+                        SharedData.myAccountData.value =
+                            SharedData.myAccountData.value?.copyWith(
+                                balance:
+                                    SharedData.myAccountData.value!.balance -
+                                        amount);
+                      }
+                      await TransactionRepository()
+                          .addRequestedTransaction(transaction);
+                      _transactionAmount = _transferAmountController.text;
+                      _clearAllTextFields();
+                      widget.closePanel();
+                      if (SharedData.userData.value!.role ==
+                          DbConstants.parentRole) {
+                        widget.openPanel(_buildTransferSuccessPanel());
+                      } else {
+                        SharedCode.showSnackbar(
+                            context: context,
+                            message: AppLocalizations.of(context)
+                                .waitForParentApproval);
+                      }
+                    } catch (e) {
+                      SharedCode.showSnackbar(
+                          context: context,
+                          message: e.toString(),
+                          isSuccess: false);
+                    }
+                    context.loaderOverlay.hide();
+                  }
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
+  }
+
+  void _clearAllTextFields() {
+    _transferAmountController.clear();
+    _transferMessageController.clear();
+    _identifierUsernameController.clear();
+    _identifierAccountController.clear();
   }
 
   Widget _buildTransferSuccessPanel() {
@@ -1024,144 +1266,173 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: SingleChildScrollView(
-            child: Column(
-                children: [
-                  const Center(child: LogoWidget()),
-                  const SizedBox(height: 24),
-                  SvgPicture.asset(
-                    'assets/core/ic_success.svg',
-                    width: 96,
-                    height: 96,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    AppLocalizations.of(context).transferSuccess,
-                    style: Theme.of(context).textTheme.displayLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    SharedData.dateTimeFormat.format(DateTime.now()),
-                    style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 14, color: ColorValues.greyBase),
-                  ),
-                  const SizedBox(height: 22),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
-                    child: _buildReceiverProfile('Fulan bin Fulan', 'fulanbinfulan', '100 000 000 1'),
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
-                    width: 100.w,
-                    child: Text(
-                      AppLocalizations.of(context).senderAccount,
-                      style: Theme.of(context).textTheme.displaySmall,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: UiConstant.smallerPadding, horizontal: UiConstant.sidePadding),
-                    decoration: const BoxDecoration(
-                        border: Border(
-                          top: BorderSide(color: ColorValues.grey10, width: 1),
-                          bottom: BorderSide(color: ColorValues.grey10, width: 1),
-                        )
-                    ),
-                    child: Column(
-                      children: [
-                        Row(children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: Image.network(
-                              'https://t4.ftcdn.net/jpg/00/64/67/27/360_F_64672736_U5kpdGs9keUll8CRQ3p3YaEv2M6qkVY5.jpg',
-                              width: 32,
-                              height: 32,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const SizedBox(width: UiConstant.defaultSpacing),
-                          Expanded(
-                            child: Text(
-                              'Fulan bin Fulan',
-                              style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12),
-                            ),
-                          ),
-                          const SizedBox(width: UiConstant.defaultSpacing),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Row(children: [
-                              Text(
-                                '100 000 000 1',
-                                style: Theme.of(context).textTheme.labelLarge?.copyWith(fontSize: 12, color: Theme.of(context).primaryColor),
-                              ),
-                              const SizedBox(width: 4),
-                              const Icon(
-                                Iconsax.copy5,
-                                size: 16,
-                                color: ColorValues.primary90,
-                              )
-                            ]),
-                          ),
-                        ]),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
-                    decoration: const BoxDecoration(
-                      color: ColorValues.background,
-                      border: Border(
-                        top: BorderSide(color: ColorValues.grey10, width: 1),
-                        bottom: BorderSide(color: ColorValues.grey10, width: 1),
-                      )
-                    ),
-                    child: Row(children: [
-                      Expanded(
-                        child: Text(
-                          AppLocalizations.of(context).transactionTotal,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12),
+          Expanded(
+              child: SingleChildScrollView(
+            child: Column(children: [
+              const Center(child: LogoWidget()),
+              const SizedBox(height: 24),
+              SvgPicture.asset(
+                'assets/core/ic_success.svg',
+                width: 96,
+                height: 96,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                AppLocalizations.of(context).transferSuccess,
+                style: Theme.of(context).textTheme.displayLarge,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                SharedData.dateTimeFormat.format(DateTime.now()),
+                style: Theme.of(context)
+                    .textTheme
+                    .displayMedium
+                    ?.copyWith(fontSize: 14, color: ColorValues.greyBase),
+              ),
+              const SizedBox(height: 22),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: UiConstant.sidePadding),
+                child: _buildReceiverProfile(),
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: UiConstant.sidePadding),
+                width: 100.w,
+                child: Text(
+                  AppLocalizations.of(context).senderAccount,
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    vertical: UiConstant.smallerPadding,
+                    horizontal: UiConstant.sidePadding),
+                decoration: const BoxDecoration(
+                    border: Border(
+                  top: BorderSide(color: ColorValues.grey10, width: 1),
+                  bottom: BorderSide(color: ColorValues.grey10, width: 1),
+                )),
+                child: Column(
+                  children: [
+                    Row(children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          'https://firebasestorage.googleapis.com/v0/b/swifties-technoscape.appspot.com/o/img_default_profile.png?alt=media&token=41b41973-531b-4f6e-95da-7b1e08f170a4',
+                          width: 32,
+                          height: 32,
+                          fit: BoxFit.cover,
                         ),
                       ),
                       const SizedBox(width: UiConstant.defaultSpacing),
                       Expanded(
                         child: Text(
-                          SharedCode.formatToRupiah(int.parse(_transferAmountController.text)),
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12),
-                          textAlign: TextAlign.right,
+                          _recipientModel!.displayName,
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelLarge
+                              ?.copyWith(fontSize: 12),
                         ),
                       ),
-                    ]),
-                  ),
-                  if (_transferMessageController.text != '') Container(
-                    width: 100.w,
-                    padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding, horizontal: UiConstant.sidePadding),
-                    decoration: const BoxDecoration(
-                        border: Border(
-                          top: BorderSide(color: ColorValues.grey10, width: 1),
-                          bottom: BorderSide(color: ColorValues.grey10, width: 1),
-                        )
-                    ),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+                      const SizedBox(width: UiConstant.defaultSpacing),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Row(children: [
                           Text(
-                            AppLocalizations.of(context).message,
-                            style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 12),
+                            _recipientModel!.accountNo!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelLarge
+                                ?.copyWith(
+                                    fontSize: 12,
+                                    color: Theme.of(context).primaryColor),
                           ),
-                          const SizedBox(height: 8),
-                          Text(
-                            _transferMessageController.text,
-                            style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
-                            textAlign: TextAlign.right,
-                          ),
+                          const SizedBox(width: 4),
+                          const Icon(
+                            Iconsax.copy5,
+                            size: 16,
+                            color: ColorValues.primary90,
+                          )
                         ]),
+                      ),
+                    ]),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                    vertical: UiConstant.defaultPadding,
+                    horizontal: UiConstant.sidePadding),
+                decoration: const BoxDecoration(
+                    color: ColorValues.background,
+                    border: Border(
+                      top: BorderSide(color: ColorValues.grey10, width: 1),
+                      bottom: BorderSide(color: ColorValues.grey10, width: 1),
+                    )),
+                child: Row(children: [
+                  Expanded(
+                    child: Text(
+                      AppLocalizations.of(context).transactionTotal,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontSize: 12),
+                    ),
                   ),
-                ]
-            ),
+                  const SizedBox(width: UiConstant.defaultSpacing),
+                  Expanded(
+                    child: Text(
+                      _transactionAmount,
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium
+                          ?.copyWith(fontSize: 12),
+                      textAlign: TextAlign.right,
+                    ),
+                  ),
+                ]),
+              ),
+              if (_transferMessageController.text != '')
+                Container(
+                  width: 100.w,
+                  padding: const EdgeInsets.symmetric(
+                      vertical: UiConstant.defaultPadding,
+                      horizontal: UiConstant.sidePadding),
+                  decoration: const BoxDecoration(
+                      border: Border(
+                    top: BorderSide(color: ColorValues.grey10, width: 1),
+                    bottom: BorderSide(color: ColorValues.grey10, width: 1),
+                  )),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          AppLocalizations.of(context).message,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleMedium
+                              ?.copyWith(fontSize: 12),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          _transferMessageController.text,
+                          style: Theme.of(context)
+                              .textTheme
+                              .displayMedium
+                              ?.copyWith(fontSize: 12),
+                          textAlign: TextAlign.right,
+                        ),
+                      ]),
+                ),
+            ]),
           )),
           const SizedBox(height: 16),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
+            padding:
+                const EdgeInsets.symmetric(horizontal: UiConstant.sidePadding),
             child: Row(
               children: [
                 Expanded(
@@ -1174,15 +1445,15 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                 ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: CustomButton(
-                    buttonText: AppLocalizations.of(context).downloadReceipt,
-                    onPressed: () {
-                      widget.closePanel();
-                    },
-                  ),
-                ),
+                // const SizedBox(width: 16),
+                // Expanded(
+                //   child: CustomButton(
+                //     buttonText: AppLocalizations.of(context).downloadReceipt,
+                //     onPressed: () {
+                //       widget.closePanel();
+                //     },
+                //   ),
+                // ),
               ],
             ),
           )

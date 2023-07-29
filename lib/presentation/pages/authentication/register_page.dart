@@ -23,6 +23,8 @@ import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart
 import 'package:swifties_technoscape/presentation/widgets/logo_widget.dart';
 
 import '../../../application/repositories/bank/bank_repository.dart';
+import '../../../application/repositories/user/user_repository.dart';
+import '../../../data/models/account/account_model.dart';
 import '../../../data/models/auth/auth_model.dart';
 import '../../../data/models/token/token_model.dart';
 
@@ -285,11 +287,14 @@ class _RegisterPageState extends State<RegisterPage> {
                                       displayName: displayName,
                                       loginPassword: loginPassword
                                     );
-                                    await AuthRepository().createUser(authModel, userModel, isAuth: true);
+                                    AuthModel result = await AuthRepository().createUser(authModel, userModel, isAuth: true);
 
                                     TokenModel tokenModel = await AuthRepository().generateToken(username, loginPassword);
                                     await SharedPreferencesService.setToken(tokenModel.accessToken);
-                                    await BankRepository().createBankAccount(tokenModel.accessToken);
+                                    AccountModel accountModel = await BankRepository().createBankAccount(tokenModel.accessToken);
+                                    userModel = userModel.copyWith(accountNo: accountModel.accountNo, uid: result.uid);
+                                    await UserRepository().addOrUpdateUser(result.uid!, userModel);
+                                    SharedPreferencesService.setUserData(userModel);
                                     _panelController.open();
                                   } catch (e) {
                                     SharedCode.showSnackbar(context: context,

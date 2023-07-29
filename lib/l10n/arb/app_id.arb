@@ -134,5 +134,12 @@
   "requestBalanceSuccess": "Minta Saldo Terkirim!",
   "requestBalanceSuccessDescription": "Hihihi, permintaan saldo-mu udah berhasil terkirim.\nHarap tunggu balasan dari keluarga/temanmu, ya!",
   "waitAtHome": "Tunggu di Beranda",
-  "requestBalanceAgain": "Minta Saldo Lagi"
+  "requestBalanceAgain": "Minta Saldo Lagi",
+  "eWallet": "E-Wallet",
+  "mobileBanking": "Mobile Banking",
+  "otherMethods": "Metode lain",
+  "neoBankTransferTitle": "Transfer via NeoBank",
+  "neoBankTransferDesc1": "Yuk, sambungin ke",
+  "neoBankTransferDesc2": "NeoBank",
+  "neoBankTransferDesc3": "dan dapetin top-up tanpa admin"
 }

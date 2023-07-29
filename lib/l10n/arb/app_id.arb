@@ -75,6 +75,8 @@
   "newChildAccountDescription": "Buat rekening baru untuk anak anda dengan mudah di sini, ya!",
   "lastActivityTitle": "Aktivitas Terakhir",
   "lastActivityDescription": "Pantau terus aktivitas si kecil",
+  "childActivityEmptyTitle": "Hmm, belum ada aktivitas nih!",
+  "childActivityEmptyDescription": "Kelihatannya si kecil belum melakukan transaksi",
   "from": "Dari",
   "to": "Ke",
   "topup": "Nabung",
@@ -97,8 +99,8 @@
   "articleEmptyDescription": "Kelihatannya belum ada artikel yang diunggah",
   "childrenAccountEmptyTitle": "Hmm, belum ada rekening untuk anak nih!",
   "childrenAccountEmptyDescription": "Kelihatannya kamu belum membuat rekening untuk si kecil",
-  "activityEmptyTitle": "Hmm, belum ada aktivitas yang dilakukan nih!",
-  "activityEmptyDescription": "Kelihatannya si kecil belum ngapa-ngapain",
+  "activityEmptyTitle": "Hmm, belum ada aktivitas nih!",
+  "activityEmptyDescription": "Keliatannya kamu belum melakukan aktivitasi apapun nih!",
   "createNewSavingTarget": "Buat Target Tabungan Baru",
   "createSavingTargetButton": "Buat Target Tabungan",
   "savingPurpose": "Tujuan Nabung",
@@ -197,5 +199,7 @@
   "rejected": "Ditolak",
   "waiting": "Menunggu",
   "emptyNotifications": "Belum ada request nih!",
-  "emptyNotificationsDescription": "Kalau kamu bikin request, nanti bisa cek di sini ya!"
+  "emptyNotificationsDescription": "Kalau kamu bikin request, nanti bisa cek di sini ya!",
+  "accountDetail": "Detail Rekening",
+  "childAccountBalance": "Saldo Rekening Anak"
 }

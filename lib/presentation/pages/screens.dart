@@ -19,3 +19,5 @@ export 'savings/savings_page.dart';
 export 'savings/saving_detail_page.dart';
 
 export 'save_now/save_now_page.dart';
+
+export 'account/account_detail_page.dart';

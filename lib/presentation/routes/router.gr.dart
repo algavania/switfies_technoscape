@@ -16,6 +16,7 @@ import 'package:flutter/cupertino.dart' as _i4;
 import 'package:flutter/material.dart' as _i3;
 
 import '../../data/models/saving/saving_model.dart' as _i5;
+import '../../data/models/user/user_model.dart' as _i6;
 import '../pages/screens.dart' as _i1;
 
 class AppRouter extends _i2.RootStackRouter {
@@ -114,6 +115,19 @@ class AppRouter extends _i2.RootStackRouter {
           saving: args.saving,
           index: args.index,
           setSavingModel: args.setSavingModel,
+        ),
+        transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
+        opaque: true,
+        barrierDismissible: false,
+      );
+    },
+    AccountDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<AccountDetailRouteArgs>();
+      return _i2.CustomPage<dynamic>(
+        routeData: routeData,
+        child: _i1.AccountDetailPage(
+          key: args.key,
+          childModel: args.childModel,
         ),
         transitionsBuilder: _i2.TransitionsBuilders.fadeIn,
         opaque: true,
@@ -246,6 +260,10 @@ class AppRouter extends _i2.RootStackRouter {
         _i2.RouteConfig(
           SavingDetailRoute.name,
           path: '/saving-detail',
+        ),
+        _i2.RouteConfig(
+          AccountDetailRoute.name,
+          path: '/account-detail',
         ),
       ];
 }
@@ -406,6 +424,40 @@ class SavingDetailRouteArgs {
   @override
   String toString() {
     return 'SavingDetailRouteArgs{key: $key, saving: $saving, index: $index, setSavingModel: $setSavingModel}';
+  }
+}
+
+/// generated route for
+/// [_i1.AccountDetailPage]
+class AccountDetailRoute extends _i2.PageRouteInfo<AccountDetailRouteArgs> {
+  AccountDetailRoute({
+    _i4.Key? key,
+    required _i6.UserModel childModel,
+  }) : super(
+          AccountDetailRoute.name,
+          path: '/account-detail',
+          args: AccountDetailRouteArgs(
+            key: key,
+            childModel: childModel,
+          ),
+        );
+
+  static const String name = 'AccountDetailRoute';
+}
+
+class AccountDetailRouteArgs {
+  const AccountDetailRouteArgs({
+    this.key,
+    required this.childModel,
+  });
+
+  final _i4.Key? key;
+
+  final _i6.UserModel childModel;
+
+  @override
+  String toString() {
+    return 'AccountDetailRouteArgs{key: $key, childModel: $childModel}';
   }
 }
 

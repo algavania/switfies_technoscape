@@ -175,7 +175,7 @@ class _CustomTransactionState extends State<CustomTransaction> {
                   ?.copyWith(fontSize: 12),
             ),
           ]),
-          if (_transactionModel.relatedId != null && _transactionModel.isApproved == null)
+          if (_transactionModel.relatedId != null && _transactionModel.isApproved == null && SharedPreferencesService.getUserData()!.relatedId == null)
             Padding(
               padding: const EdgeInsets.only(top: 8),
               child: Row(children: [

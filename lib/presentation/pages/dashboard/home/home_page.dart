@@ -13,8 +13,10 @@ import 'package:swifties_technoscape/presentation/core/shared_data.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_app_bar.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_article.dart';
+import 'package:swifties_technoscape/presentation/widgets/custom_button.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_child_account.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
+import 'package:swifties_technoscape/presentation/widgets/custom_text_field.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_transaction.dart';
 
 import '../../../../application/common/db_constants.dart';
@@ -25,7 +27,8 @@ import '../../../../data/models/user/user_model.dart';
 import '../../../routes/router.gr.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final Function openPanel, closePanel;
+  const HomePage({Key? key, required this.openPanel, required this.closePanel}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -33,6 +36,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ValueNotifier<bool> _isBalanceVisible = ValueNotifier(false);
+  final ValueNotifier<String> _selectedIdentifier = ValueNotifier('No. Rekening');
+  final TextEditingController _identifierController = TextEditingController();
   List<UserModel> _childList = [];
   List<ArticleModel> _articleList = [];
   List<TransactionModel> _transactionList = [];
@@ -111,22 +116,22 @@ class _HomePageState extends State<HomePage> {
                   _isLoading
                       ? Container()
                       : SingleChildScrollView(
-                        physics: const AlwaysScrollableScrollPhysics(),
-                        child: Column(
-                          children: [
-                            _buildBalance(),
-                            _buildActions(),
-                            const SizedBox(height: UiConstant.defaultSpacing),
-                            _buildMenus(),
-                            const SizedBox(height: UiConstant.defaultSpacing),
-                            if (_isParent) _buildApprovalRequests(),
-                            if (_isParent) const SizedBox(height: UiConstant.defaultSpacing),
-                            if (_isParent) _buildChildrenAccounts(),
-                            if (_isParent)  const SizedBox(height: UiConstant.defaultSpacing),
-                            _buildArticles(),
-                          ],
-                        ),
-                      ),
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    child: Column(
+                      children: [
+                        _buildBalance(),
+                        _buildActions(),
+                        const SizedBox(height: UiConstant.defaultSpacing),
+                        _buildMenus(),
+                        const SizedBox(height: UiConstant.defaultSpacing),
+                        if (_isParent) _buildApprovalRequests(),
+                        if (_isParent) const SizedBox(height: UiConstant.defaultSpacing),
+                        if (_isParent) _buildChildrenAccounts(),
+                        if (_isParent)  const SizedBox(height: UiConstant.defaultSpacing),
+                        _buildArticles(),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -222,34 +227,39 @@ class _HomePageState extends State<HomePage> {
         Expanded(child: _buildActionButton(
           AppLocalizations.of(context).transferOut,
           Iconsax.direct_up5,
-              () {},
+          () {
+            widget.openPanel(_buildTransferPanel());
+          },
         )),
       ]),
     );
   }
 
   Widget _buildActionButton(String title, IconData iconData, Function() onTap) {
-    return Column(
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: ColorValues.primary10,
+    return InkWell(
+      onTap: onTap,
+      child: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(8),
+              color: ColorValues.primary10,
+            ),
+            child: Icon(
+              iconData,
+              size: 24,
+              color: ColorValues.primary50,
+            ),
           ),
-          child: Icon(
-            iconData,
-            size: 24,
-            color: ColorValues.primary50,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          title,
-          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
-          textAlign: TextAlign.center,
-        )
-      ],
+          const SizedBox(height: 4),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+            textAlign: TextAlign.center,
+          )
+        ],
+      ),
     );
   }
 
@@ -541,6 +551,104 @@ class _HomePageState extends State<HomePage> {
                 ?.copyWith(fontSize: 12),
           )
         ]),
+      ),
+    );
+  }
+
+  Widget _buildTransferPanel() {
+    return ValueListenableBuilder(
+      valueListenable: _selectedIdentifier,
+      builder: (context, _, __) {
+        bool isAccountId = _selectedIdentifier.value == AppLocalizations.of(context).accountId;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _buildPanelTitle(AppLocalizations.of(context).transferToOtherUser),
+            const SizedBox(height: 16),
+            Expanded(child: SingleChildScrollView(
+              child: Column(children: [
+                Row(children: [
+                  Expanded(
+                    child: _buildIdentifierChip(
+                      AppLocalizations.of(context).accountId,
+                      Iconsax.empty_wallet5,
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildIdentifierChip(
+                      AppLocalizations.of(context).username,
+                      Iconsax.frame5,
+                    ),
+                  ),
+                ]),
+                const SizedBox(height: 24),
+                CustomTextField(
+                  controller: _identifierController,
+                  isRequired: true,
+                  textInputType: isAccountId ? TextInputType.number : null,
+                  validator: SharedCode.emailValidators,
+                  icon: isAccountId ? Iconsax.empty_wallet5 : Iconsax.frame5,
+                  label: isAccountId ? AppLocalizations.of(context).receiverAccountId : AppLocalizations.of(context).receiverUsername,
+                  hint: isAccountId ? AppLocalizations.of(context).enterAccountId : AppLocalizations.of(context).enterUsername,
+                ),
+              ]),
+            )),
+            const SizedBox(height: 16),
+            CustomButton(
+              buttonText: AppLocalizations.of(context).validateReceiverAccount,
+              onPressed: () {},
+            )
+          ],
+        );
+      }
+    );
+  }
+
+  Widget _buildPanelTitle(String title) {
+    return GestureDetector(
+      onTap: () => widget.closePanel(),
+      child: Row(children: [
+        const Icon(
+          Iconsax.arrow_left,
+          size: 24,
+          color: ColorValues.text50,
+        ),
+        const SizedBox(width: 16),
+        Text(title, style: Theme.of(context).textTheme.titleMedium?.copyWith(fontSize: 14))
+      ]),
+    );
+  }
+
+  Widget _buildIdentifierChip(String title, IconData iconData) {
+    return InkWell(
+      onTap: () {
+        if (_selectedIdentifier.value != title) {
+          _selectedIdentifier.value = title;
+        }
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: UiConstant.smallerPadding, horizontal: UiConstant.mediumPadding),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(width: 1, color: ColorValues.primary50),
+          color: _selectedIdentifier.value == title ? ColorValues.primary10 : null,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              iconData,
+              size: 16,
+              color: ColorValues.primary50,
+            ),
+            const SizedBox(width: 8),
+            Text(
+                title,
+                style: Theme.of(context).textTheme.titleMedium?.copyWith(color: ColorValues.primary50, fontSize: 12)
+            ),
+          ],
+        ),
       ),
     );
   }

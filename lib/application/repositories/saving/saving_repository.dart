@@ -37,10 +37,10 @@ class SavingRepository implements BaseSavingRepository {
   }
 
   @override
-  Future<List<SavingModel>> getSavingList(int? limit, {DocumentSnapshot? document}) async {
+  Future<List<SavingModel>> getSavingList(int? limit, {DocumentSnapshot? document, String? uid}) async {
     List<SavingModel> list = [];
     Query<Map<String, dynamic>> query = DbConstants.db.collection(DbConstants.users)
-        .doc(SharedPreferencesService.getUserData()!.uid!.toString())
+        .doc(uid ?? SharedPreferencesService.getUserData()!.uid!.toString())
         .collection(DbConstants.savings);
     if (document != null) {
       query = query.startAfterDocument(document);

@@ -17,6 +17,9 @@ import 'package:swifties_technoscape/presentation/widgets/custom_app_bar.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_transaction.dart';
 
+import '../../../data/models/account/account_model.dart';
+import '../../../data/models/token/token_model.dart';
+import '../../../data/models/user/user_model.dart';
 import '../../widgets/custom_button.dart';
 import '../../widgets/custom_text_field.dart';
 
@@ -25,7 +28,11 @@ class SavingDetailPage extends StatefulWidget {
   final int index;
   final void Function(SavingModel, int) setSavingModel;
 
-  const SavingDetailPage({Key? key, required this.saving, required this.index, required this.setSavingModel}) : super(key: key);
+  const SavingDetailPage({Key? key,
+    required this.saving,
+    required this.index,
+    required this.setSavingModel})
+      : super(key: key);
 
   @override
   State<SavingDetailPage> createState() => _SavingDetailPageState();
@@ -65,14 +72,16 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
         });
       }
       _transactions.clear();
-      _transactions = await TransactionRepository().getSavingTransactionHistory(limit: 2, savingId: _saving.id!);
+      _transactions = await TransactionRepository()
+          .getSavingTransactionHistory(limit: 50, savingId: _saving.id!);
       _saving = await SavingRepository().getSavingById(_saving.id!);
       widget.setSavingModel.call(_saving, widget.index);
       setState(() {
         _isLoading = false;
       });
     } catch (e) {
-      SharedCode.showSnackbar(context: context, message: e.toString(), isSuccess: false);
+      SharedCode.showSnackbar(
+          context: context, message: e.toString(), isSuccess: false);
     }
     context.loaderOverlay.hide();
   }
@@ -118,62 +127,67 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
                             style: Theme
                                 .of(context)
                                 .textTheme
-                                .titleMedium
-                        ),
+                                .titleMedium),
                       ),
-                      Expanded(child: Stack(
-                        children: [
-                          ListView(physics: const AlwaysScrollableScrollPhysics()),
-                          _isLoading
-                              ? Container()
-                              :
-                          SingleChildScrollView(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: UiConstant.mediumPadding),
-                              child: Column(children: [
-                                _buildMainInfo(),
-                                const SizedBox(height: UiConstant.defaultSpacing),
-                                _buildInfo(
-                                  AppLocalizations
-                                      .of(context)
-                                      .savingTarget,
-                                  SharedCode.formatToRupiah(_saving.savingTarget),
-                                  Iconsax.status_up5,
-                                ),
-                                const SizedBox(height: UiConstant.defaultSpacing),
-                                _buildInfo(
-                                  AppLocalizations
-                                      .of(context)
-                                      .startSavingDate,
-                                  SharedData.monthYearDateFormat.format(
-                                      _saving.startDate),
-                                  Iconsax.calendar5,
-                                ),
-                                const SizedBox(height: UiConstant.defaultSpacing),
-                                _buildInfo(
-                                  AppLocalizations
-                                      .of(context)
-                                      .endSavingDate,
-                                  SharedData.monthYearDateFormat.format(
-                                      _saving.endDate),
-                                  Iconsax.calendar5,
-                                ),
-                                if (_saving.hasClaimedReward != null) const SizedBox(
-                                    height: UiConstant.defaultSpacing),
-                                if (_saving.hasClaimedReward !=
-                                    null) _buildClaimReward(),
-                                const SizedBox(height: UiConstant.defaultSpacing),
-                                _buildHistory(),
-                              ])
-                          ),
-                        ],
-                      ))
+                      Expanded(
+                          child: Stack(
+                            children: [
+                              ListView(
+                                  physics: const AlwaysScrollableScrollPhysics()),
+                              _isLoading
+                                  ? Container()
+                                  : SingleChildScrollView(
+                                  physics:
+                                  const AlwaysScrollableScrollPhysics(),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: UiConstant.mediumPadding),
+                                  child: Column(children: [
+                                    _buildMainInfo(),
+                                    const SizedBox(
+                                        height: UiConstant.defaultSpacing),
+                                    _buildInfo(
+                                      AppLocalizations
+                                          .of(context)
+                                          .savingTarget,
+                                      SharedCode.formatToRupiah(
+                                          _saving.savingTarget),
+                                      Iconsax.status_up5,
+                                    ),
+                                    const SizedBox(
+                                        height: UiConstant.defaultSpacing),
+                                    _buildInfo(
+                                      AppLocalizations
+                                          .of(context)
+                                          .startSavingDate,
+                                      SharedData.monthYearDateFormat
+                                          .format(_saving.startDate),
+                                      Iconsax.calendar5,
+                                    ),
+                                    const SizedBox(
+                                        height: UiConstant.defaultSpacing),
+                                    _buildInfo(
+                                      AppLocalizations
+                                          .of(context)
+                                          .endSavingDate,
+                                      SharedData.monthYearDateFormat
+                                          .format(_saving.endDate),
+                                      Iconsax.calendar5,
+                                    ),
+                                    if (_saving.hasClaimedReward != null)
+                                      const SizedBox(
+                                          height: UiConstant.defaultSpacing),
+                                    if (_saving.hasClaimedReward != null)
+                                      _buildClaimReward(),
+                                    const SizedBox(
+                                        height: UiConstant.defaultSpacing),
+                                    _buildHistory(),
+                                  ])),
+                            ],
+                          ))
                     ],
                   ),
                 );
-              }
-          ),
+              }),
         ),
       ),
     );
@@ -236,15 +250,15 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
             if (_formKey2.currentState?.validate() ?? true) {
               context.loaderOverlay.show();
               try {
-                double amount = SharedCode.formatFromRupiah(
-                    _withdrawController.text)
+                double amount =
+                SharedCode.formatFromRupiah(_withdrawController.text)
                     .toDouble();
                 SavingModel saving = _saving.copyWith(
-                    currentSaving: _saving.currentSaving - amount
-                );
-                if (saving.currentSaving < 0) throw AppLocalizations
-                    .of(context)
-                    .insufficientFund;
+                    currentSaving: _saving.currentSaving - amount);
+                if (saving.currentSaving < 0)
+                  throw AppLocalizations
+                      .of(context)
+                      .insufficientFund;
                 await SavingRepository().updateSaving(_saving.id!, saving);
                 SharedData.myAccountData.value = SharedData.myAccountData.value
                     ?.copyWith(
@@ -253,14 +267,18 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
                 TransactionModel transactionModel = TransactionModel(
                     uid: SharedPreferencesService.getUserData()!.uid!,
                     amount: amount,
-                    createTime: DateTime.now().millisecondsSinceEpoch,
+                    createTime: DateTime
+                        .now()
+                        .millisecondsSinceEpoch,
                     senderAccountNo: SharedData.myAccountData.value!.accountNo,
                     traxType: DbConstants.transferOut,
                     receiverAccountNo: DbConstants.topUpId,
-                    senderName: AppLocalizations.of(context).withdraw,
+                    senderName: AppLocalizations
+                        .of(context)
+                        .withdraw,
                     receiverName: _saving.title);
-                await TransactionRepository().addSavingTransactionHistory(
-                    _saving.id!, transactionModel);
+                await TransactionRepository()
+                    .addSavingTransactionHistory(_saving.id!, transactionModel);
                 _withdrawController.clear();
                 _panelController.close();
                 List<TransactionModel> list = [transactionModel];
@@ -274,9 +292,11 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
                 });
                 widget.setSavingModel.call(_saving, widget.index);
                 SharedCode.showSnackbar(
-                    context: context, message: AppLocalizations
-                    .of(context)
-                    .withdrawToMainAccount);
+                    context: context,
+                    message:
+                    AppLocalizations
+                        .of(context)
+                        .withdrawToMainAccount);
               } catch (e) {
                 SharedCode.showSnackbar(
                     context: context, message: e.toString(), isSuccess: false);
@@ -346,16 +366,15 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
             if (_formKey.currentState?.validate() ?? true) {
               context.loaderOverlay.show();
               try {
-                double amount = SharedCode.formatFromRupiah(
-                    _savingController.text)
+                double amount =
+                SharedCode.formatFromRupiah(_savingController.text)
                     .toDouble();
-                if (SharedData.myAccountData.value!.balance - amount <
-                    0) throw AppLocalizations
-                    .of(context)
-                    .insufficientFund;
+                if (SharedData.myAccountData.value!.balance - amount < 0)
+                  throw AppLocalizations
+                      .of(context)
+                      .insufficientFund;
                 SavingModel saving = _saving.copyWith(
-                    currentSaving: _saving.currentSaving + amount
-                );
+                    currentSaving: _saving.currentSaving + amount);
                 await SavingRepository().updateSaving(_saving.id!, saving);
                 SharedData.myAccountData.value = SharedData.myAccountData.value
                     ?.copyWith(
@@ -364,14 +383,18 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
                 TransactionModel transactionModel = TransactionModel(
                     uid: SharedPreferencesService.getUserData()!.uid!,
                     amount: amount,
-                    createTime: DateTime.now().millisecondsSinceEpoch,
+                    createTime: DateTime
+                        .now()
+                        .millisecondsSinceEpoch,
                     senderAccountNo: SharedData.myAccountData.value!.accountNo,
                     traxType: DbConstants.transferIn,
                     receiverAccountNo: DbConstants.topUpId,
-                    senderName: AppLocalizations.of(context).mainBalance,
+                    senderName: AppLocalizations
+                        .of(context)
+                        .mainBalance,
                     receiverName: _saving.title);
-                await TransactionRepository().addSavingTransactionHistory(
-                    _saving.id!, transactionModel);
+                await TransactionRepository()
+                    .addSavingTransactionHistory(_saving.id!, transactionModel);
                 List<TransactionModel> list = [transactionModel];
                 list.addAll(_transactions);
                 if (list.length > 2) {
@@ -385,9 +408,10 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
                 });
                 widget.setSavingModel.call(_saving, widget.index);
                 SharedCode.showSnackbar(
-                    context: context, message: AppLocalizations
-                    .of(context)
-                    .depositToSaving);
+                    context: context,
+                    message: AppLocalizations
+                        .of(context)
+                        .depositToSaving);
               } catch (e) {
                 SharedCode.showSnackbar(
                     context: context, message: e.toString(), isSuccess: false);
@@ -416,7 +440,8 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
 
     return CustomShadow(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding,
+        padding: const EdgeInsets.symmetric(
+            vertical: UiConstant.defaultPadding,
             horizontal: UiConstant.sidePadding),
         color: ColorValues.surface,
         child: Column(
@@ -493,12 +518,13 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
                   const SizedBox(height: 4),
                   Row(
                     children: [
-                      Text('Rp ', style: Theme
-                          .of(context)
-                          .textTheme
-                          .displayMedium
-                          ?.copyWith(
-                          fontSize: 20, color: ColorValues.success30)),
+                      Text('Rp ',
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .displayMedium
+                              ?.copyWith(
+                              fontSize: 20, color: ColorValues.success30)),
                       Text(SharedCode.formatThousands(_saving.currentSaving),
                           style: Theme
                               .of(context)
@@ -507,8 +533,8 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
                               ?.copyWith(
                               fontSize: 20, color: ColorValues.success30)),
                       const SizedBox(width: 4),
-                      const Icon(Iconsax.trend_up, color: ColorValues.success50,
-                          size: 20)
+                      const Icon(Iconsax.trend_up,
+                          color: ColorValues.success50, size: 20)
                     ],
                   ),
                 ],
@@ -521,38 +547,40 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
                   horizontal: UiConstant.sidePadding),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(UiConstant.smallerBorder),
-                  border: Border.all(width: 1, color: ColorValues.grey10)
-              ),
+                  border: Border.all(width: 1, color: ColorValues.grey10)),
               child: Row(children: [
-                Expanded(child: _buildActionButton(
-                  AppLocalizations
-                      .of(context)
-                      .topup,
-                  Iconsax.direct_down5,
-                      () {
-                    _panelContent.value = _buildDepositPanel();
-                    _panelHeight.value = 40.h;
-                    _panelController.open();
-                  },
-                )),
-                Expanded(child: _buildActionButton(
-                  AppLocalizations
-                      .of(context)
-                      .withdraw,
-                  Iconsax.direct_up5,
-                      () {
-                    _panelContent.value = _buildWithdrawPanel();
-                    _panelHeight.value = 40.h;
-                    _panelController.open();
-                  },
-                )),
-                Expanded(child: _buildActionButton(
-                  AppLocalizations
-                      .of(context)
-                      .history,
-                  Iconsax.activity5,
-                      () {},
-                )),
+                Expanded(
+                    child: _buildActionButton(
+                      AppLocalizations
+                          .of(context)
+                          .topup,
+                      Iconsax.direct_down5,
+                          () {
+                        _panelContent.value = _buildDepositPanel();
+                        _panelHeight.value = 40.h;
+                        _panelController.open();
+                      },
+                    )),
+                Expanded(
+                    child: _buildActionButton(
+                      AppLocalizations
+                          .of(context)
+                          .withdraw,
+                      Iconsax.direct_up5,
+                          () {
+                        _panelContent.value = _buildWithdrawPanel();
+                        _panelHeight.value = 40.h;
+                        _panelController.open();
+                      },
+                    )),
+                // Expanded(
+                //     child: _buildActionButton(
+                //       AppLocalizations
+                //           .of(context)
+                //           .history,
+                //       Iconsax.activity5,
+                //           () {},
+                //     )),
               ]),
             )
           ],
@@ -596,7 +624,8 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
   Widget _buildInfo(String title, String content, IconData iconData) {
     return CustomShadow(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding,
+        padding: const EdgeInsets.symmetric(
+            vertical: UiConstant.defaultPadding,
             horizontal: UiConstant.sidePadding),
         color: ColorValues.surface,
         child: Row(
@@ -638,7 +667,8 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
   Widget _buildClaimReward() {
     return CustomShadow(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding,
+        padding: const EdgeInsets.symmetric(
+            vertical: UiConstant.defaultPadding,
             horizontal: UiConstant.sidePadding),
         color: ColorValues.surface,
         child: Row(
@@ -663,7 +693,16 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
             ),
             const SizedBox(width: 16),
             Expanded(
-              child: _saving.hasClaimedReward! ? Text(
+              child: _saving.savingTarget < 50000 ? Text(
+                'Reward 5% bisa didapatkan saat target tabunganmu melebihi Rp 50.000',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodySmall
+                    ?.copyWith(fontSize: 12),
+                textAlign: TextAlign.right,
+              ) : _saving.hasClaimedReward!
+                  ? Text(
                 AppLocalizations
                     .of(context)
                     .hasClaimReward,
@@ -673,12 +712,50 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
                     .labelLarge
                     ?.copyWith(fontSize: 12),
                 textAlign: TextAlign.right,
-              ) : CustomButton(
+              )
+                  : CustomButton(
                 buttonText: AppLocalizations
                     .of(context)
                     .claim,
                 onPressed: _saving.currentSaving >= _saving.savingTarget
-                    ? () {}
+                    ? () async {
+                  context.loaderOverlay.show();
+                  try {
+                    double amount = _saving.savingTarget * 0.05;
+                    UserModel parent = await UserRepository().getUserById(
+                        SharedPreferencesService.getUserData()!.relatedId!);
+                    TokenModel token = await AuthRepository().generateToken(
+                        parent.username, parent.loginPassword);
+
+                    List<AccountModel> accounts = await BankRepository().getAllAccount();
+                    UserModel? user = SharedData.userData.value;
+                    if (user == null) {
+                      user = SharedPreferencesService.getUserData();
+                      SharedData.userData.value = user;
+                    }
+                    List<SavingModel> savings = await SavingRepository().getSavingList(null, uid: parent.uid!.toString());
+                    if (accounts.isNotEmpty) {
+                      AccountModel account = accounts.first;
+                      num balance = account.balance;
+                      for (var data in savings) {
+                        balance -= data.currentSaving;
+                      }
+                      if (balance - amount < 0) throw 'Rekening utama orang tuamu tidak cukup, nih!';
+                      account = account.copyWith(balance: balance.toDouble());
+                    }
+
+                    await BankRepository().createTransaction(parent.accountNo!,
+                        SharedPreferencesService.getUserData()!.accountNo!,
+                        amount, token.accessToken);
+                    _saving = _saving.copyWith(hasClaimedReward: true);
+                    await SavingRepository().updateSaving(_saving.id!, _saving);
+                    SharedCode.showSnackbar(context: context, message: 'Kamu berhasil mengklaim reward!');
+                    await _getAllData();
+                  } catch (e) {
+                    SharedCode.showSnackbar(context: context, message: e.toString(), isSuccess: false);
+                  }
+                  context.loaderOverlay.hide();
+                }
                     : null,
               ),
             )
@@ -688,11 +765,11 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
     );
   }
 
-
   Widget _buildHistory() {
     return CustomShadow(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: UiConstant.defaultPadding,
+        padding: const EdgeInsets.symmetric(
+            vertical: UiConstant.defaultPadding,
             horizontal: UiConstant.sidePadding),
         child: Column(
           children: [
@@ -707,40 +784,26 @@ class _SavingDetailPageState extends State<SavingDetailPage> {
                         .textTheme
                         .labelLarge,
                   )),
-              if (_transactions.isNotEmpty)
-                GestureDetector(
-                  onTap: () {},
-                  child: Text(
-                    AppLocalizations
-                        .of(context)
-                        .seeAll,
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .displayMedium
-                        ?.copyWith(
-                        fontSize: 12, color: Theme
-                        .of(context)
-                        .primaryColor),
-                  ),
-                )
             ]),
             const SizedBox(height: 16),
-            _transactions.isNotEmpty ? ListView.separated(
+            _transactions.isNotEmpty
+                ? ListView.separated(
               primary: false,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: _transactions.length,
               itemBuilder: (c, i) {
                 return CustomTransaction(
-                    userId: SharedPreferencesService.getUserData()!.accountNo!,
+                    userId: SharedPreferencesService.getUserData()!
+                        .accountNo!,
                     refreshPage: () {},
                     transactionModel: _transactions[i]);
               },
               separatorBuilder: (_, __) {
                 return const SizedBox(height: UiConstant.defaultSpacing);
               },
-            ) : _buildEmptyHistory(),
+            )
+                : _buildEmptyHistory(),
             if (_transactions.isNotEmpty) const SizedBox(height: 16),
           ],
         ),

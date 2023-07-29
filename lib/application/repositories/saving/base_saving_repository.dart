@@ -7,6 +7,6 @@ abstract class BaseSavingRepository {
   Future<String> addSaving(SavingModel savingModel);
   Future<void> updateSaving(String savingId, SavingModel savingModel);
   Future<void> deleteSaving(String savingId);
-  Future<List<SavingModel>> getSavingList(int? limit, {DocumentSnapshot document});
+  Future<List<SavingModel>> getSavingList(int? limit, {DocumentSnapshot document, String? uid});
   Future<SavingModel> getSavingById(String savingId);
 }

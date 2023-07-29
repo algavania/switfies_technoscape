@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -6,6 +7,7 @@ import 'package:swifties_technoscape/data/models/transaction/transaction_model.d
 import 'package:swifties_technoscape/l10n/l10n.dart';
 import 'package:swifties_technoscape/presentation/core/color_values.dart';
 import 'package:swifties_technoscape/presentation/core/ui_constant.dart';
+import 'package:swifties_technoscape/presentation/routes/router.gr.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_app_bar.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_shadow.dart';
 import 'package:swifties_technoscape/presentation/widgets/custom_transaction.dart';
@@ -105,7 +107,9 @@ class _ActivityPageState extends State<ActivityPage> {
   Widget _buildAddAccount() {
     return CustomShadow(
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          AutoRouter.of(context).navigate(const AddChildRoute());
+        },
         child: Container(
           padding: const EdgeInsets.symmetric(
               vertical: UiConstant.defaultPadding,

@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:loader_overlay/loader_overlay.dart';
@@ -20,6 +21,7 @@ import '../../../../application/common/db_constants.dart';
 import '../../../../application/service/shared_preferences_service.dart';
 import '../../../../data/models/account/account_model.dart';
 import '../../../../data/models/user/user_model.dart';
+import '../../../routes/router.gr.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -230,31 +232,39 @@ class _HomePageState extends State<HomePage> {
           children: [
             Expanded(
               child: _buildMenuItem(
-                  title: AppLocalizations.of(context).createSavingTarget,
-                  iconData: Iconsax.status_up5,
-                  iconColor: ColorValues.primary50,
-                  backgroundColor: ColorValues.primary10),
+                title: AppLocalizations.of(context).createSavingTargetAlt,
+                iconData: Iconsax.status_up5,
+                iconColor: ColorValues.primary50,
+                backgroundColor: ColorValues.primary10,
+                onTap: () => AutoRouter.of(context).navigate(const SavingsRoute()),
+              ),
             ),
             Expanded(
               child: _buildMenuItem(
-                  title: AppLocalizations.of(context).saveNow,
-                  iconData: Iconsax.direct_inbox5,
-                  iconColor: ColorValues.success30,
-                  backgroundColor: ColorValues.success10),
+                title: AppLocalizations.of(context).saveNow,
+                iconData: Iconsax.direct_inbox5,
+                iconColor: ColorValues.success30,
+                backgroundColor: ColorValues.success10,
+                onTap: () {},
+              ),
             ),
             Expanded(
               child: _buildMenuItem(
-                  title: AppLocalizations.of(context).interestCalculator,
-                  iconData: Iconsax.calculator5,
-                  iconColor: ColorValues.danger30,
-                  backgroundColor: ColorValues.danger10),
+                title: AppLocalizations.of(context).interestCalculator,
+                iconData: Iconsax.calculator5,
+                iconColor: ColorValues.danger30,
+                backgroundColor: ColorValues.danger10,
+                onTap: () {},
+              ),
             ),
             Expanded(
               child: _buildMenuItem(
-                  title: AppLocalizations.of(context).financeArticle,
-                  iconData: Iconsax.document_text5,
-                  iconColor: ColorValues.warning30,
-                  backgroundColor: ColorValues.warning10),
+                title: AppLocalizations.of(context).financeArticle,
+                iconData: Iconsax.document_text5,
+                iconColor: ColorValues.warning30,
+                backgroundColor: ColorValues.warning10,
+                onTap: () {},
+              ),
             ),
           ],
         ),
@@ -262,32 +272,32 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildMenuItem(
-      {required String title,
-      required IconData iconData,
-      required Color iconColor,
-      required Color backgroundColor}) {
-    return Column(children: [
-      Container(
-        padding: const EdgeInsets.all(8),
-        decoration: BoxDecoration(
-            color: backgroundColor,
-            borderRadius: BorderRadius.circular(UiConstant.smallerBorder)),
-        child: Icon(
-          iconData,
-          color: iconColor,
-          size: 24,
+  Widget _buildMenuItem({required String title, required IconData iconData, required Color iconColor, required Color backgroundColor, required Function() onTap}) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(children: [
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+              color: backgroundColor,
+              borderRadius: BorderRadius.circular(UiConstant.smallerBorder)
+          ),
+          child: Icon(
+            iconData,
+            color: iconColor,
+            size: 24,
+          ),
         ),
-      ),
-      const SizedBox(height: 4),
-      Text(
-        title,
-        style:
-            Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
-        textAlign: TextAlign.center,
-      )
-    ]);
+        const SizedBox(height: 4),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.displayMedium?.copyWith(fontSize: 12),
+          textAlign: TextAlign.center,
+        )
+      ]),
+    );
   }
+
 
   Widget _buildSectionHeading(
       {required String title,
